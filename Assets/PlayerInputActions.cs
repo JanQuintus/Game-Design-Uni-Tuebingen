@@ -17,14 +17,67 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         {
             ""name"": ""Default"",
             ""id"": ""53075603-93c3-4f76-9fc5-8b04ebfc1dc9"",
-            ""actions"": [],
-            ""bindings"": []
+            ""actions"": [
+                {
+                    ""name"": ""Shoot"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""57ca1301-7aae-4845-a29c-807c07b450b8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Walk"",
+                    ""type"": ""Value"",
+                    ""id"": ""6fe0e4fe-583c-48d2-8503-c960724fb933"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""1d196488-b1bb-4c09-bcf2-07dd52931077"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9f9d869a-6af3-4e2b-a489-fc13cc56a079"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Walk"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""aee232f4-163a-4e99-b3fa-1f43aeac8142"",
+                    ""path"": ""<SwitchProControllerHID>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Walk"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
 }");
         // Default
         m_Default = asset.FindActionMap("Default", throwIfNotFound: true);
+        m_Default_Shoot = m_Default.FindAction("Shoot", throwIfNotFound: true);
+        m_Default_Walk = m_Default.FindAction("Walk", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -74,10 +127,14 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     // Default
     private readonly InputActionMap m_Default;
     private IDefaultActions m_DefaultActionsCallbackInterface;
+    private readonly InputAction m_Default_Shoot;
+    private readonly InputAction m_Default_Walk;
     public struct DefaultActions
     {
         private @PlayerInputActions m_Wrapper;
         public DefaultActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Shoot => m_Wrapper.m_Default_Shoot;
+        public InputAction @Walk => m_Wrapper.m_Default_Walk;
         public InputActionMap Get() { return m_Wrapper.m_Default; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -87,15 +144,29 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         {
             if (m_Wrapper.m_DefaultActionsCallbackInterface != null)
             {
+                @Shoot.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnShoot;
+                @Shoot.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnShoot;
+                @Shoot.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnShoot;
+                @Walk.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnWalk;
+                @Walk.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnWalk;
+                @Walk.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnWalk;
             }
             m_Wrapper.m_DefaultActionsCallbackInterface = instance;
             if (instance != null)
             {
+                @Shoot.started += instance.OnShoot;
+                @Shoot.performed += instance.OnShoot;
+                @Shoot.canceled += instance.OnShoot;
+                @Walk.started += instance.OnWalk;
+                @Walk.performed += instance.OnWalk;
+                @Walk.canceled += instance.OnWalk;
             }
         }
     }
     public DefaultActions @Default => new DefaultActions(this);
     public interface IDefaultActions
     {
+        void OnShoot(InputAction.CallbackContext context);
+        void OnWalk(InputAction.CallbackContext context);
     }
 }
