@@ -27,9 +27,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Walk"",
-                    ""type"": ""Value"",
-                    ""id"": ""6fe0e4fe-583c-48d2-8503-c960724fb933"",
+                    ""name"": ""RightClick"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""5bd494d8-fb1d-4077-bde8-2ade14dcbffc"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -49,23 +49,12 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""9f9d869a-6af3-4e2b-a489-fc13cc56a079"",
-                    ""path"": ""<Keyboard>/w"",
+                    ""id"": ""a21e7ebc-11d7-493e-91e1-58cf6400eec5"",
+                    ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Walk"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""aee232f4-163a-4e99-b3fa-1f43aeac8142"",
-                    ""path"": ""<SwitchProControllerHID>/buttonEast"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Walk"",
+                    ""action"": ""RightClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -77,7 +66,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         // Default
         m_Default = asset.FindActionMap("Default", throwIfNotFound: true);
         m_Default_Shoot = m_Default.FindAction("Shoot", throwIfNotFound: true);
-        m_Default_Walk = m_Default.FindAction("Walk", throwIfNotFound: true);
+        m_Default_RightClick = m_Default.FindAction("RightClick", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -128,13 +117,13 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     private readonly InputActionMap m_Default;
     private IDefaultActions m_DefaultActionsCallbackInterface;
     private readonly InputAction m_Default_Shoot;
-    private readonly InputAction m_Default_Walk;
+    private readonly InputAction m_Default_RightClick;
     public struct DefaultActions
     {
         private @PlayerInputActions m_Wrapper;
         public DefaultActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Shoot => m_Wrapper.m_Default_Shoot;
-        public InputAction @Walk => m_Wrapper.m_Default_Walk;
+        public InputAction @RightClick => m_Wrapper.m_Default_RightClick;
         public InputActionMap Get() { return m_Wrapper.m_Default; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -147,9 +136,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @Shoot.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnShoot;
                 @Shoot.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnShoot;
                 @Shoot.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnShoot;
-                @Walk.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnWalk;
-                @Walk.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnWalk;
-                @Walk.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnWalk;
+                @RightClick.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnRightClick;
+                @RightClick.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnRightClick;
+                @RightClick.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnRightClick;
             }
             m_Wrapper.m_DefaultActionsCallbackInterface = instance;
             if (instance != null)
@@ -157,9 +146,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @Shoot.started += instance.OnShoot;
                 @Shoot.performed += instance.OnShoot;
                 @Shoot.canceled += instance.OnShoot;
-                @Walk.started += instance.OnWalk;
-                @Walk.performed += instance.OnWalk;
-                @Walk.canceled += instance.OnWalk;
+                @RightClick.started += instance.OnRightClick;
+                @RightClick.performed += instance.OnRightClick;
+                @RightClick.canceled += instance.OnRightClick;
             }
         }
     }
@@ -167,6 +156,6 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     public interface IDefaultActions
     {
         void OnShoot(InputAction.CallbackContext context);
-        void OnWalk(InputAction.CallbackContext context);
+        void OnRightClick(InputAction.CallbackContext context);
     }
 }
