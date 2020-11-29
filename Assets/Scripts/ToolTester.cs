@@ -24,7 +24,7 @@ public class ToolTester : MonoBehaviour
         inputActions.Default.RightClick.performed -= RightClick;
     }
 
-    private void Shoot(CallbackContext ctx) => Tool.Shoot();
-    private void RightClick(CallbackContext ctx) => Tool.Shoot(true);
+    private void Shoot(CallbackContext ctx) => Tool?.Shoot();
+    private void RightClick(CallbackContext ctx) => Tool?.Shoot(true);
 
 }

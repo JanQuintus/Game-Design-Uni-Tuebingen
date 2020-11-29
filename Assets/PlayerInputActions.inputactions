@@ -7,7 +7,7 @@
             "actions": [
                 {
                     "name": "Shoot",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "57ca1301-7aae-4845-a29c-807c07b450b8",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -15,7 +15,7 @@
                 },
                 {
                     "name": "RightClick",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "5bd494d8-fb1d-4077-bde8-2ade14dcbffc",
                     "expectedControlType": "Button",
                     "processors": "",
