@@ -21,7 +21,6 @@ public class GravityLaunerProjectile : MonoBehaviour
         Debug.Log("Locked");
         if (collision.gameObject.isStatic)
         {
-            transform.SetParent(collision.collider.transform);
             gameObject.GetComponent<Rigidbody>().detectCollisions = false;
             gameObject.GetComponent<Rigidbody>().isKinematic = true;
         }
