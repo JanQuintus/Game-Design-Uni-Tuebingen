@@ -8,7 +8,7 @@ public class GravityObject : MonoBehaviour
     private Rigidbody rb;
     [SerializeField] private bool useGravity = true;
 
-    private int counter = 0;
+    //private int counter = 0;
 
     void Awake()
     {
@@ -16,20 +16,14 @@ public class GravityObject : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        Debug.Log(rb.name);
-    }
-
     // Update is called once per frame
     void Update()
     {
-        counter = counter + 1;
-        if (counter == 100)
-        {
-            SetLocalGravity(new Vector3(-9, 0, 0));
-        }
+        //counter = counter + 1;
+        //if (counter == 100)
+        //{
+        //    SetLocalGravity(new Vector3(-9, 0, 0));
+        //}
     }
 
     void FixedUpdate()
