@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
+
 public class GravityObject : MonoBehaviour
 {
     [SerializeField] private Vector3 localGravity = new Vector3(0, -9.81f, 0); //initialization with standard gravity
@@ -12,7 +14,6 @@ public class GravityObject : MonoBehaviour
 
     void Awake()
     {
-        gameObject.AddComponent<Rigidbody>();
         rb = GetComponent<Rigidbody>();
     }
 
