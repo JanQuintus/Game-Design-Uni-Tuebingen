@@ -2,7 +2,7 @@
 using UnityEngine.InputSystem;
 using DG.Tweening;
 
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Rigidbody), typeof(GravityObject))]
 public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
 {
     [SerializeField] private CapsuleCollider col;
@@ -47,6 +47,7 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
 
     private PlayerInputActions _inputActions;
     private Rigidbody _rb;
+    private GravityObject _gravity;
 
     private bool _isGrounded = false;
     private bool _isCrouching = false;
@@ -75,6 +76,7 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
+        _gravity = GetComponent<GravityObject>();
         _inputActions = new PlayerInputActions();
         _inputActions.Player.SetCallbacks(this);
         Cursor.lockState = CursorLockMode.Locked;
@@ -128,12 +130,13 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
         localVelocity = transform.InverseTransformDirection(_rb.velocity);
         if (localVelocity.y <= 0)
         {
-            localVelocity += transform.up * Physics.gravity.y * (fallMultiplier - 1) * Time.fixedDeltaTime;
+            _rb.velocity += _gravity.GetLocalGravity() * (fallMultiplier - 1) * Time.fixedDeltaTime;
         }else if (localVelocity.y > 0 && !_jump)
         {
-            localVelocity += transform.up * Physics.gravity.y * (lowJumpMultiplier - 1) * Time.fixedDeltaTime;
+            _rb.velocity += _gravity.GetLocalGravity() * (lowJumpMultiplier - 1) * Time.fixedDeltaTime;
         }
 
+        localVelocity = transform.InverseTransformDirection(_rb.velocity);
         if (_isGrounded && localVelocity.y <= 0)
         {
             col.material.staticFriction = Mathf.Clamp01(-_rb.velocity.y * -_rb.velocity.y);
@@ -144,7 +147,6 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
             col.material.staticFriction = 0;
             col.material.frictionCombine = PhysicMaterialCombine.Minimum;
         }
-        _rb.velocity = transform.TransformDirection(localVelocity);
 
         if (_isGrounded && !wasGrounded)
         {
@@ -160,7 +162,7 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
     private void Update()
     {
         transform.Rotate(new Vector3(0, _rotate.x, 0) * Time.deltaTime * mouseSensitivity);
-        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.FromToRotation(transform.up, -Physics.gravity.normalized) * transform.rotation, 4f * Time.deltaTime);
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.FromToRotation(transform.up, -_gravity.GetLocalGravity().normalized) * transform.rotation, 4f * Time.deltaTime);
         // Head
         _pitch += -_rotate.y * Time.deltaTime * mouseSensitivity;
         _pitch = Mathf.Clamp(_pitch, -maxPitch, -minPitch);
