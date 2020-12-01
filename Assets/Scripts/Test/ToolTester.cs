@@ -14,14 +14,14 @@ public class ToolTester : MonoBehaviour
 
     private void OnEnable()
     {
-        inputActions.Default.Shoot.performed += Shoot;
-        inputActions.Default.RightClick.performed += RightClick;
+        inputActions.Player.Shoot.performed += Shoot;
+        inputActions.Player.RightClick.performed += RightClick;
     }
 
     private void OnDisable()
     {
-        inputActions.Default.Shoot.performed -= Shoot;
-        inputActions.Default.RightClick.performed -= RightClick;
+        inputActions.Player.Shoot.performed -= Shoot;
+        inputActions.Player.RightClick.performed -= RightClick;
     }
 
     private void Shoot(CallbackContext ctx) => Tool?.Shoot();
