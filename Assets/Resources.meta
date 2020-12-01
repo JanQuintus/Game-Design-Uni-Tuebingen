@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: f1be3d6d4db2a2640bc6569331401cd8
+=======
+guid: a9352817713ccaa45863b0d164edb3b0
+>>>>>>> feature/GravityLauncherShoot
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
