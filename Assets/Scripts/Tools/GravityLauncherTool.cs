@@ -37,7 +37,11 @@ public class GravityLauncherTool : ATool
         }
         else
         {
-            destroyBullet();
+            destroyBullet(); 
+            if (newBullet)
+            {
+                Destroy(newBullet);
+            }
         }
     }
 
