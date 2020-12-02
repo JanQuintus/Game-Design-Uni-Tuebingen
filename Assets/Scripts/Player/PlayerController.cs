@@ -161,10 +161,10 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
 
     private void Update()
     {
-        transform.Rotate(new Vector3(0, _rotate.x, 0) * Time.deltaTime * mouseSensitivity);
+        transform.Rotate(new Vector3(0, _rotate.x, 0) * mouseSensitivity);
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.FromToRotation(transform.up, -_gravity.GetLocalGravity().normalized) * transform.rotation, 4f * Time.deltaTime);
         // Head
-        _pitch += -_rotate.y * Time.deltaTime * mouseSensitivity;
+        _pitch += -_rotate.y * mouseSensitivity;
         _pitch = Mathf.Clamp(_pitch, -maxPitch, -minPitch);
         head.localEulerAngles = new Vector3(_pitch, 0, 0);
 
