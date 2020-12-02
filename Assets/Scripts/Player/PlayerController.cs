@@ -120,11 +120,14 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
         Vector3 move = transform.TransformDirection(new Vector3(_smoothMove.x, 0, _smoothMove.y) * Time.fixedDeltaTime * speed) + upVelocity;
         _rb.velocity = move;
 
-        if (_jumpRequest && _isGrounded)
+        if (_jumpRequest)
         {
             _jumpRequest = false;
-            Vector3 jumpVel = transform.TransformDirection(jumpVelocity);
-            _rb.AddForce(jumpVel, ForceMode.Impulse);
+            if (_isGrounded && !KeepCrouching())
+            {
+                Vector3 jumpVel = transform.TransformDirection(jumpVelocity);
+                _rb.AddForce(jumpVel, ForceMode.Impulse);
+            }
         }
 
         localVelocity = transform.InverseTransformDirection(_rb.velocity);
