@@ -12,10 +12,6 @@ public class GravityLauncherProjectile : MonoBehaviour
     {
         liveTime = 5f;
     }
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
@@ -23,7 +19,6 @@ public class GravityLauncherProjectile : MonoBehaviour
         if (!active)
         {
             liveTime -= Time.deltaTime;
-            Debug.Log(liveTime);
             if (liveTime < 0)
             {
                 Destroy(this.gameObject);
@@ -40,6 +35,7 @@ public class GravityLauncherProjectile : MonoBehaviour
             gameObject.GetComponent<Rigidbody>().isKinematic = true;
             isLocked = true;
             active = true;
+            changeGravity(collision);
         }
     }
     
@@ -56,5 +52,15 @@ public class GravityLauncherProjectile : MonoBehaviour
     public bool getActive()
     {
         return active;
+    }
+
+    private void changeGravity(Collision collision)
+    {
+        Vector3 normal = collision.GetContact(0).normal;
+        GravityObject[] gravityObjects = GameObject.FindObjectsOfType<GravityObject>();
+        foreach(GravityObject gravityObject in gravityObjects)
+        {
+            gravityObject.SetLocalGravity(normal * -9.81f);
+        }
     }
 }
