@@ -5,9 +5,10 @@ using DG.Tweening;
 [RequireComponent(typeof(Rigidbody), typeof(GravityObject))]
 public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
 {
+    public static PlayerController Instance;
+
     [SerializeField] private CapsuleCollider col;
     [SerializeField] private float height = 1.8f;
-
 
     [Header("Movement")]
     [SerializeField] private float moveDamping = 5f;
@@ -71,12 +72,20 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
     private float _tbInitialDefaultPosY = 0;
     private float _tbDefaultPosY = 0;
     private float _tbDefaultPosX = 0;
+    private float _tbDefaultPosZ = 0;
     private float _tbTimer = 0;
 
     #region Unity Functions
 
     private void Awake()
     {
+        if(Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+
         _rb = GetComponent<Rigidbody>();
         _gravity = GetComponent<GravityObject>();
         _inputActions = new PlayerInputActions();
@@ -91,6 +100,7 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
         _tbDefaultPosY = toolHolder.localPosition.y;
         _tbInitialDefaultPosY = toolHolder.localPosition.y;
         _tbDefaultPosX = toolHolder.localPosition.x;
+        _tbDefaultPosZ = toolHolder.localPosition.z;
     }
 
     private void FixedUpdate()
@@ -165,8 +175,11 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
         }
     }
 
-    private void Update()
+    private void LateUpdate()
     {
+        if (Input.GetKeyDown(KeyCode.T))
+            SetCurrentTool(currentTool);
+
         transform.Rotate(new Vector3(0, _rotate.x, 0) * mouseSensitivity);
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.FromToRotation(transform.up, -_gravity.GetLocalGravity().normalized) * transform.rotation, 4f * Time.deltaTime);
         // Head
@@ -223,7 +236,26 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
         _crouch = false;
     }
 
-#endregion
+    #endregion
+
+    #region Public Methods
+    public void SetCurrentTool(ATool tool)
+    {
+        if (currentTool == tool)
+        {
+            Destroy(currentTool.gameObject);
+            currentTool = Instantiate(tool, toolHolder);
+            return;
+        }
+        toolHolder.DOKill();
+        toolHolder.DOLocalMove(new Vector3(_tbDefaultPosX + 0.5f, _tbDefaultPosY - 1f, _tbDefaultPosZ - 1f), 0.25f).OnComplete(() =>
+        {
+            Destroy(currentTool.gameObject);
+            toolHolder.DOLocalMoveZ(_tbDefaultPosZ, 0.25f);
+            currentTool = Instantiate(tool, toolHolder);
+        });
+    }
+    #endregion
 
     private void CheckIsGrounded()
     {
@@ -261,7 +293,7 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
 
 #endregion
 
-private void OnDrawGizmosSelected()
+    private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.gray;
         Gizmos.DrawWireSphere(transform.position + transform.TransformDirection(gcOffset), gcRadius);
