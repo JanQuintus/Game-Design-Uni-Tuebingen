@@ -38,12 +38,14 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
     [SerializeField] private Vector3 gcOffset = new Vector3(0, .1f, 0);
     [SerializeField] private float gcDistance = .3f;
     [SerializeField] private float gcRadius = .3f;
+    [SerializeField] private LayerMask gcLayerMask;
 
     [Header("Crouch")]
     [SerializeField] private float crouchHeight = 1f;
     [SerializeField] private Vector3 ccOffset = new Vector3(0, -.1f, 0);
     [SerializeField] private float ccDistance = .3f;
     [SerializeField] private float ccRadius = .3f;
+    [SerializeField] private LayerMask ccLayerMask;
 
     private PlayerInputActions _inputActions;
     private Rigidbody _rb;
@@ -83,6 +85,7 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
         Cursor.visible = false;
         col.height = height;
         col.center = new Vector3(col.center.x, height / 2f, col.center.z);
+        Physics.IgnoreCollision(col, head.GetComponent<Collider>());
         _hbDefaultPosY = height - .2f;
         _hbDefaultPosX = head.localPosition.x;
         _tbDefaultPosY = toolHolder.localPosition.y;
@@ -154,7 +157,7 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
         if (_isGrounded && !wasGrounded)
         {
             _tbDefaultPosY = _tbInitialDefaultPosY;
-            head.DOLocalMoveY(head.localPosition.y - 0.3f, 0.1f);
+            head.DOLocalMoveY(head.localPosition.y - 0.25f, 0.1f);
         }
         else if(!_isGrounded && wasGrounded)
         {
@@ -224,12 +227,12 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
 
     private void CheckIsGrounded()
     {
-        _isGrounded = Physics.SphereCast(new Ray(transform.position + transform.TransformDirection(gcOffset), -transform.up), gcRadius, gcDistance);
+        _isGrounded = Physics.SphereCast(new Ray(transform.position + transform.TransformDirection(gcOffset), -transform.up), gcRadius, gcDistance, gcLayerMask);
     }
 
     private bool KeepCrouching()
     {
-        return Physics.SphereCast(new Ray(transform.position + transform.TransformDirection(new Vector3(0, crouchHeight, 0)) + transform.TransformDirection(ccOffset), transform.up), ccRadius, ccDistance);
+        return Physics.SphereCast(new Ray(transform.position + transform.TransformDirection(new Vector3(0, crouchHeight, 0)) + transform.TransformDirection(ccOffset), transform.up), ccRadius, ccDistance, ccLayerMask);
     }
 
     #region Input
