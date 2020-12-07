@@ -198,7 +198,6 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
         }
         else
         {
-            _hbTimer = 0;
             head.localPosition = new Vector3(Mathf.Lerp(head.localPosition.x, _hbDefaultPosX, Time.deltaTime * (walkBobbingSpeed / 2f)),
                 Mathf.Lerp(head.localPosition.y, _hbDefaultPosY, Time.deltaTime * walkBobbingSpeed), head.localPosition.z);
         }
