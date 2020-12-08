@@ -30,10 +30,15 @@ public class GravityLauncherTool : ATool
             newBullet = Instantiate(projectile) as GameObject;
             newBullet.name = "GravityBomb";
             newBullet.transform.position = transform.position + Camera.main.transform.forward * 2;
+            if (bullet)
+            {
+                newBullet.GetComponent<GravityObject>().SetLocalGravity(bullet.GetComponent<GravityObject>().GetLocalGravity());
+            }
+            
             Rigidbody rb = newBullet.GetComponent<Rigidbody>();
             rb.velocity = Camera.main.transform.forward * 40;
 
-           
+
         }
         else
         {
@@ -42,6 +47,8 @@ public class GravityLauncherTool : ATool
             {
                 Destroy(newBullet);
             }
+
+            normalizeGravity();
         }
     }
 
@@ -75,5 +82,14 @@ public class GravityLauncherTool : ATool
         }
     }
 
+    void normalizeGravity()
+    {
+        GravityObject[] gravityObjects = GameObject.FindObjectsOfType<GravityObject>();
+
+        foreach(GravityObject gravityObject in gravityObjects)
+        {
+            gravityObject.SetLocalGravity(new Vector3(0, -9.81f, 0));
+        }
+    }
     
 }
