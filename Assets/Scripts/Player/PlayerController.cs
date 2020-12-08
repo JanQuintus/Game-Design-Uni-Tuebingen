@@ -108,7 +108,8 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
         bool wasGrounded = _isGrounded;
         CheckIsGrounded();
 
-        if (_crouch || KeepCrouching())
+        bool wasCrouching = _isCrouching;
+        if (_crouch || (wasCrouching && KeepCrouching()))
             _isCrouching = true;
         else
             _isCrouching = false;
