@@ -27,11 +27,9 @@ public class MassExchangerTool : ATool
                 {
                     // store ref to object
                     mERightObj = hit.transform.gameObject;
-                    //Debug.Log("Right Object : " + mERightObj);
 
                     // store mass
-                    mEMassRight = hit.transform.gameObject.GetComponent<Rigidbody>().mass;
-                    //Debug.Log("Right mass : " + mEMassRight);
+                    mEMassRight = Mathf.Round(hit.transform.gameObject.GetComponent<Rigidbody>().mass);
 
                     // if other mass isn't -1 ( the default/unassigned value ), ignore swapping the masses of the same object
                     if ((mEMassLeft != -1) && (mERightObj != mELeftObj))
@@ -52,11 +50,9 @@ public class MassExchangerTool : ATool
                 {
                     // store ref to object
                     mELeftObj = hit.transform.gameObject;
-                    //Debug.Log("Left Object : " + mELeftObj);
 
                     // store mass
-                    mEMassLeft = hit.transform.gameObject.GetComponent<Rigidbody>().mass;
-                    //Debug.Log("Left mass : " + mEMassLeft);
+                    mEMassLeft = Mathf.Round(hit.transform.gameObject.GetComponent<Rigidbody>().mass);
 
                     // if other mass isn't -1 ( the default/unassigned value ), ignore swapping the masses of the same object
                     if ((mEMassRight != -1) && (mERightObj != mELeftObj))
