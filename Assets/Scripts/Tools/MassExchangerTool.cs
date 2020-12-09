@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 
 public class MassExchangerTool : ATool
 {
@@ -12,12 +10,14 @@ public class MassExchangerTool : ATool
     public GameObject mERightObj;
     public GameObject mELeftObj;
 
-    //private Rigidbody shite;
 
-    public override void Shoot(bool isRightClick)
+    public override void Shoot(Ray ray, bool isRelease = false, bool isRightClick = false)
     {
+        if (isRelease)
+            return;
+
         // Raycast
-        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit))
+        if (Physics.Raycast(ray, out RaycastHit hit))
         {
             // depending on what kinda click
             if (isRightClick) // rite click
@@ -68,4 +68,11 @@ public class MassExchangerTool : ATool
             }
         }
     }
+
+    public override void Reset(bool isRelease)
+    {
+        
+    }
+
+    public override void Scroll(float delta){}
 }

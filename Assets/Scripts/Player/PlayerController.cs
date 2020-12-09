@@ -287,11 +287,15 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
 
     public void OnCrouch(InputAction.CallbackContext context) => _crouch = !_crouch;
 
-    public void OnShoot(InputAction.CallbackContext context) { if (context.performed) currentTool?.Shoot(); }
+    public void OnShoot(InputAction.CallbackContext context) { if(context.performed || context.canceled) currentTool?.Shoot(new Ray(head.position, head.forward), context.canceled); }
 
-    public void OnRightClick(InputAction.CallbackContext context) { if (context.performed) currentTool?.Shoot(true); }
+    public void OnRightClick(InputAction.CallbackContext context) { if (context.performed || context.canceled) currentTool?.Shoot(new Ray(head.position, head.forward), context.canceled, true); }
 
-#endregion
+    public void OnMiddleClick(InputAction.CallbackContext context) { if (context.performed || context.canceled) currentTool?.Reset(context.canceled); }
+
+    public void OnScroll(InputAction.CallbackContext context) { currentTool?.Scroll(context.ReadValue<Vector2>().y); }
+
+    #endregion
 
     private void OnDrawGizmosSelected()
     {
@@ -305,5 +309,4 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position + transform.TransformDirection(new Vector3(0, crouchHeight, 0)) + transform.TransformDirection(ccOffset) + transform.up * ccDistance, ccRadius);
     }
-
 }

@@ -11,14 +11,13 @@ public class GravityLauncherTool : ATool
     {
         projectile = Resources.Load("projectile") as GameObject;
     }
-    public override void Shoot(bool isRightClick = false)
+    public override void Shoot(Ray ray, bool isRelease = false, bool isRightClick = false)
     {
-
+        if (isRelease)
+            return;
         // Check if a projectile is already active, if so destroy it. (Can be done on right and left click)
-       
-        
 
-        if (isRightClick)
+        if (!isRightClick)
         {
             if (newBullet)
             {
@@ -27,7 +26,8 @@ public class GravityLauncherTool : ATool
                     Destroy(newBullet);
                 }
             }
-            newBullet = Instantiate(projectile) as GameObject;
+            newBullet = Instantiate(projectile);
+            newBullet.transform.right = ray.direction;
             newBullet.name = "GravityBomb";
             newBullet.transform.position = transform.position + Camera.main.transform.forward * 2;
             if (bullet)
@@ -36,26 +36,21 @@ public class GravityLauncherTool : ATool
             }
             
             Rigidbody rb = newBullet.GetComponent<Rigidbody>();
-            rb.velocity = Camera.main.transform.forward * 40;
-
-
+            rb.velocity = ray.direction * 40;
         }
         else
         {
             destroyBullet(); 
             if (newBullet)
-            {
                 Destroy(newBullet);
-            }
 
             normalizeGravity();
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public override void Reset(bool isRelease)
     {
-        
+
     }
 
     // Update is called once per frame
@@ -77,9 +72,7 @@ public class GravityLauncherTool : ATool
     void destroyBullet()
     {
         if (bullet)
-        {
             Destroy(bullet);
-        }
     }
 
     void normalizeGravity()
@@ -91,5 +84,6 @@ public class GravityLauncherTool : ATool
             gravityObject.SetLocalGravity(new Vector3(0, -9.81f, 0));
         }
     }
-    
+
+    public override void Scroll(float delta){}
 }
