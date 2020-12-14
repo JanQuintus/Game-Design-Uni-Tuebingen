@@ -15,6 +15,8 @@ public class MassExchangerTool : ATool
     private Stack<Rigidbody> mEObjStack = new Stack<Rigidbody>();
     private Stack<float> mEMassStack = new Stack<float>();
 
+    // initialize energy ( ammo )
+    public int mEEnergy = 20;
 
     public override void Shoot(Ray ray, bool isRelease = false, bool isRightClick = false)
     {
@@ -36,8 +38,8 @@ public class MassExchangerTool : ATool
                     // store mass
                     mEMassRight = Mathf.Round(hit.transform.gameObject.GetComponent<Rigidbody>().mass);
 
-                    // if other mass isn't -1 ( the default/unassigned value ), ignore swapping the masses of the same object
-                    if ((mEMassLeft != -1) && (mERightObj != mELeftObj))
+                    // if other mass isn't -1 ( the default/unassigned value ), ignore swapping the masses of the same object, have ammo
+                    if ((mEMassLeft != -1) && (mERightObj != mELeftObj) && (mEEnergy > 0))
                     {
                         // add values to the stack so we can reset them later
                         mEObjStack.Push(mERightObj.GetComponent<Rigidbody>());
@@ -45,9 +47,10 @@ public class MassExchangerTool : ATool
                         mEObjStack.Push(mELeftObj.GetComponent<Rigidbody>());
                         mEMassStack.Push(mEMassLeft);
 
-                        // add this mass to other obj, add other mass to this obj, reset stored values to -1
+                        // add this mass to other obj, add other mass to this obj, reset stored values to -1, deduct ammo
                         mELeftObj.GetComponent<Rigidbody>().mass = mEMassRight;
                         mERightObj.GetComponent<Rigidbody>().mass = mEMassLeft;
+                        mEEnergy -= 1;
 
                         mEMassLeft = -1;
                         mEMassRight = -1;
@@ -65,8 +68,8 @@ public class MassExchangerTool : ATool
                     // store mass
                     mEMassLeft = Mathf.Round(hit.transform.gameObject.GetComponent<Rigidbody>().mass);
 
-                    // if other mass isn't -1 ( the default/unassigned value ), ignore swapping the masses of the same object
-                    if ((mEMassRight != -1) && (mERightObj != mELeftObj))
+                    // if other mass isn't -1 ( the default/unassigned value ), ignore swapping the masses of the same object, have ammo
+                    if ((mEMassRight != -1) && (mERightObj != mELeftObj) && (mEEnergy > 0))
                     {
                         // add values to the stack so we can reset them later
                         mEObjStack.Push(mERightObj.GetComponent<Rigidbody>());
@@ -74,9 +77,10 @@ public class MassExchangerTool : ATool
                         mEObjStack.Push(mELeftObj.GetComponent<Rigidbody>());
                         mEMassStack.Push(mEMassLeft);
 
-                        // add this mass to other obj, add other mass to this obj, reset stored values to -1
+                        // add this mass to other obj, add other mass to this obj, reset stored values to -1, deduct ammo
                         mERightObj.GetComponent<Rigidbody>().mass = mEMassLeft;
                         mELeftObj.GetComponent<Rigidbody>().mass = mEMassRight;
+                        mEEnergy -= 1;
 
                         mEMassLeft = -1;
                         mEMassRight = -1;
