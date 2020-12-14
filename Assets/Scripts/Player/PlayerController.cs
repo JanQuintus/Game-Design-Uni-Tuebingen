@@ -22,8 +22,8 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
     [SerializeField] private float mouseSensitivity = 40f;
     [SerializeField] private float maxPitch = 90;
     [SerializeField] private float minPitch = -70;
-    [SerializeField] public float walkBobbingSpeed = 14f;
-    [SerializeField] public Vector2 walkBobbingAmount = new Vector2(0.025f, 0.05f);
+    [SerializeField] private float walkBobbingSpeed = 14f;
+    [SerializeField] private Vector2 walkBobbingAmount = new Vector2(0.025f, 0.05f);
 
     [Header("Jump")]
     [SerializeField] private Vector3 jumpVelocity = new Vector3(0, 400, 0);
@@ -48,6 +48,10 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
     [SerializeField] private float ccDistance = .3f;
     [SerializeField] private float ccRadius = .3f;
     [SerializeField] private LayerMask ccLayerMask;
+
+    [Header("Interact")]
+    [SerializeField] private float interactDistance = 2;
+    [SerializeField] private LayerMask interactLayerMask;
 
     private PlayerInputActions _inputActions;
     private Rigidbody _rb;
@@ -295,6 +299,12 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
     public void OnNum3(InputAction.CallbackContext context) { if (context.performed) weaponBelt?.SetWeapon(2); }
     public void OnNum4(InputAction.CallbackContext context) { if (context.performed) weaponBelt?.SetWeapon(3); }
 
+    public void OnInteract(InputAction.CallbackContext context) { 
+        if(Physics.Raycast(head.position, head.forward, out RaycastHit hit, interactDistance, interactLayerMask))
+            if (context.performed || context.canceled)
+                hit.collider.GetComponent<AInteractive>()?.Interact(context.canceled);
+    }
+
     #endregion
 
     private void OnDrawGizmosSelected()
@@ -309,6 +319,4 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position + transform.TransformDirection(new Vector3(0, crouchHeight, 0)) + transform.TransformDirection(ccOffset) + transform.up * ccDistance, ccRadius);
     }
-
-
 }

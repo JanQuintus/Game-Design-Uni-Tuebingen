@@ -129,6 +129,14 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""4b2cd536-8c99-487d-ba1a-b8fa54a56643"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -371,6 +379,17 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Num4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9ffa34f8-d85d-4f1c-9c7a-5ad1e7094a85"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -962,6 +981,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         m_Player_Num2 = m_Player.FindAction("Num2", throwIfNotFound: true);
         m_Player_Num3 = m_Player.FindAction("Num3", throwIfNotFound: true);
         m_Player_Num4 = m_Player.FindAction("Num4", throwIfNotFound: true);
+        m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1037,6 +1057,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Num2;
     private readonly InputAction m_Player_Num3;
     private readonly InputAction m_Player_Num4;
+    private readonly InputAction m_Player_Interact;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -1055,6 +1076,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         public InputAction @Num2 => m_Wrapper.m_Player_Num2;
         public InputAction @Num3 => m_Wrapper.m_Player_Num3;
         public InputAction @Num4 => m_Wrapper.m_Player_Num4;
+        public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1106,6 +1128,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @Num4.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNum4;
                 @Num4.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNum4;
                 @Num4.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNum4;
+                @Interact.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
+                @Interact.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
+                @Interact.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1152,6 +1177,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @Num4.started += instance.OnNum4;
                 @Num4.performed += instance.OnNum4;
                 @Num4.canceled += instance.OnNum4;
+                @Interact.started += instance.OnInteract;
+                @Interact.performed += instance.OnInteract;
+                @Interact.canceled += instance.OnInteract;
             }
         }
     }
@@ -1322,6 +1350,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         void OnNum2(InputAction.CallbackContext context);
         void OnNum3(InputAction.CallbackContext context);
         void OnNum4(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
