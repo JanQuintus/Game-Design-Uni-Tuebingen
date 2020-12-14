@@ -13,33 +13,41 @@ public class GravityGunTool : ATool
     {
         if (changedBodies.Count > 0){
             energy -= Time.deltaTime * changedBodies.Count;
-            if(energy <= 0)
-            {
-                changedBodies.Clear();
-            }
+            if(energy <= 0) Reset(false);
         }
     }
 
     public override void Shoot(Ray ray, bool isRelease = false, bool isRightClick = false)
     {
-        if (isRightClick || isRelease)
-            return;
-
+        if (isRelease || isRightClick) return;
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
             Rigidbody rb = hit.collider.GetComponent<Rigidbody>();
-            if (rb != null)
+            if (rb)
             {
-                rb.useGravity = false;
-                changedBodies.Add(rb);
+                rb.useGravity = !rb.useGravity;
+                if(changedBodies.Contains(rb))
+                {
+                    changedBodies.Remove(rb);
+                }
+                else changedBodies.Add(rb);
             }
         }
     }
 
     public override void Reset(bool isRelease)
     {
-        
+        if (!isRelease)
+        {
+            foreach (Rigidbody rb in changedBodies)
+            {
+                rb.useGravity = !rb.useGravity;
+            }
+            changedBodies.Clear();
+        }
     }
 
     public override void Scroll(float delta) { }
+
+
 }
