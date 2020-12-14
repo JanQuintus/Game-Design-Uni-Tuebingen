@@ -8,6 +8,8 @@ public class GravityLauncherProjectile : MonoBehaviour
     private bool isLocked = false;
     private bool active = false;
     private float liveTime;
+    private Vector3 normal;
+    public float radius = 20f;
     private void Awake()
     {
         liveTime = 5f;
@@ -24,21 +26,23 @@ public class GravityLauncherProjectile : MonoBehaviour
                 Destroy(this.gameObject);
             }
         }
+
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.isStatic)
         {
-            Debug.Log("Locked");
-            gameObject.GetComponent<Rigidbody>().detectCollisions = false;
             gameObject.GetComponent<Rigidbody>().isKinematic = true;
             isLocked = true;
             active = true;
-            changeGravity(collision);
+            gameObject.GetComponent<SphereCollider>().radius = radius;
+            gameObject.GetComponent<SphereCollider>().isTrigger = true;
+            transform.rotation = collision.gameObject.transform.rotation;
+            initialGravityChanger(collision);
         }
     }
-    
+
     public bool getIsLocked()
     {
         return isLocked;
@@ -54,13 +58,70 @@ public class GravityLauncherProjectile : MonoBehaviour
         return active;
     }
 
-    private void changeGravity(Collision collision)
+    /**
+     * initial gravity change after projectile is locked on the collision
+     */
+    private void initialGravityChanger(Collision collision)
     {
-        Vector3 normal = collision.GetContact(0).normal;
-        GravityObject[] gravityObjects = GameObject.FindObjectsOfType<GravityObject>();
-        foreach(GravityObject gravityObject in gravityObjects)
+        normal = collision.GetContact(0).normal;
+        Collider[] co = Physics.OverlapSphere(normal, radius, 0);
+        foreach (Collider collider in co)
         {
-            gravityObject.SetLocalGravity(normal * -9.81f);
+
+            // double direction = Vector3.Dot(normal, (collider.transform.position - transform.position));
+            // if (direction < -2) changeGravity(collider, -normal * -9.81f);
+            // else changeGravity(collider, normal * -9.81f);
+            changeGravity(collider, normal * -9.81f);
+
         }
+
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+
+        // double direction = Vector3.Dot(normal, (other.transform.position - transform.position));
+        // if (direction < -2) changeGravity(other, -normal * -9.81f);
+        //  else changeGravity(other, normal * -9.81f);
+        changeGravity(other, normal * -9.81f);
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        Debug.Log(other);
+        changeGravity(other, new Vector3(0, -9.81f, 0));
+    }
+
+    private void OnDestroy()
+    {
+        Collider[] co = Physics.OverlapSphere(transform.position, radius);
+        foreach (Collider collider in co)
+        {
+            changeGravity(collider, new Vector3(0, -9.81f, 0));
+        }
+    }
+
+    /**
+     * change gravity of Collider collider to the Vector3 gravity
+     */
+    private void changeGravity(Collider collider, Vector3 gravity)
+    {
+        /**
+         * check if collider hast an gravityObject if not check if parent has one. 
+         * Gravity of that GravityObject.
+         */
+
+        GravityObject go = collider.GetComponent<GravityObject>();
+        if (!go) go = collider.GetComponentInParent<GravityObject>();
+        if (go) go.SetLocalGravity(gravity);
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+
+        //  double direction = Vector3.Dot(normal, (other.transform.position - transform.position));
+        // if (direction < -2) changeGravity(other, -normal * -9.81f);
+        //  else changeGravity(other, normal * -9.81f);
+        changeGravity(other, normal * -9.81f);
     }
 }
