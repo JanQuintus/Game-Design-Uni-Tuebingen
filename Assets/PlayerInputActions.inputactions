@@ -84,6 +84,38 @@
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Num1",
+                    "type": "Button",
+                    "id": "ff527062-e764-4321-9a30-ce9f36703612",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Num2",
+                    "type": "Button",
+                    "id": "78461f8e-6057-4120-944d-115e943652ba",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Num3",
+                    "type": "Button",
+                    "id": "5f2ae93f-d78f-4a53-beed-f0a5fe2431e9",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Num4",
+                    "type": "Button",
+                    "id": "6ba9ab76-b5cb-4ed1-b915-f347bc7bc28a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -282,6 +314,50 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Scroll",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e7d53944-8087-461b-9d49-0cb932290b85",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Num1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2a411add-181b-4607-a9ce-db99806825f3",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Num2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6c8c99d1-999d-42aa-83aa-7e7493a1b6b5",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Num3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "27958804-abb4-4967-abf9-f6d7990d9032",
+                    "path": "<Keyboard>/4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Num4",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

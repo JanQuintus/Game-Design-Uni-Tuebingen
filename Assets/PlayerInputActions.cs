@@ -97,6 +97,38 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Num1"",
+                    ""type"": ""Button"",
+                    ""id"": ""ff527062-e764-4321-9a30-ce9f36703612"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Num2"",
+                    ""type"": ""Button"",
+                    ""id"": ""78461f8e-6057-4120-944d-115e943652ba"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Num3"",
+                    ""type"": ""Button"",
+                    ""id"": ""5f2ae93f-d78f-4a53-beed-f0a5fe2431e9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Num4"",
+                    ""type"": ""Button"",
+                    ""id"": ""6ba9ab76-b5cb-4ed1-b915-f347bc7bc28a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -295,6 +327,50 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Scroll"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e7d53944-8087-461b-9d49-0cb932290b85"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Num1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2a411add-181b-4607-a9ce-db99806825f3"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Num2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6c8c99d1-999d-42aa-83aa-7e7493a1b6b5"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Num3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""27958804-abb4-4967-abf9-f6d7990d9032"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Num4"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -882,6 +958,10 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         m_Player_RightClick = m_Player.FindAction("RightClick", throwIfNotFound: true);
         m_Player_MiddleClick = m_Player.FindAction("MiddleClick", throwIfNotFound: true);
         m_Player_Scroll = m_Player.FindAction("Scroll", throwIfNotFound: true);
+        m_Player_Num1 = m_Player.FindAction("Num1", throwIfNotFound: true);
+        m_Player_Num2 = m_Player.FindAction("Num2", throwIfNotFound: true);
+        m_Player_Num3 = m_Player.FindAction("Num3", throwIfNotFound: true);
+        m_Player_Num4 = m_Player.FindAction("Num4", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -953,6 +1033,10 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_RightClick;
     private readonly InputAction m_Player_MiddleClick;
     private readonly InputAction m_Player_Scroll;
+    private readonly InputAction m_Player_Num1;
+    private readonly InputAction m_Player_Num2;
+    private readonly InputAction m_Player_Num3;
+    private readonly InputAction m_Player_Num4;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -967,6 +1051,10 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         public InputAction @RightClick => m_Wrapper.m_Player_RightClick;
         public InputAction @MiddleClick => m_Wrapper.m_Player_MiddleClick;
         public InputAction @Scroll => m_Wrapper.m_Player_Scroll;
+        public InputAction @Num1 => m_Wrapper.m_Player_Num1;
+        public InputAction @Num2 => m_Wrapper.m_Player_Num2;
+        public InputAction @Num3 => m_Wrapper.m_Player_Num3;
+        public InputAction @Num4 => m_Wrapper.m_Player_Num4;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1006,6 +1094,18 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @Scroll.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnScroll;
                 @Scroll.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnScroll;
                 @Scroll.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnScroll;
+                @Num1.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNum1;
+                @Num1.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNum1;
+                @Num1.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNum1;
+                @Num2.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNum2;
+                @Num2.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNum2;
+                @Num2.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNum2;
+                @Num3.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNum3;
+                @Num3.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNum3;
+                @Num3.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNum3;
+                @Num4.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNum4;
+                @Num4.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNum4;
+                @Num4.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNum4;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1040,6 +1140,18 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @Scroll.started += instance.OnScroll;
                 @Scroll.performed += instance.OnScroll;
                 @Scroll.canceled += instance.OnScroll;
+                @Num1.started += instance.OnNum1;
+                @Num1.performed += instance.OnNum1;
+                @Num1.canceled += instance.OnNum1;
+                @Num2.started += instance.OnNum2;
+                @Num2.performed += instance.OnNum2;
+                @Num2.canceled += instance.OnNum2;
+                @Num3.started += instance.OnNum3;
+                @Num3.performed += instance.OnNum3;
+                @Num3.canceled += instance.OnNum3;
+                @Num4.started += instance.OnNum4;
+                @Num4.performed += instance.OnNum4;
+                @Num4.canceled += instance.OnNum4;
             }
         }
     }
@@ -1206,6 +1318,10 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         void OnRightClick(InputAction.CallbackContext context);
         void OnMiddleClick(InputAction.CallbackContext context);
         void OnScroll(InputAction.CallbackContext context);
+        void OnNum1(InputAction.CallbackContext context);
+        void OnNum2(InputAction.CallbackContext context);
+        void OnNum3(InputAction.CallbackContext context);
+        void OnNum4(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

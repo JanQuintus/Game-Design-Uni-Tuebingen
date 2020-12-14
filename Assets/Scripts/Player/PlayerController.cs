@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
 
     [SerializeField] private CapsuleCollider col;
     [SerializeField] private float height = 1.8f;
+    [SerializeField] private WeaponBelt weaponBelt;
 
     [Header("Movement")]
     [SerializeField] private float moveDamping = 5f;
@@ -241,18 +242,16 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
     #region Public Methods
     public void SetCurrentTool(ATool tool)
     {
-        if (currentTool == tool)
-        {
-            Destroy(currentTool.gameObject);
-            currentTool = Instantiate(tool, toolHolder);
+        if (currentTool != null && currentTool.GetType() == tool.GetType())
             return;
-        }
+
         toolHolder.DOKill();
-        toolHolder.DOLocalMove(new Vector3(_tbDefaultPosX + 0.5f, _tbDefaultPosY - 1f, _tbDefaultPosZ - 1f), 0.25f).OnComplete(() =>
+        toolHolder.DOLocalMove(new Vector3(_tbDefaultPosX + 0.5f, _tbDefaultPosY - 0.5f, _tbDefaultPosZ - 0.5f), 0.25f).OnComplete(() =>
         {
-            Destroy(currentTool.gameObject);
+            if (currentTool != null) currentTool.gameObject.SetActive(false);
             toolHolder.DOLocalMoveZ(_tbDefaultPosZ, 0.25f);
-            currentTool = Instantiate(tool, toolHolder);
+            currentTool = tool;
+            currentTool.gameObject.SetActive(true);
         });
     }
     #endregion
@@ -282,18 +281,19 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
     public void OnSprint(InputAction.CallbackContext context) => _sprint = !_sprint;
 
     public void OnJumpStart(InputAction.CallbackContext context) { if (context.performed) _jumpRequest = true; }
-
     public void OnJumpHold(InputAction.CallbackContext context) => _jump = !_jump;
 
     public void OnCrouch(InputAction.CallbackContext context) => _crouch = !_crouch;
 
     public void OnShoot(InputAction.CallbackContext context) { if(context.performed || context.canceled) currentTool?.Shoot(new Ray(head.position, head.forward), context.canceled); }
-
     public void OnRightClick(InputAction.CallbackContext context) { if (context.performed || context.canceled) currentTool?.Shoot(new Ray(head.position, head.forward), context.canceled, true); }
-
     public void OnMiddleClick(InputAction.CallbackContext context) { if (context.performed || context.canceled) currentTool?.Reset(context.canceled); }
-
     public void OnScroll(InputAction.CallbackContext context) { currentTool?.Scroll(context.ReadValue<Vector2>().y); }
+
+    public void OnNum1(InputAction.CallbackContext context) { if (context.performed) weaponBelt?.SetWeapon(0); }
+    public void OnNum2(InputAction.CallbackContext context) { if (context.performed) weaponBelt?.SetWeapon(1); }
+    public void OnNum3(InputAction.CallbackContext context) { if (context.performed) weaponBelt?.SetWeapon(2); }
+    public void OnNum4(InputAction.CallbackContext context) { if (context.performed) weaponBelt?.SetWeapon(3); }
 
     #endregion
 
@@ -309,4 +309,6 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position + transform.TransformDirection(new Vector3(0, crouchHeight, 0)) + transform.TransformDirection(ccOffset) + transform.up * ccDistance, ccRadius);
     }
+
+
 }
