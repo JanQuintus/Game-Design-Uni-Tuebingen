@@ -17610,7 +17610,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   col: {fileID: 289248512}
   height: 1.8
-  weaponBelt: {fileID: 0}
+  weaponBelt: {fileID: 1228714589}
   moveDamping: 5
   walkSpeed: 200
   sprintSpeedMult: 1.75
@@ -66015,7 +66015,7 @@ GameObject:
   - component: {fileID: 6385175393298256694}
   - component: {fileID: 8003605751117322581}
   - component: {fileID: 1191429400644395440}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TractorBeam Prototype
   m_TagString: Untagged
   m_Icon: {fileID: 0}
