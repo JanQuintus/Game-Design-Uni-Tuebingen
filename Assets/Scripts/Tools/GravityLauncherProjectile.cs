@@ -68,9 +68,10 @@ public class GravityLauncherProjectile : MonoBehaviour
         foreach (Collider collider in co)
         {
 
-            double direction = Vector3.Dot(normal, (collider.transform.position - transform.position));
-            if (direction < -2) changeGravity(collider, -normal * -9.81f);
-            else changeGravity(collider, normal * -9.81f);
+            // double direction = Vector3.Dot(normal, (collider.transform.position - transform.position));
+            // if (direction < -2) changeGravity(collider, -normal * -9.81f);
+            // else changeGravity(collider, normal * -9.81f);
+            changeGravity(collider, normal * -9.81f);
 
         }
 
@@ -79,10 +80,10 @@ public class GravityLauncherProjectile : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
 
-        double direction = Vector3.Dot(normal, (other.transform.position - transform.position));
-        if (direction < -2) changeGravity(other, -normal * -9.81f);
-        else changeGravity(other, normal * -9.81f);
-
+        // double direction = Vector3.Dot(normal, (other.transform.position - transform.position));
+        // if (direction < -2) changeGravity(other, -normal * -9.81f);
+        //  else changeGravity(other, normal * -9.81f);
+        changeGravity(other, normal * -9.81f);
     }
 
     private void OnTriggerExit(Collider other)
@@ -93,7 +94,7 @@ public class GravityLauncherProjectile : MonoBehaviour
 
     private void OnDestroy()
     {
-        Collider[] co = Physics.OverlapSphere(transform.position, radius, 0);
+        Collider[] co = Physics.OverlapSphere(transform.position, radius);
         foreach (Collider collider in co)
         {
             changeGravity(collider, new Vector3(0, -9.81f, 0));
@@ -118,8 +119,9 @@ public class GravityLauncherProjectile : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
 
-        double direction = Vector3.Dot(normal, (other.transform.position - transform.position));
-        if (direction < -2) changeGravity(other, -normal * -9.81f);
-        else changeGravity(other, normal * -9.81f);
+        //  double direction = Vector3.Dot(normal, (other.transform.position - transform.position));
+        // if (direction < -2) changeGravity(other, -normal * -9.81f);
+        //  else changeGravity(other, normal * -9.81f);
+        changeGravity(other, normal * -9.81f);
     }
 }
