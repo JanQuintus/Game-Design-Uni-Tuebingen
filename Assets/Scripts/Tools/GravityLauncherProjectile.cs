@@ -30,24 +30,19 @@ public class GravityLauncherProjectile : MonoBehaviour
     }
 
     private void OnCollisionEnter(Collision collision)
-    {   
+    {
         if (collision.gameObject.isStatic)
         {
-            if (collision.gameObject.isStatic)
-            {
-                Debug.Log("locked");
-                gameObject.GetComponent<Rigidbody>().isKinematic = true;
-                isLocked = true;
-                active = true;
-                gameObject.GetComponent<SphereCollider>().radius = radius;
-                gameObject.GetComponent<SphereCollider>().isTrigger = true;
-                gameObject.GetComponent<SphereCollider>().center = Vector3.zero;
-                initialGravityChanger(collision);
-
-            }
+            gameObject.GetComponent<Rigidbody>().isKinematic = true;
+            isLocked = true;
+            active = true;
+            gameObject.GetComponent<SphereCollider>().radius = radius;
+            gameObject.GetComponent<SphereCollider>().isTrigger = true;
+            transform.rotation = collision.gameObject.transform.rotation;
+            initialGravityChanger(collision);
         }
     }
-    
+
     public bool getIsLocked()
     {
         return isLocked;
@@ -69,8 +64,8 @@ public class GravityLauncherProjectile : MonoBehaviour
     private void initialGravityChanger(Collision collision)
     {
         normal = collision.GetContact(0).normal;
-        Collider[] co = Physics.OverlapSphere(transform.position, radius);
-        foreach(Collider collider in co)
+        Collider[] co = Physics.OverlapSphere(normal, radius, 0);
+        foreach (Collider collider in co)
         {
 
             double direction = Vector3.Dot(normal, (collider.transform.position - transform.position));
@@ -92,12 +87,13 @@ public class GravityLauncherProjectile : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        changeGravity(other, new Vector3 (0,-9.81f,0));
+        Debug.Log(other);
+        changeGravity(other, new Vector3(0, -9.81f, 0));
     }
 
     private void OnDestroy()
     {
-        Collider[] co = Physics.OverlapSphere(transform.position, radius);
+        Collider[] co = Physics.OverlapSphere(transform.position, radius, 0);
         foreach (Collider collider in co)
         {
             changeGravity(collider, new Vector3(0, -9.81f, 0));
@@ -108,7 +104,7 @@ public class GravityLauncherProjectile : MonoBehaviour
      * change gravity of Collider collider to the Vector3 gravity
      */
     private void changeGravity(Collider collider, Vector3 gravity)
-    {   
+    {
         /**
          * check if collider hast an gravityObject if not check if parent has one. 
          * Gravity of that GravityObject.
