@@ -26,6 +26,7 @@ public class GravityLauncherProjectile : MonoBehaviour
                 Destroy(this.gameObject);
             }
         }
+
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -71,15 +72,22 @@ public class GravityLauncherProjectile : MonoBehaviour
         Collider[] co = Physics.OverlapSphere(transform.position, radius);
         foreach(Collider collider in co)
         {
-            changeGravity(collider, normal * -9.81f);
-            
+
+            double direction = Vector3.Dot(normal, (collider.transform.position - transform.position));
+            if (direction < -2) changeGravity(collider, -normal * -9.81f);
+            else changeGravity(collider, normal * -9.81f);
+
         }
 
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        changeGravity(other, normal * -9.81f);   
+
+        double direction = Vector3.Dot(normal, (other.transform.position - transform.position));
+        if (direction < -2) changeGravity(other, -normal * -9.81f);
+        else changeGravity(other, normal * -9.81f);
+
     }
 
     private void OnTriggerExit(Collider other)
@@ -109,5 +117,13 @@ public class GravityLauncherProjectile : MonoBehaviour
         GravityObject go = collider.GetComponent<GravityObject>();
         if (!go) go = collider.GetComponentInParent<GravityObject>();
         if (go) go.SetLocalGravity(gravity);
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+
+        double direction = Vector3.Dot(normal, (other.transform.position - transform.position));
+        if (direction < -2) changeGravity(other, -normal * -9.81f);
+        else changeGravity(other, normal * -9.81f);
     }
 }

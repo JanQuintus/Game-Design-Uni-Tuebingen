@@ -7,6 +7,7 @@ public class GravityLauncherTool : ATool
     GameObject projectile;
     GameObject bullet;
     GameObject newBullet;
+    public int ammo = 25;
 
     private void Awake()
     {
@@ -32,8 +33,9 @@ public class GravityLauncherTool : ATool
         if (isRelease) return;
         // Check if a projectile is already active, if so destroy it. (Can be done on right and left click)
 
-        if (!isRightClick)
+        if (!isRightClick && ammo > 0)
         {
+            ammo--;
             if (newBullet)
             {
                 if (!newBullet.GetComponent<GravityLauncherProjectile>().getActive())
@@ -57,7 +59,7 @@ public class GravityLauncherTool : ATool
     }
 
    
-
+    
     public override void Reset(bool isRelease) { }
 
     public override void Scroll(float delta){}
