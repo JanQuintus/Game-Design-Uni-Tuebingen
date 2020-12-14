@@ -13,17 +13,13 @@ public class GravityGunTool : ATool
     {
         if (changedBodies.Count > 0){
             energy -= Time.deltaTime * changedBodies.Count;
-            if(energy <= 0)
-            {
-                resetGravityFromObjects();
-            }
+            if(energy <= 0) Reset(false);
         }
     }
 
     public override void Shoot(Ray ray, bool isRelease = false, bool isRightClick = false)
     {
-        if (isRightClick) resetGravityFromObjects();
-        if (isRelease) return;
+        if (isRelease || isRightClick) return;
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
             Rigidbody rb = hit.collider.GetComponent<Rigidbody>();
@@ -41,21 +37,17 @@ public class GravityGunTool : ATool
 
     public override void Reset(bool isRelease)
     {
-        
+        if (!isRelease)
+        {
+            foreach (Rigidbody rb in changedBodies)
+            {
+                rb.useGravity = !rb.useGravity;
+            }
+            changedBodies.Clear();
+        }
     }
 
     public override void Scroll(float delta) { }
 
-    /**
-     * reset gravity of all objects that have been changed
-     */
-    private void resetGravityFromObjects()
-    {
-        foreach(Rigidbody rb in changedBodies)
-        {
-            rb.useGravity = !rb.useGravity;
-        }
-        changedBodies.Clear();
-    }
 
 }
