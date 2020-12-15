@@ -8,10 +8,19 @@ public class GravityLauncherProjectile : MonoBehaviour
     private bool _isLocked = false;
     private bool _active = false;
     private float _liveTime = 5f;
+    private GameObject _sphere;
     private Vector3 _normal;
     private Vector3 _defaultGravity = new Vector3(0, -9.81f, 0);
     public float radius = 20f;
+    [SerializeField] private float growthRate = 20f;
 
+    private void Awake()
+    {
+
+        _sphere = Instantiate(Resources.Load("GravityField")) as GameObject;
+        _sphere.SetActive(false);
+        _sphere.transform.localScale = new Vector3(0, 0, 0);
+    }
     // Update is called once per frame
     void Update()
     {
@@ -23,6 +32,8 @@ public class GravityLauncherProjectile : MonoBehaviour
                 Destroy(this.gameObject);
             }
         }
+        if(_active && _sphere.transform.localScale.x < radius + 5)  _sphere.transform.localScale += new Vector3(1, 1, 1) * Time.deltaTime * growthRate;
+            
 
     }
 
@@ -36,6 +47,8 @@ public class GravityLauncherProjectile : MonoBehaviour
             gameObject.GetComponent<SphereCollider>().radius = radius;
             gameObject.GetComponent<SphereCollider>().isTrigger = true;
             transform.rotation = collision.gameObject.transform.rotation;
+            _sphere.transform.position = transform.position;
+            _sphere.SetActive(true);
             initialGravityChanger(collision);
         }
     }
@@ -88,6 +101,7 @@ public class GravityLauncherProjectile : MonoBehaviour
 
     private void OnDestroy()
     {
+        Destroy(_sphere);
         Collider[] co = Physics.OverlapSphere(transform.position, radius);
         foreach (Collider collider in co)
         {
