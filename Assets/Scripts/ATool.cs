@@ -7,4 +7,6 @@ public abstract class ATool : MonoBehaviour
     public abstract void Reset(bool isRelease);
 
     public abstract void Scroll(float delta);
+
+    public abstract void Reload();
 }

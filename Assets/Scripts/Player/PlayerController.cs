@@ -258,6 +258,8 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
             currentTool.gameObject.SetActive(true);
         });
     }
+
+    public ATool GetCurrentTool() => currentTool;
     #endregion
 
     private void CheckIsGrounded()

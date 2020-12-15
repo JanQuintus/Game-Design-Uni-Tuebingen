@@ -3,17 +3,21 @@ using UnityEngine;
 
 public class GravityGunTool : ATool
 {
-    [SerializeField]
-    private float distance;
+    [SerializeField] private float distance;
+    [SerializeField] private float maxEnergy = 100;
 
-    float energy = 100;
-    List<Rigidbody> changedBodies = new List<Rigidbody>();
+    private float _energy = 100;
+    private List<Rigidbody> _changedBodies = new List<Rigidbody>();
 
     private void Update()
     {
-        if (changedBodies.Count > 0){
-            energy -= Time.deltaTime * changedBodies.Count;
-            if(energy <= 0) Reset(false);
+        if (_changedBodies.Count > 0){
+            _energy -= Time.deltaTime * _changedBodies.Count;
+            if (_energy <= 0)
+            {
+                _energy = 0;
+                Reset(false);
+            }
         }
     }
 
@@ -26,11 +30,11 @@ public class GravityGunTool : ATool
             if (rb)
             {
                 rb.useGravity = !rb.useGravity;
-                if(changedBodies.Contains(rb))
+                if(_changedBodies.Contains(rb))
                 {
-                    changedBodies.Remove(rb);
+                    _changedBodies.Remove(rb);
                 }
-                else changedBodies.Add(rb);
+                else _changedBodies.Add(rb);
             }
         }
     }
@@ -39,15 +43,15 @@ public class GravityGunTool : ATool
     {
         if (!isRelease)
         {
-            foreach (Rigidbody rb in changedBodies)
+            foreach (Rigidbody rb in _changedBodies)
             {
                 rb.useGravity = !rb.useGravity;
             }
-            changedBodies.Clear();
+            _changedBodies.Clear();
         }
     }
 
+    public override void Reload() => _energy = maxEnergy;
+
     public override void Scroll(float delta) { }
-
-
 }

@@ -66,14 +66,16 @@ public class TractorBeamTool : ATool
         }
     }
 
-    public override void Reset(bool isRelease)
-    {
-
-    }
-
-    // delta = -120, 0, 120 depending on scroll direction
     public override void Scroll(float delta) 
     {
         TheBeam.changeDisplacementIntensity(delta);
     }
+
+    public override void Reload()
+    {
+        // TODO:
+    }
+
+    public override void Reset(bool isRelease) {}
+    
 }
