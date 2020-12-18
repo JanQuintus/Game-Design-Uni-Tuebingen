@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GravityLauncherTool : ATool
 {
+    [SerializeField] private int maxEnergy = 25;
+
     GameObject projectile;
     GameObject bullet;
     GameObject newBullet;
@@ -63,10 +65,7 @@ public class GravityLauncherTool : ATool
         }
     }
 
-    public override void Reload()
-    {
-        // TODO:
-    }
+    public override void Reload() => ammo = maxEnergy;
 
     public override void Scroll(float delta){}
 

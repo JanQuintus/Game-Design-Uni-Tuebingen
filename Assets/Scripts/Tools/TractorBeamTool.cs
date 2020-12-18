@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TractorBeamTool : ATool
 {
+    [SerializeField] private float maxEnergy = 10;
 
     private TheBeam TheBeam;
 
@@ -71,10 +72,7 @@ public class TractorBeamTool : ATool
         TheBeam.changeDisplacementIntensity(delta);
     }
 
-    public override void Reload()
-    {
-        // TODO:
-    }
+    public override void Reload() => shootForce = maxEnergy;
 
     public override void Reset(bool isRelease) {}
     

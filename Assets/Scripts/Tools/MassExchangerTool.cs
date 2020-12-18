@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 public class MassExchangerTool : ATool
 {
+    [SerializeField] private int maxEnergy = 20;
+
     // initialize 2 vars to keep "saved" rb masses from objects with -1
     public float mEMassLeft = -1.0f;
     public float mEMassRight = -1.0f;
@@ -100,10 +102,7 @@ public class MassExchangerTool : ATool
         }
     }
 
-    public override void Reload()
-    {
-        // TODO:
-    }
+    public override void Reload() => mEEnergy = maxEnergy;
 
     public override void Scroll(float delta){}
 }
