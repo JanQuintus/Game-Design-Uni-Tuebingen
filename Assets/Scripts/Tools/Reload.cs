@@ -10,6 +10,12 @@ public class Reload : MonoBehaviour
     [SerializeField]
     private float distance;
 
+    //Create referencies of Scripts later tog et method Reload()
+    public GravityGunTool GGun;
+    public GravityLauncherTool GLauncher;
+    public MassExchangerTool MExchanger;
+    public TractorBeamTool TBeam;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,10 +28,10 @@ public class Reload : MonoBehaviour
         distance = (checkpoint.transform.position - transform.position).magnitude;
         if (distance <= 0)
         {
-            gameObject.GetComponent<GravityGunTool>().Reload();
-            gameObject.GetComponent<GravityLauncherTool>().Reload();
-            gameObject.GetComponent<MassExchangerTool>().Reload();
-            gameObject.GetComponent<TractorBeamTool>().Reload();
+            GGun.Reload();
+            GLauncher.Reload();
+            MExchanger.Reload();
+            TBeam.Reload();
         }
     }
 }
