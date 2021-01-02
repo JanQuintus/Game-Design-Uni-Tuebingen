@@ -5,27 +5,47 @@ using UnityEngine;
 public class GravityLauncherProjectile : MonoBehaviour
 {
     // Start is called before the first frame update
-    private bool isLocked = false;
-    private bool active = false;
-    private float liveTime;
-    private Vector3 normal;
+    private bool _isLocked = false;
+    private bool _active = false;
+    private float _liveTime = 5f;
+    private GameObject _sphere;
+    private GameObject _sphereMesh;
+    private Vector3 _normal;
+    private Vector3 _defaultGravity = new Vector3(0, -9.81f, 0);
     public float radius = 20f;
+    
+    private MeshRenderer _meshRenderer; 
+    [SerializeField] private float growthRate = 20f;
+
     private void Awake()
     {
-        liveTime = 5f;
+        _sphere = Instantiate(Resources.Load("GravityField")) as GameObject;
+        _sphere.SetActive(false);
+        _sphere.transform.localScale = new Vector3(0, 0, 0);
+       
+    }
+
+    void Start()
+    {
+        _meshRenderer = gameObject.GetComponent<MeshRenderer>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!active)
+        if (!_active)
         {
-            liveTime -= Time.deltaTime;
-            if (liveTime < 0)
+            _liveTime -= Time.deltaTime;
+            if (_liveTime < 0)
             {
                 Destroy(this.gameObject);
             }
         }
+        if (_active && _sphere.transform.localScale.x < radius/2)
+        {
+            _sphere.transform.localScale += new Vector3(1, 1, 1) * Time.deltaTime * growthRate;
+        }
+            
 
     }
 
@@ -33,29 +53,43 @@ public class GravityLauncherProjectile : MonoBehaviour
     {
         if (collision.gameObject.isStatic)
         {
+
             gameObject.GetComponent<Rigidbody>().isKinematic = true;
-            isLocked = true;
-            active = true;
+            _isLocked = true;
+            _active = true;
             gameObject.GetComponent<SphereCollider>().radius = radius;
             gameObject.GetComponent<SphereCollider>().isTrigger = true;
-            transform.rotation = collision.gameObject.transform.rotation;
+            _sphere.transform.position = transform.position;
+            _sphere.SetActive(true);
             initialGravityChanger(collision);
+            _sphere.transform.rotation *= Quaternion.FromToRotation(_sphere.transform.up, _normal);
+            _sphere.transform.localPosition = transform.localPosition;
+            initialGravityChanger(collision);
+            transform.rotation = Quaternion.FromToRotation(Vector3.right, _normal);
+            Debug.Log(_meshRenderer.materials.Length);
+            Material mat = _meshRenderer.materials[0];
+            mat.SetFloat("_YCompression", 2f) ;
+            mat.SetFloat("_ZCompression", 2f);
+            mat.SetFloat("_XCompression", 0.2f);
+           
+            _meshRenderer.material = mat;
+            
         }
     }
 
     public bool getIsLocked()
     {
-        return isLocked;
+        return _isLocked;
     }
 
     public void setIsLocked(bool locked)
     {
-        isLocked = locked;
+        _isLocked = locked;
     }
 
     public bool getActive()
     {
-        return active;
+        return _active;
     }
 
     /**
@@ -63,15 +97,13 @@ public class GravityLauncherProjectile : MonoBehaviour
      */
     private void initialGravityChanger(Collision collision)
     {
-        normal = collision.GetContact(0).normal;
-        Collider[] co = Physics.OverlapSphere(normal, radius, 0);
+        _normal = collision.GetContact(0).normal;
+        Collider[] co = Physics.OverlapSphere(_normal, radius, 0);
         foreach (Collider collider in co)
         {
 
-            // double direction = Vector3.Dot(normal, (collider.transform.position - transform.position));
-            // if (direction < -2) changeGravity(collider, -normal * -9.81f);
-            // else changeGravity(collider, normal * -9.81f);
-            changeGravity(collider, normal * -9.81f);
+            double direction = Vector3.Dot(_normal, (collider.transform.position - transform.position));
+            if (direction > -2) changeGravity(collider, _normal * -9.81f);
 
         }
 
@@ -80,24 +112,24 @@ public class GravityLauncherProjectile : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
 
-        // double direction = Vector3.Dot(normal, (other.transform.position - transform.position));
-        // if (direction < -2) changeGravity(other, -normal * -9.81f);
-        //  else changeGravity(other, normal * -9.81f);
-        changeGravity(other, normal * -9.81f);
+        double direction = Vector3.Dot(_normal, (other.transform.position - transform.position));
+        if (direction > -2) changeGravity(other, _normal * -9.81f);
+        else changeGravity(other, _defaultGravity);
     }
 
     private void OnTriggerExit(Collider other)
     {
         Debug.Log(other);
-        changeGravity(other, new Vector3(0, -9.81f, 0));
+        changeGravity(other, _defaultGravity);
     }
 
     private void OnDestroy()
     {
+        Destroy(_sphere);
         Collider[] co = Physics.OverlapSphere(transform.position, radius);
         foreach (Collider collider in co)
         {
-            changeGravity(collider, new Vector3(0, -9.81f, 0));
+            changeGravity(collider, _defaultGravity);
         }
     }
 
@@ -119,9 +151,9 @@ public class GravityLauncherProjectile : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
 
-        //  double direction = Vector3.Dot(normal, (other.transform.position - transform.position));
-        // if (direction < -2) changeGravity(other, -normal * -9.81f);
-        //  else changeGravity(other, normal * -9.81f);
-        changeGravity(other, normal * -9.81f);
+
+        double direction = Vector3.Dot(_normal, (other.transform.position - transform.position));
+        if (direction > -2) changeGravity(other, _normal * -9.81f);
+        else changeGravity(other, _defaultGravity);
     }
 }

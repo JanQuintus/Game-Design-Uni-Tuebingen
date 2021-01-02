@@ -4,26 +4,27 @@ using UnityEngine;
 
 public class GravityLauncherTool : ATool
 {
-    GameObject projectile;
-    GameObject bullet;
-    GameObject newBullet;
-    public int ammo = 25;
+    [SerializeField] private int maxAmmo = 25;
+    GameObject _projectile;
+    GameObject _bullet;
+    GameObject _newBullet;
+    private int _ammo = 25;
 
     private void Awake()
     {
-        projectile = Resources.Load("Projectile") as GameObject;
+        _projectile = Resources.Load("Projectile") as GameObject;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (newBullet)
+        if (_newBullet)
         {
-            if (newBullet.GetComponent<GravityLauncherProjectile>().getIsLocked())
+            if (_newBullet.GetComponent<GravityLauncherProjectile>().getIsLocked())
             {
-                if (bullet) Destroy(bullet);
-                bullet = newBullet;
-                bullet.GetComponent<GravityLauncherProjectile>().setIsLocked(false);
+                if (_bullet) Destroy(_bullet);
+                _bullet = _newBullet;
+                _bullet.GetComponent<GravityLauncherProjectile>().setIsLocked(false);
             }
         }
     }
@@ -33,22 +34,22 @@ public class GravityLauncherTool : ATool
         if (isRelease || isRightClick) return;
         // Check if a projectile is already active, if so destroy it. (Can be done on right and left click)
 
-        if (!isRightClick && ammo > 0)
+        if (!isRightClick && _ammo > 0)
         {
-            ammo--;
-            if (newBullet)
+            _ammo--;
+            if (_newBullet)
             {
-                if (!newBullet.GetComponent<GravityLauncherProjectile>().getActive())
+                if (!_newBullet.GetComponent<GravityLauncherProjectile>().getActive())
                 {
-                    Destroy(newBullet);
+                    Destroy(_newBullet);
                 }
             }
-            newBullet = Instantiate(projectile);
-            newBullet.transform.right = ray.direction;
-            newBullet.name = "GravityBomb";
-            newBullet.transform.position = transform.position + Camera.main.transform.forward * 2;
+            _newBullet = Instantiate(_projectile);
+            _newBullet.transform.right = ray.direction;
+            _newBullet.name = "GravityBomb";
+            _newBullet.transform.position = transform.position + Camera.main.transform.forward * 2;
             
-            Rigidbody rb = newBullet.GetComponent<Rigidbody>();
+            Rigidbody rb = _newBullet.GetComponent<Rigidbody>();
             rb.velocity = ray.direction * 40;
         }
     }
@@ -58,14 +59,14 @@ public class GravityLauncherTool : ATool
     public override void Reset(bool isRelease) {
         if(!isRelease)
         {
-            if (bullet) Destroy(bullet);
-            if (newBullet) Destroy(newBullet);
+            if (_bullet) Destroy(_bullet);
+            if (_newBullet) Destroy(_newBullet);
         }
     }
 
     public override void Reload()
     {
-        // TODO:
+        _ammo = maxAmmo;
     }
 
     public override void Scroll(float delta){}
