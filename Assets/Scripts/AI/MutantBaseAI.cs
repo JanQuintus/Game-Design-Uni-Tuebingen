@@ -12,14 +12,14 @@ public class MutantBaseAI : BaseAI
 
     private Health _health;
 
-    private void Awake()
+    /*protected override void Awake()
     {
         _health = GetComponent<Health>();
         _health.OnDeath.AddListener(() =>
         {
             isAlive = false;
         });
-    }
+    }*/
 
     void Start()
     {

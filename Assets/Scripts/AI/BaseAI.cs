@@ -24,7 +24,7 @@ public class BaseAI : MonoBehaviour
     private float _rotateTime = 0;
     private bool _isGrounded = false;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
         _gravity = GetComponent<GravityObject>();
