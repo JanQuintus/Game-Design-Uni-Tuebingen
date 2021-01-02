@@ -36,6 +36,9 @@ public class GravityLauncherProjectile : MonoBehaviour
         if (!_active)
         {
             _liveTime -= Time.deltaTime;
+            Vector3 velo = GetComponent<Rigidbody>().velocity;
+            velo = new Vector3(velo.x/10, 10/velo.y, 10/velo.z);
+            _meshRenderer.material.SetVector("_Velocity",velo );
             if (_liveTime < 0)
             {
                 Destroy(this.gameObject);
@@ -67,12 +70,8 @@ public class GravityLauncherProjectile : MonoBehaviour
             initialGravityChanger(collision);
             transform.rotation = Quaternion.FromToRotation(Vector3.right, _normal);
             Debug.Log(_meshRenderer.materials.Length);
-            Material mat = _meshRenderer.materials[0];
-            mat.SetFloat("_YCompression", 2f) ;
-            mat.SetFloat("_ZCompression", 2f);
-            mat.SetFloat("_XCompression", 0.2f);
+            _meshRenderer.material.SetVector("_Velocity",new Vector3(0.2f, 2f, 2f));
            
-            _meshRenderer.material = mat;
             
         }
     }

@@ -31,6 +31,9 @@ Material:
     - Vector1_4C24C602: 1
     - Vector1_69DC7D35: 1
     - Vector1_7B23B705: 1
+    - _XCompression: 1
+    - _YCompression: 1
+    - _ZCompression: 1
     m_Colors: []
   m_BuildTextureStacks: []
 --- !u!114 &6891236311985492335
