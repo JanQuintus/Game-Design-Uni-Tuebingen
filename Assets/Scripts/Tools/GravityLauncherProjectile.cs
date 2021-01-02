@@ -10,9 +10,17 @@ public class GravityLauncherProjectile : MonoBehaviour
     private float liveTime;
     private Vector3 normal;
     public float radius = 20f;
+    private MeshRenderer _meshRenderer; 
     private void Awake()
     {
         liveTime = 5f;
+
+       
+    }
+
+    void Start()
+    {
+        _meshRenderer = gameObject.GetComponent<MeshRenderer>();
     }
 
     // Update is called once per frame
@@ -38,8 +46,16 @@ public class GravityLauncherProjectile : MonoBehaviour
             active = true;
             gameObject.GetComponent<SphereCollider>().radius = radius;
             gameObject.GetComponent<SphereCollider>().isTrigger = true;
-            transform.rotation = collision.gameObject.transform.rotation;
             initialGravityChanger(collision);
+            transform.rotation = Quaternion.FromToRotation(Vector3.right, normal);
+            Debug.Log(_meshRenderer.materials.Length);
+            Material mat = _meshRenderer.materials[0];
+            mat.SetFloat("_YCompression", 2f) ;
+            mat.SetFloat("_ZCompression", 2f);
+            mat.SetFloat("_XCompression", 0.2f);
+           
+            _meshRenderer.material = mat;
+            
         }
     }
 
