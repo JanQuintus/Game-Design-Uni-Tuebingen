@@ -6,7 +6,7 @@ public class TractorBeamTool : ATool
 {
     [SerializeField] private float maxEnergy = 10;
 
-    private TheBeam TheBeam;
+    [SerializeField] private TheBeam TheBeam;
 
     private bool windUp;
     private float shootForce = 1; // current shoot force
@@ -18,17 +18,6 @@ public class TractorBeamTool : ATool
 
     private bool isBeamOn = false;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        TheBeam = GameObject.Find("TheBeam").GetComponent<TheBeam>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     void FixedUpdate()
     {

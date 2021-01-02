@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using eDmitriyAssets.NavmeshLinksGenerator;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class GravityLauncherProjectile : MonoBehaviour
 {
@@ -13,7 +15,10 @@ public class GravityLauncherProjectile : MonoBehaviour
     private Vector3 _normal;
     private Vector3 _defaultGravity = new Vector3(0, -9.81f, 0);
     public float radius = 20f;
-    
+
+    private NavMeshSurface _navMeshSurface;
+    private NavMeshLinks_AutoPlacer _navMeshLinks;
+
     private MeshRenderer _meshRenderer; 
     [SerializeField] private float growthRate = 20f;
 
@@ -22,6 +27,8 @@ public class GravityLauncherProjectile : MonoBehaviour
         _sphere = Instantiate(Resources.Load("GravityField")) as GameObject;
         _sphere.SetActive(false);
         _sphere.transform.localScale = new Vector3(0, 0, 0);
+        _navMeshSurface = GetComponent<NavMeshSurface>();
+        _navMeshLinks = GetComponent<NavMeshLinks_AutoPlacer>();
        
     }
 
@@ -56,22 +63,26 @@ public class GravityLauncherProjectile : MonoBehaviour
     {
         if (collision.gameObject.isStatic)
         {
-
             gameObject.GetComponent<Rigidbody>().isKinematic = true;
             _isLocked = true;
             _active = true;
             gameObject.GetComponent<SphereCollider>().radius = radius;
             gameObject.GetComponent<SphereCollider>().isTrigger = true;
             _sphere.transform.position = transform.position;
-            _sphere.SetActive(true);
             initialGravityChanger(collision);
             _sphere.transform.rotation *= Quaternion.FromToRotation(_sphere.transform.up, _normal);
             _sphere.transform.localPosition = transform.localPosition;
-            initialGravityChanger(collision);
-            transform.rotation = Quaternion.FromToRotation(Vector3.right, _normal);
+            transform.rotation = Quaternion.FromToRotation(Vector3.up, _normal);
             Debug.Log(_meshRenderer.materials.Length);
-            _meshRenderer.material.SetVector("_Velocity",new Vector3(0.2f, 2f, 2f));
-           
+            Material mat = _meshRenderer.materials[0];
+            mat.SetFloat("_YCompression", 2f) ;
+            mat.SetFloat("_ZCompression", 2f);
+            mat.SetFloat("_XCompression", 0.2f);
+            _navMeshSurface.BuildNavMesh();
+            _navMeshLinks.Generate();
+            _sphere.SetActive(true);
+
+            _meshRenderer.material = mat;
             
         }
     }
@@ -100,10 +111,8 @@ public class GravityLauncherProjectile : MonoBehaviour
         Collider[] co = Physics.OverlapSphere(_normal, radius, 0);
         foreach (Collider collider in co)
         {
-
             double direction = Vector3.Dot(_normal, (collider.transform.position - transform.position));
             if (direction > -2) changeGravity(collider, _normal * -9.81f);
-
         }
 
     }
@@ -145,6 +154,9 @@ public class GravityLauncherProjectile : MonoBehaviour
         GravityObject go = collider.GetComponent<GravityObject>();
         if (!go) go = collider.GetComponentInParent<GravityObject>();
         if (go) go.SetLocalGravity(gravity);
+        BaseAI ai = collider.GetComponent<BaseAI>();
+        if (!ai) ai = collider.GetComponentInParent<BaseAI>();
+        if (ai) ai.GravityChange();
     }
 
     private void OnTriggerStay(Collider other)
