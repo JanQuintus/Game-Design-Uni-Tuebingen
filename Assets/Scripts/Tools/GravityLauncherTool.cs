@@ -64,10 +64,7 @@ public class GravityLauncherTool : ATool
         }
     }
 
-    public override void Reload()
-    {
-        _ammo = maxAmmo;
-    }
+    public override void Reload() => _ammo = maxAmmo;
 
     public override void Scroll(float delta){}
 
