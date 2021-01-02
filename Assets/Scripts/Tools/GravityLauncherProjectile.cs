@@ -9,6 +9,7 @@ public class GravityLauncherProjectile : MonoBehaviour
     private bool _active = false;
     private float _liveTime = 5f;
     private GameObject _sphere;
+    private GameObject _sphereMesh;
     private Vector3 _normal;
     private Vector3 _defaultGravity = new Vector3(0, -9.81f, 0);
     public float radius = 20f;
@@ -16,8 +17,8 @@ public class GravityLauncherProjectile : MonoBehaviour
 
     private void Awake()
     {
-
         _sphere = Instantiate(Resources.Load("GravityField")) as GameObject;
+
         _sphere.SetActive(false);
         _sphere.transform.localScale = new Vector3(0, 0, 0);
     }
@@ -32,7 +33,10 @@ public class GravityLauncherProjectile : MonoBehaviour
                 Destroy(this.gameObject);
             }
         }
-        if(_active && _sphere.transform.localScale.x < radius + 5)  _sphere.transform.localScale += new Vector3(1, 1, 1) * Time.deltaTime * growthRate;
+        if (_active && _sphere.transform.localScale.x < radius/2)
+        {
+            _sphere.transform.localScale += new Vector3(1, 1, 1) * Time.deltaTime * growthRate;
+        }
             
 
     }
@@ -41,6 +45,7 @@ public class GravityLauncherProjectile : MonoBehaviour
     {
         if (collision.gameObject.isStatic)
         {
+
             gameObject.GetComponent<Rigidbody>().isKinematic = true;
             _isLocked = true;
             _active = true;
@@ -50,6 +55,9 @@ public class GravityLauncherProjectile : MonoBehaviour
             _sphere.transform.position = transform.position;
             _sphere.SetActive(true);
             initialGravityChanger(collision);
+            _sphere.transform.rotation *= Quaternion.FromToRotation(_sphere.transform.up, _normal);
+            _sphere.transform.localPosition = transform.localPosition;
+
         }
     }
 
