@@ -13,6 +13,8 @@ public class TheBeam : MonoBehaviour
     [SerializeField] private float slowdown = 7; // this value determins the amount of slowdown if the object inside the beam is close to the gravitation point
     [SerializeField] private float pullForceInProximity = 2; // this value determines the pullforce when the object is close to the gravitation point
     [SerializeField] private float maxWeightLiftable = 10;
+    [SerializeField] private Transform beamStart;
+    [SerializeField] private BezierCurve laserEffect;
 
     private Collider objectInBeam;
     private float dist; // distance of objectinbeam to center ie. gravitation point of beam
@@ -39,6 +41,7 @@ public class TheBeam : MonoBehaviour
             Vector3 targetPos = transform.position + transform.TransformDirection(localPos) + transform.TransformDirection(lPos) + transform.TransformDirection(displace);
 
             Vector3 objectPos = objectInBeam.transform.position;
+            laserEffect.point3 = objectInBeam.transform;
 
             float dx = objectPos.x - targetPos.x;
             float dy = objectPos.y - targetPos.y;

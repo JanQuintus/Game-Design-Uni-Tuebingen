@@ -28,16 +28,15 @@ public class MutantBaseAI : BaseAI
 
     private IEnumerator TryAttackPlayerCor()
     {
-        while (isAlive)
+        yield return new WaitForSeconds(findPlayerInterval);
+        float distance = Vector3.Distance(transform.position, PlayerController.Instance.transform.position);
+        if (distance <= maxFindPlayerDistance)
         {
-            yield return new WaitForSeconds(findPlayerInterval);
-            float distance = Vector3.Distance(transform.position, PlayerController.Instance.transform.position);
-            if (distance <= maxFindPlayerDistance)
-            {
-                if (!Physics.Raycast(headPosition.position, PlayerController.Instance.GetHeadPosition(), distance, obstacleLayerMask))
-                    MoveTo(PlayerController.Instance.transform.position);
-            }
+            if (!Physics.Raycast(headPosition.position, PlayerController.Instance.GetHeadPosition(), distance, obstacleLayerMask))
+                MoveTo(PlayerController.Instance.transform.position);
         }
+        if (isAlive)
+            StartCoroutine(TryAttackPlayerCor());
     }
 
     public Health GetHealth => _health;
