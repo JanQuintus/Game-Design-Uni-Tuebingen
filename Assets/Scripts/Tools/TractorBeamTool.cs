@@ -8,7 +8,14 @@ public class TractorBeamTool : ATool
     private TheBeam TheBeam;
 
     private bool windUp;
-    private float shootForce = 10;
+    private float shootForce = 1; // current shoot force
+    [SerializeField] private float maximalShootForce = 20f;
+    [SerializeField] private float heat = 0;
+    [SerializeField] private float maximalHeat = 300;
+    [SerializeField] private float heatUpPerTick = 1;
+    [SerializeField] private float coolDownPerTick = 2;
+
+    private bool isBeamOn = false;
 
     // Start is called before the first frame update
     void Start()
@@ -24,10 +31,25 @@ public class TractorBeamTool : ATool
 
     void FixedUpdate()
     {
-        if (windUp && (shootForce < 40))
+        // windup mechanics
+        if (windUp && (shootForce <= maximalShootForce))
         {
             shootForce = shootForce + 0.5f;
-            TheBeam.setWindup(shootForce/20); // needed for pulling of object towards player if winded up
+            TheBeam.setWindup(shootForce/10); // needed for pulling of object towards player if winded up
+        }
+
+        // overheating mechanics
+        if (isBeamOn)
+        {
+            heat = heat + heatUpPerTick;
+        } else if(heat > 0)
+        {
+            heat = heat - coolDownPerTick;
+        }
+
+        if (heat >= maximalHeat)
+        {
+            turnOff();
         }
     }
 
@@ -37,13 +59,13 @@ public class TractorBeamTool : ATool
         //rmb pressed
         if (isRightClick && !isRelease)
         {
-            TheBeam.turnOnBeam();
+            turnOn();
         }
 
         //rmb released
         if (isRightClick && isRelease)
         {
-            TheBeam.turnOffBeam();
+            turnOff();
         }
 
         //lmb released
@@ -52,11 +74,12 @@ public class TractorBeamTool : ATool
             //shoot object in beam
             Vector3 shootDirection = ray.direction;
             TheBeam.shoot(shootForce, shootDirection);
-            TheBeam.turnOffBeam();
+            turnOff();
+
 
             // reset windup
             windUp = false;
-            shootForce = 10;
+            shootForce = 1;
         }
 
         //lmb pressed
@@ -64,6 +87,18 @@ public class TractorBeamTool : ATool
         {
             windUp = true;
         }
+    }
+
+    private void turnOn()
+    {
+        TheBeam.turnOnBeam();
+        isBeamOn = true;
+    }
+
+    private void turnOff()
+    {
+        TheBeam.turnOffBeam();
+        isBeamOn = false;
     }
 
     public override void Scroll(float delta) 

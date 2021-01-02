@@ -5,37 +5,37 @@ using UnityEngine;
 public class TheBeam : MonoBehaviour
 {
 
-    public float pullForce = 4;
-    public float minDist = 5f;
+    [SerializeField] private float pullForce = 4;
+    [SerializeField] private float minDist = 3f; // value which tells the distance to the gravitation point to start slowing down the object
+    [SerializeField] private float maxDisplacementTo = 3; // maximal displacement due to scroll
+    [SerializeField] private float maxDisplacementAway =10; // maximal displacement due to scroll
+    [SerializeField] private float displacementCorrection = 9; // number which adjusts the position of the gravitation point. Needed to allow larger ranged beam
+    [SerializeField] private float slowdown = 7; // this value determins the amount of slowdown if the object inside the beam is close to the gravitation point
+    [SerializeField] private float pullForceInProximity = 2; // this value determines the pullforce when the object is close to the gravitation point
+    [SerializeField] private float maxWeightLiftable = 10;
 
     private Collider objectInBeam;
-    private float dist;
-
+    private float dist; // distance of objectinbeam to center ie. gravitation point of beam
     private bool isOccupied = false;
-
-    private Vector3 displacement = new Vector3(0,0,0); // needed for displacement ob object inside beam due to scoll
-    private int displacementIntensity = 0;
-
-    private float maxDisplacement = 3; // adjust to beam length
-
+    private int scrollDisplacement = 0; // current displacement due to scroll
     private float windUpStrength = 0; // this is the number which is decreased to visualize windup (stronger windup = object is closer to player)
+    private int iter = 0;
 
-    // Start is called before the first frame update
+
     void Start()
     {
         gameObject.SetActive(false);
     }
 
-    // Update is called once per frame
+
     void FixedUpdate()
     {
-        //TODO: add offset to move object in beam via scrolling (objectInBeam.TransformDirection(vector);)
-
         if (isOccupied)
         {
-            Vector3 localPos = transform.InverseTransformDirection(transform.forward) * displacementIntensity;
+            // displace center of gravitation according to scroll and windup and correct for the length of the beam
+            Vector3 localPos = transform.InverseTransformDirection(transform.forward) * scrollDisplacement;
             Vector3 lPos = transform.InverseTransformDirection(transform.forward * -1) * windUpStrength;
-            Vector3 displace = transform.InverseTransformDirection(transform.forward * -1) * 9; // adjust floating to be closer to the player to allow more the beam to have more range
+            Vector3 displace = transform.InverseTransformDirection(transform.forward * -1) * displacementCorrection; // adjust floating to be closer to the player to allow the beam to have more range
             Vector3 targetPos = transform.position + transform.TransformDirection(localPos) + transform.TransformDirection(lPos) + transform.TransformDirection(displace);
 
             Vector3 objectPos = objectInBeam.transform.position;
@@ -49,20 +49,31 @@ public class TheBeam : MonoBehaviour
             Vector3 forceDirection = targetPos - objectPos;
             Rigidbody rb = objectInBeam.GetComponent<Rigidbody>();
 
-            if (dist > minDist)
+            if ((rb.mass <= maxWeightLiftable) || !(rb.useGravity))
             {
+                if (dist > minDist)
+                {
+                    iter = iter + 1;
+                    if (iter >= 20)
+                    {
+                        rb.velocity = rb.velocity / 2;
+                        iter = 0;
+                    }
 
-                rb.AddForce(forceDirection.normalized * pullForce, ForceMode.Impulse); // apply force towards center
-
+                    float factor = rb.mass / 5;
+                    if (!rb.useGravity)
+                    {
+                        factor = rb.mass;
+                    }
+                    rb.AddForce(forceDirection.normalized * pullForce * Mathf.Max(1, factor), ForceMode.Impulse); // apply force towards center
+                }
+                else
+                {
+                    rb.velocity = rb.velocity * (1 - (slowdown * Time.deltaTime)); // slowdown when closer to the gravitation point
+                    rb.AddForce(forceDirection.normalized * pullForceInProximity * rb.mass, ForceMode.Impulse);
+                }
             }
-            else
-            {
-                rb.velocity = rb.velocity * (1 - (5 * Time.deltaTime));
-                rb.AddForce(forceDirection.normalized * pullForce, ForceMode.Impulse);
 
-                //Vector3 lPos = transform.InverseTransformDirection(transform.forward * -1) * windUpStrength;
-                //rb.AddForce(transform.TransformDirection(lPos), ForceMode.Impulse);
-            }
         }
 
     }
@@ -70,21 +81,18 @@ public class TheBeam : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-
         if ((!isOccupied) && (other.GetComponent("GravityObject") != null))
         {
             objectInBeam = other.GetComponent<Collider>();
             isOccupied = true;
         }
-
-
     }
 
     public void turnOffBeam()
     {
         isOccupied = false;
         objectInBeam = null;
-        displacementIntensity = 0;
+        scrollDisplacement = 0;
         windUpStrength = 0;
         gameObject.SetActive(false);
     }
@@ -94,38 +102,36 @@ public class TheBeam : MonoBehaviour
         gameObject.SetActive(true);
     }
 
+    // This function should only be called along with turnOffBeam
     public void shoot(float shootForce, Vector3 forceDirection)
     {
         if (objectInBeam != null)
         {
             Rigidbody rb = objectInBeam.GetComponent<Rigidbody>();
-            rb.AddForce(forceDirection.normalized * shootForce, ForceMode.Impulse);
+            rb.velocity = Vector3.zero;
+            rb.AddForce(forceDirection.normalized * Mathf.Max(1, rb.mass/2) * Mathf.Max(0, shootForce - (scrollDisplacement*2)), ForceMode.Impulse);
         }
     }
 
-    public void SetDisplacement(Vector3 newDir)
-    {
-        displacement = newDir;
-    }
-
+    // changes the displacement intensity due to scroll
     public void changeDisplacementIntensity(float delta)
     {
         //move object in the distance
-        if (displacementIntensity <= maxDisplacement)
+        if (scrollDisplacement <= maxDisplacementAway)
         {
             if (delta > 0)
             {
-                displacementIntensity = displacementIntensity + 1;
+                scrollDisplacement = scrollDisplacement + 1;
             }
 
         }
 
         //move object closer to the player
-        if (displacementIntensity >= -maxDisplacement)
+        if (scrollDisplacement >= -1 * maxDisplacementTo)
         {
             if (delta < 0)
             {
-                displacementIntensity = displacementIntensity - 1;
+                scrollDisplacement = scrollDisplacement - 1;
             }
         }
     }
