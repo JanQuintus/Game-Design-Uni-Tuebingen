@@ -6,6 +6,7 @@ public class WeaponBelt : MonoBehaviour
 {
     [SerializeField] private int startTool;
     [SerializeField] private ATool[] tools;
+    [SerializeField] private int unlocked = 1;
 
     private void Awake()
     {
@@ -19,7 +20,8 @@ public class WeaponBelt : MonoBehaviour
 
     public void SetWeapon(int index)
     {
-        // TODO: Check if player unlocked weapon...
+        if (index > unlocked)
+            return;
 
         PlayerController.Instance.SetCurrentTool(tools[index]);
     }

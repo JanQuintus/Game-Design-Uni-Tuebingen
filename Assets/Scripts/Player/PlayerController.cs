@@ -260,6 +260,8 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
     }
 
     public ATool GetCurrentTool() => currentTool;
+
+    public Vector3 GetHeadPosition() => head.position;
     #endregion
 
     private void CheckIsGrounded()
