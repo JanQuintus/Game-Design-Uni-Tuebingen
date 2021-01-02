@@ -13,15 +13,23 @@ public class GravityLauncherProjectile : MonoBehaviour
     private Vector3 _normal;
     private Vector3 _defaultGravity = new Vector3(0, -9.81f, 0);
     public float radius = 20f;
+    
+    private MeshRenderer _meshRenderer; 
     [SerializeField] private float growthRate = 20f;
 
     private void Awake()
     {
         _sphere = Instantiate(Resources.Load("GravityField")) as GameObject;
-
         _sphere.SetActive(false);
         _sphere.transform.localScale = new Vector3(0, 0, 0);
+       
     }
+
+    void Start()
+    {
+        _meshRenderer = gameObject.GetComponent<MeshRenderer>();
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -51,13 +59,21 @@ public class GravityLauncherProjectile : MonoBehaviour
             _active = true;
             gameObject.GetComponent<SphereCollider>().radius = radius;
             gameObject.GetComponent<SphereCollider>().isTrigger = true;
-            transform.rotation = collision.gameObject.transform.rotation;
             _sphere.transform.position = transform.position;
             _sphere.SetActive(true);
             initialGravityChanger(collision);
             _sphere.transform.rotation *= Quaternion.FromToRotation(_sphere.transform.up, _normal);
             _sphere.transform.localPosition = transform.localPosition;
-
+            initialGravityChanger(collision);
+            transform.rotation = Quaternion.FromToRotation(Vector3.right, _normal);
+            Debug.Log(_meshRenderer.materials.Length);
+            Material mat = _meshRenderer.materials[0];
+            mat.SetFloat("_YCompression", 2f) ;
+            mat.SetFloat("_ZCompression", 2f);
+            mat.SetFloat("_XCompression", 0.2f);
+           
+            _meshRenderer.material = mat;
+            
         }
     }
 
