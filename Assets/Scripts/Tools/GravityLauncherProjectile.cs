@@ -50,8 +50,8 @@ public class GravityLauncherProjectile : MonoBehaviour
             Rigidbody rb = GetComponent<Rigidbody>();
             Vector3 velo = rb.velocity;
 
-            float mag = velo.magnitude +1; // Speed
-            Vector4 skew = new Vector4(10/mag, mag/10, 1f);
+            float mag = velo.magnitude +0.1f; // Speed
+            Vector4 skew = new Vector4(5/mag, mag/100, 1f);
             _meshRenderer.material.SetVector("_Velocity", skew);
             transform.rotation = Quaternion.LookRotation(velo);
           

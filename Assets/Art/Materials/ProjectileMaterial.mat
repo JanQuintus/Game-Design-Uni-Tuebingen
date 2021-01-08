@@ -30,11 +30,15 @@ Material:
     m_Floats:
     - Vector1_4C24C602: 1
     - Vector1_69DC7D35: 1
+    - Vector1_74FCDBC9: 1
     - Vector1_7B23B705: 1
+    - _Power: 3
     - _XCompression: 1
     - _YCompression: 1
     - _ZCompression: 1
-    m_Colors: []
+    m_Colors:
+    - FresenelColor: {r: 1, g: 1, b: 1, a: 0}
+    - _Velocity: {r: 1, g: 1, b: 1, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &6891236311985492335
 MonoBehaviour:
