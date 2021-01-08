@@ -48,9 +48,8 @@ public class GravityLauncherTool : ATool
             _newBullet.transform.right = ray.direction;
             _newBullet.name = "GravityBomb";
             _newBullet.transform.position = transform.position + Camera.main.transform.forward * 2;
-            
             Rigidbody rb = _newBullet.GetComponent<Rigidbody>();
-            rb.velocity = ray.direction * 40;
+            rb.velocity = ray.direction * 20;
         }
     }
 

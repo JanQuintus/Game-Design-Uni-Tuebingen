@@ -15,7 +15,7 @@ public class GravityLauncherProjectile : MonoBehaviour
     private Vector3 _normal;
     private Vector3 _defaultGravity = new Vector3(0, -9.81f, 0);
     public float radius = 20f;
-
+    private Quaternion _initalRot;
     private NavMeshSurface _navMeshSurface;
     private NavMeshLinks_AutoPlacer _navMeshLinks;
 
@@ -24,17 +24,21 @@ public class GravityLauncherProjectile : MonoBehaviour
 
     private void Awake()
     {
-        _sphere = Instantiate(Resources.Load("GravityField")) as GameObject;
+        _sphere = transform.GetChild(0).gameObject.transform.GetChild(0).gameObject;
         _sphere.SetActive(false);
         _sphere.transform.localScale = new Vector3(0, 0, 0);
         _navMeshSurface = GetComponent<NavMeshSurface>();
         _navMeshLinks = GetComponent<NavMeshLinks_AutoPlacer>();
-       
+
     }
+    
 
     void Start()
     {
+       
+        transform.LookAt(transform.position);
         _meshRenderer = gameObject.GetComponent<MeshRenderer>();
+        _initalRot = transform.rotation;
     }
 
     // Update is called once per frame
@@ -43,19 +47,26 @@ public class GravityLauncherProjectile : MonoBehaviour
         if (!_active)
         {
             _liveTime -= Time.deltaTime;
-            Vector3 velo = GetComponent<Rigidbody>().velocity;
-            velo = new Vector3(velo.x/10, 10/velo.y, 10/velo.z);
-            _meshRenderer.material.SetVector("_Velocity",velo );
+            Rigidbody rb = GetComponent<Rigidbody>();
+            Vector3 velo = rb.velocity;
+
+            float mag = velo.magnitude +1; // Speed
+            Vector4 skew = new Vector4(10/mag, mag/10, 1f);
+            _meshRenderer.material.SetVector("_Velocity", skew);
+            transform.rotation = Quaternion.LookRotation(velo);
+          
             if (_liveTime < 0)
             {
                 Destroy(this.gameObject);
             }
         }
+        
         if (_active && _sphere.transform.localScale.x < radius/2)
         {
             _sphere.transform.localScale += new Vector3(1, 1, 1) * Time.deltaTime * growthRate;
         }
-            
+
+
 
     }
 
@@ -70,19 +81,13 @@ public class GravityLauncherProjectile : MonoBehaviour
             gameObject.GetComponent<SphereCollider>().isTrigger = true;
             _sphere.transform.position = transform.position;
             initialGravityChanger(collision);
-            _sphere.transform.rotation *= Quaternion.FromToRotation(_sphere.transform.up, _normal);
-            _sphere.transform.localPosition = transform.localPosition;
-            transform.rotation = Quaternion.FromToRotation(Vector3.up, _normal);
-            Debug.Log(_meshRenderer.materials.Length);
-            Material mat = _meshRenderer.materials[0];
-            mat.SetFloat("_YCompression", 2f) ;
-            mat.SetFloat("_ZCompression", 2f);
-            mat.SetFloat("_XCompression", 0.2f);
+            transform.rotation = Quaternion.FromToRotation(Vector3.up, _normal); 
+
+            _meshRenderer.material.SetVector("_Velocity", new Vector4(1f, 0.2f, 2f));
             _navMeshSurface.BuildNavMesh();
             _navMeshLinks.Generate();
             _sphere.SetActive(true);
 
-            _meshRenderer.material = mat;
             
         }
     }
