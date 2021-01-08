@@ -97,6 +97,7 @@ public class TheBeam : MonoBehaviour
         objectInBeam = null;
         scrollDisplacement = 0;
         windUpStrength = 0;
+        laserEffect.point3 = beamStart;
         gameObject.SetActive(false);
     }
 
