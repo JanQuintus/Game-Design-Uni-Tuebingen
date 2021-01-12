@@ -5044,7 +5044,7 @@ LineRenderer:
     numCornerVertices: 10
     numCapVertices: 0
     alignment: 0
-    textureMode: 3
+    textureMode: 0
     shadowBias: 0
     generateLightingData: 1
   m_UseWorldSpace: 0
@@ -5062,9 +5062,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   point1: {fileID: 0}
-  point2: {fileID: 0}
   point3: {fileID: 0}
-  vertexCount: 12
+  vertexCount: 24
   lineRenderer: {fileID: 6537478031898835036}
 --- !u!1 &6537478032105464153
 GameObject:
