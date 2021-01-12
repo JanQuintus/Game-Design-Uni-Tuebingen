@@ -20,7 +20,7 @@ public class DoorButtonInteractive : AInteractive
 
     public override void Interact(bool isRelease)
     {
-        if (!isRelease)
+        if (!isRelease && _currentTime == 0)
         {
             _currentTime = Time.fixedTime;
             door.OpenDoor();
