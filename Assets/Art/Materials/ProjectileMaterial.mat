@@ -10,9 +10,9 @@ Material:
   m_Name: ProjectileMaterial
   m_Shader: {fileID: -6465566751694194690, guid: ab43d73ca109ba742a469a5ffb1abfb2, type: 3}
   m_ShaderKeywords: 
-  m_LightmapFlags: 4
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
+  m_DoubleSidedGI: 1
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
@@ -30,8 +30,15 @@ Material:
     m_Floats:
     - Vector1_4C24C602: 1
     - Vector1_69DC7D35: 1
+    - Vector1_74FCDBC9: 1
     - Vector1_7B23B705: 1
-    m_Colors: []
+    - _Power: 4
+    - _XCompression: 1
+    - _YCompression: 1
+    - _ZCompression: 1
+    m_Colors:
+    - FresenelColor: {r: 1.7411011, g: 1.7411011, b: 1.7411011, a: 0}
+    - _Velocity: {r: 1, g: 1, b: 1, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &6891236311985492335
 MonoBehaviour:
