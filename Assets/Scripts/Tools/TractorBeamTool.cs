@@ -99,5 +99,11 @@ public class TractorBeamTool : ATool
     public override void Reload() => shootForce = maxEnergy;
 
     public override void Reset(bool isRelease) {}
-    
+
+    public override void OnEquip()
+    { }
+
+    public override void OnUnequip()
+    { }
+
 }

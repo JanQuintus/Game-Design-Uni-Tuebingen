@@ -105,4 +105,10 @@ public class MassExchangerTool : ATool
     public override void Reload() => mEEnergy = maxEnergy;
 
     public override void Scroll(float delta){}
+
+    public override void OnEquip()
+    { }
+
+    public override void OnUnequip()
+    { }
 }

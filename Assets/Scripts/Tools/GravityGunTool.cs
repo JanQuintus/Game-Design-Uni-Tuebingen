@@ -54,4 +54,10 @@ public class GravityGunTool : ATool
     public override void Reload() => _energy = maxEnergy;
 
     public override void Scroll(float delta) { }
+
+    public override void OnEquip()
+    {}
+
+    public override void OnUnequip()
+    {}
 }

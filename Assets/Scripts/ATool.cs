@@ -8,5 +8,8 @@ public abstract class ATool : MonoBehaviour
 
     public abstract void Scroll(float delta);
 
+    public abstract void OnEquip();
+    public abstract void OnUnequip();
+
     public abstract void Reload();
 }

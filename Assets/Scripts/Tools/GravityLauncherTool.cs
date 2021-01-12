@@ -67,5 +67,10 @@ public class GravityLauncherTool : ATool
 
     public override void Scroll(float delta){}
 
+    public override void OnEquip()
+    { }
+
+    public override void OnUnequip()
+    { }
 
 }

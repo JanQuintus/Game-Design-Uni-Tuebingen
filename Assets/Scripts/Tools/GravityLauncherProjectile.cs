@@ -15,8 +15,6 @@ public class GravityLauncherProjectile : MonoBehaviour
     private Vector3 _defaultGravity = new Vector3(0, -9.81f, 0);
     public float radius = 20f;
     private Quaternion _initalRot;
-    private NavMeshSurface _navMeshSurface;
-    private NavMeshLinks_AutoPlacer _navMeshLinks;
 
     private MeshRenderer _meshRenderer; 
     [SerializeField] private float growthRate = 20f;
@@ -43,8 +41,6 @@ public class GravityLauncherProjectile : MonoBehaviour
             }
         }
         _sphere.transform.localScale = new Vector3(0, 0, 0);
-        _navMeshSurface = GetComponent<NavMeshSurface>();
-        _navMeshLinks = GetComponent<NavMeshLinks_AutoPlacer>();
 
     }
     
@@ -106,8 +102,6 @@ public class GravityLauncherProjectile : MonoBehaviour
             transform.rotation = Quaternion.FromToRotation(Vector3.up, _normal);
             _projectile.transform.rotation = Quaternion.FromToRotation(Vector3.up, _normal);
             _meshRenderer.material.SetVector("_Velocity", new Vector4(1f, 0.2f, 2f));
-            _navMeshSurface.BuildNavMesh();
-            _navMeshLinks.Generate();
             _sphere.SetActive(true);
             _plane.SetActive(true);
             _twirlSystem.SetActive(true);
