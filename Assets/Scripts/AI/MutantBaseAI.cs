@@ -1,42 +1,54 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Health))]
 public class MutantBaseAI : BaseAI
 {
-    [SerializeField] private float findPlayerInterval = 0.5f;
-    [SerializeField] private Transform headPosition;
-    [SerializeField] private float maxFindPlayerDistance = 30f;
-    [SerializeField] private LayerMask obstacleLayerMask;
-
+    private float maxPlayerDistance = 30f;
     private Health _health;
 
-    /*protected override void Awake()
+    private float _mpd2;
+
+    protected override void Awake()
     {
+        base.Awake();
+        _mpd2 = maxPlayerDistance * maxPlayerDistance;
         _health = GetComponent<Health>();
         _health.OnDeath.AddListener(() =>
         {
-            isAlive = false;
+            _isAlive = false;
+            if (_target != null)
+                _target.Untrack();
+            _collider.material.staticFriction = 1f;
+            _collider.material.dynamicFriction = 1f;
+            _collider.material.frictionCombine = PhysicMaterialCombine.Average;
         });
-    }*/
-
-    void Start()
-    {
-        StartCoroutine(TryAttackPlayerCor());
     }
 
-    private IEnumerator TryAttackPlayerCor()
+    protected void Update()
     {
-        yield return new WaitForSeconds(findPlayerInterval);
-        float distance = Vector3.Distance(transform.position, PlayerController.Instance.transform.position);
-        if (distance <= maxFindPlayerDistance)
-        {
-            if (!Physics.Raycast(headPosition.position, PlayerController.Instance.GetHeadPosition(), distance, obstacleLayerMask))
-                MoveTo(PlayerController.Instance.transform.position);
-        }
-        if (isAlive)
-            StartCoroutine(TryAttackPlayerCor());
+        if (!_isAlive)
+            return;
+
+        if (_target == null && Vector3.SqrMagnitude(transform.position - PlayerController.Instance.transform.position) <= _mpd2)
+            SetTarget(PlayerController.Instance.GetAITarget());
+        else if (_target != null && Vector3.SqrMagnitude(transform.position - PlayerController.Instance.transform.position) > _mpd2)
+            SetTarget(null);
+    }
+
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (!_isAlive)
+            return;
+
+        if (collision.collider.gameObject.layer == LayerMask.GetMask("AI"))
+            return;
+
+        if (collision.relativeVelocity.magnitude < 20f)
+            return;
+        float mass = collision.rigidbody ? collision.rigidbody.mass : 1f;
+        _health.Damage((collision.relativeVelocity.magnitude - 20f) * mass);
     }
 
     public Health GetHealth => _health;

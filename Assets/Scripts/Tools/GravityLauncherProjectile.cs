@@ -1,8 +1,4 @@
-﻿using eDmitriyAssets.NavmeshLinksGenerator;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.AI;
+﻿using UnityEngine;
 
 public class GravityLauncherProjectile : MonoBehaviour
 {
@@ -16,9 +12,6 @@ public class GravityLauncherProjectile : MonoBehaviour
     private Vector3 _defaultGravity = new Vector3(0, -9.81f, 0);
     public float radius = 20f;
 
-    private NavMeshSurface _navMeshSurface;
-    private NavMeshLinks_AutoPlacer _navMeshLinks;
-
     private MeshRenderer _meshRenderer; 
     [SerializeField] private float growthRate = 20f;
 
@@ -27,9 +20,6 @@ public class GravityLauncherProjectile : MonoBehaviour
         _sphere = Instantiate(Resources.Load("GravityField")) as GameObject;
         _sphere.SetActive(false);
         _sphere.transform.localScale = new Vector3(0, 0, 0);
-        _navMeshSurface = GetComponent<NavMeshSurface>();
-        _navMeshLinks = GetComponent<NavMeshLinks_AutoPlacer>();
-       
     }
 
     void Start()
@@ -75,8 +65,6 @@ public class GravityLauncherProjectile : MonoBehaviour
             mat.SetFloat("_YCompression", 2f) ;
             mat.SetFloat("_ZCompression", 2f);
             mat.SetFloat("_XCompression", 0.2f);
-            _navMeshSurface.BuildNavMesh();
-            _navMeshLinks.Generate();
             _sphere.SetActive(true);
 
             _meshRenderer.material = mat;
@@ -153,7 +141,6 @@ public class GravityLauncherProjectile : MonoBehaviour
         if (go) go.SetLocalGravity(gravity);
         BaseAI ai = collider.GetComponent<BaseAI>();
         if (!ai) ai = collider.GetComponentInParent<BaseAI>();
-        if (ai) ai.GravityChange();
     }
 
     private void OnTriggerStay(Collider other)

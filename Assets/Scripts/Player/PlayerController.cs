@@ -56,6 +56,7 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
     private PlayerInputActions _inputActions;
     private Rigidbody _rb;
     private GravityObject _gravity;
+    private AITarget _target;
 
     private bool _isGrounded = false;
     private bool _isCrouching = false;
@@ -93,6 +94,7 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
 
         _rb = GetComponent<Rigidbody>();
         _gravity = GetComponent<GravityObject>();
+        _target = GetComponent<AITarget>();
         _inputActions = new PlayerInputActions();
         _inputActions.Player.SetCallbacks(this);
         Cursor.lockState = CursorLockMode.Locked;
@@ -262,6 +264,8 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
     public ATool GetCurrentTool() => currentTool;
 
     public Vector3 GetHeadPosition() => head.position;
+
+    public AITarget GetAITarget() => _target;
     #endregion
 
     private void CheckIsGrounded()
