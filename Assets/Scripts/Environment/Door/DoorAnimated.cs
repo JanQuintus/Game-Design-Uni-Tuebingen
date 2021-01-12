@@ -1,23 +1,35 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class DoorAnimated : MonoBehaviour
 {
-    private Animator animator;
+    [SerializeField] private GameObject doorLeft;
+    [SerializeField] private GameObject doorRight;
+    [SerializeField] private GameObject endPosLeft;
+    [SerializeField] private GameObject endPosRight;
+    [SerializeField] private GameObject startPosLeft;
+    [SerializeField] private GameObject startPosRight;
+
+    [SerializeField] private int duration = 1;
+
+
 
     private void Awake()
     {
-        animator = GetComponent<Animator>();
+
     }
 
     public void OpenDoor()
     {
-        animator.SetBool("Open", true);
+        doorLeft.transform.DOMove(endPosLeft.transform.position, duration);
+        doorRight.transform.DOMove(endPosRight.transform.position, duration);
     }
 
     public void CloseDoor()
     {
-        animator.SetBool("Open", false);
+        doorLeft.transform.DOMove(startPosLeft.transform.position, duration);
+        doorRight.transform.DOMove(startPosRight.transform.position, duration);
     }
 }
