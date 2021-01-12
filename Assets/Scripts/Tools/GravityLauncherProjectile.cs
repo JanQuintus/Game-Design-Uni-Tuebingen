@@ -11,7 +11,10 @@ public class GravityLauncherProjectile : MonoBehaviour
     private bool _active = false;
     private float _liveTime = 5f;
     private GameObject _sphere;
-    private GameObject _sphereMesh;
+    private GameObject _plane;
+    private GameObject _projectile;
+    private GameObject _projectileParticles;
+    private GameObject _twirlSystem;
     private Vector3 _normal;
     private Vector3 _defaultGravity = new Vector3(0, -9.81f, 0);
     public float radius = 20f;
@@ -24,8 +27,25 @@ public class GravityLauncherProjectile : MonoBehaviour
 
     private void Awake()
     {
+        
         _sphere = transform.GetChild(0).gameObject.transform.GetChild(0).gameObject;
-        _sphere.SetActive(false);
+        foreach (Transform child in transform)
+        {
+            switch (child.name)
+            {
+                case "Sphere": _sphere = child.gameObject;
+                    break;
+                case "Projectile": _projectile = child.gameObject;
+                    break;
+                case "Plane": _plane = child.gameObject;
+                    break;
+                case "ProjectileParticles": _projectileParticles = child.gameObject;
+                    break;
+                case "TwirlSystem": _twirlSystem = child.gameObject;
+                    break;
+
+            }
+        }
         _sphere.transform.localScale = new Vector3(0, 0, 0);
         _navMeshSurface = GetComponent<NavMeshSurface>();
         _navMeshLinks = GetComponent<NavMeshLinks_AutoPlacer>();
@@ -36,9 +56,9 @@ public class GravityLauncherProjectile : MonoBehaviour
     void Start()
     {
        
-        transform.LookAt(transform.position);
-        _meshRenderer = gameObject.GetComponent<MeshRenderer>();
-        _initalRot = transform.rotation;
+        _projectile.transform.LookAt(transform.position);
+        _meshRenderer = _projectile.GetComponent<MeshRenderer>();
+        _initalRot = _projectile.transform.rotation;
     }
 
     // Update is called once per frame
@@ -53,7 +73,7 @@ public class GravityLauncherProjectile : MonoBehaviour
             float mag = velo.magnitude +0.1f; // Speed
             Vector4 skew = new Vector4(5/mag, mag/100, 1f);
             _meshRenderer.material.SetVector("_Velocity", skew);
-            transform.rotation = Quaternion.LookRotation(velo);
+            _projectile.transform.rotation = Quaternion.LookRotation(velo);
           
             if (_liveTime < 0)
             {
@@ -64,8 +84,13 @@ public class GravityLauncherProjectile : MonoBehaviour
         if (_active && _sphere.transform.localScale.x < radius/2)
         {
             _sphere.transform.localScale += new Vector3(1, 1, 1) * Time.deltaTime * growthRate;
-        }
 
+            GetComponent<SphereCollider>().radius += 1 * Time.deltaTime * growthRate;
+        }
+        if (_active && _plane.transform.localScale.x < 1)
+        {
+            _plane.transform.localScale += new Vector3(0.01f, 0.01f, 0.01f) * Time.deltaTime * growthRate;
+        }
 
 
     }
@@ -77,16 +102,22 @@ public class GravityLauncherProjectile : MonoBehaviour
             gameObject.GetComponent<Rigidbody>().isKinematic = true;
             _isLocked = true;
             _active = true;
-            gameObject.GetComponent<SphereCollider>().radius = radius;
-            gameObject.GetComponent<SphereCollider>().isTrigger = true;
+            GetComponent<SphereCollider>().isTrigger = true;
+            gameObject.isStatic = true;
             _sphere.transform.position = transform.position;
             initialGravityChanger(collision);
-            transform.rotation = Quaternion.FromToRotation(Vector3.up, _normal); 
-
+           
+            transform.rotation = Quaternion.FromToRotation(Vector3.up, _normal);
+            _projectile.transform.rotation = Quaternion.FromToRotation(Vector3.up, _normal);
             _meshRenderer.material.SetVector("_Velocity", new Vector4(1f, 0.2f, 2f));
             _navMeshSurface.BuildNavMesh();
             _navMeshLinks.Generate();
             _sphere.SetActive(true);
+            _plane.SetActive(true);
+            _twirlSystem.SetActive(true);
+            _projectileParticles.SetActive(true);
+            _projectile.GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            
 
             
         }
@@ -164,12 +195,4 @@ public class GravityLauncherProjectile : MonoBehaviour
         if (ai) ai.GravityChange();
     }
 
-    private void OnTriggerStay(Collider other)
-    {
-
-
-        double direction = Vector3.Dot(_normal, (other.transform.position - transform.position));
-        if (direction > -2) changeGravity(other, _normal * -9.81f);
-        else changeGravity(other, _defaultGravity);
-    }
 }
