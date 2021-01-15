@@ -14,7 +14,6 @@ public class GravityLauncherProjectile : MonoBehaviour
     private Vector3 _normal;
     private Vector3 _defaultGravity = new Vector3(0, -9.81f, 0);
     public float radius = 20f;
-    private Quaternion _initalRot;
 
     private MeshRenderer _meshRenderer; 
     [SerializeField] private float growthRate = 20f;
@@ -50,7 +49,6 @@ public class GravityLauncherProjectile : MonoBehaviour
        
         _projectile.transform.LookAt(transform.position);
         _meshRenderer = _projectile.GetComponent<MeshRenderer>();
-        _initalRot = _projectile.transform.rotation;
     }
 
     // Update is called once per frame
@@ -180,8 +178,6 @@ public class GravityLauncherProjectile : MonoBehaviour
         GravityObject go = collider.GetComponent<GravityObject>();
         if (!go) go = collider.GetComponentInParent<GravityObject>();
         if (go) go.SetLocalGravity(gravity);
-        BaseAI ai = collider.GetComponent<BaseAI>();
-        if (!ai) ai = collider.GetComponentInParent<BaseAI>();
     }
 
 }

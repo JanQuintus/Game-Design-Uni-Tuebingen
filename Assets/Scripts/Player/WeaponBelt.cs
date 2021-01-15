@@ -11,7 +11,7 @@ public class WeaponBelt : MonoBehaviour
     private void Awake()
     {
         foreach (ATool tool in tools)
-            tool.gameObject.SetActive(false);
+            tool.gameObject.transform.localScale = Vector3.zero;
     }
     private void Start()
     {

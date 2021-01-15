@@ -251,13 +251,16 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
         if (currentTool != null && currentTool.GetType() == tool.GetType())
             return;
 
+        currentTool?.OnUnequip();
+
         toolHolder.DOKill();
         toolHolder.DOLocalMove(new Vector3(_tbDefaultPosX + 0.5f, _tbDefaultPosY - 0.5f, _tbDefaultPosZ - 0.5f), 0.25f).OnComplete(() =>
         {
-            if (currentTool != null) currentTool.gameObject.SetActive(false);
+            if (currentTool != null) currentTool.transform.localScale = Vector3.zero;
             toolHolder.DOLocalMoveZ(_tbDefaultPosZ, 0.25f);
             currentTool = tool;
-            currentTool.gameObject.SetActive(true);
+            currentTool?.OnEquip();
+            currentTool.transform.localScale = Vector3.one;
         });
     }
 
