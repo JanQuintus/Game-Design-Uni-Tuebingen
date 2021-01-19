@@ -5063,7 +5063,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   point1: {fileID: 0}
   point3: {fileID: 0}
-  vertexCount: 24
+  vertexCount: 100
   lineRenderer: {fileID: 6537478031898835036}
 --- !u!1 &6537478032105464153
 GameObject:

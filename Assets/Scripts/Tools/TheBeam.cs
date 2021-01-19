@@ -24,14 +24,33 @@ public class TheBeam : MonoBehaviour
     private int iter = 0;
 
 
+    // Shaderchange VFX
+    private int _activateEmssionID = Shader.PropertyToID("beamActive");
+
+    // Gravity Paticle VFX
+    public GameObject sphereEffect;
+    private GameObject _inst_FX;
+    private Material material;
+    //////////////////////////////////////////////////////////////////////////////////////////////////////
+
     void Start()
     {
         gameObject.SetActive(false);
+        // Gravity Paticle VFX
+        _inst_FX = Instantiate(sphereEffect, new Vector3(0, 0, 0), new Quaternion(0,0,0,0));
+        //////////////////////////////////////////////////////////////////////////////////////////////////////
     }
 
 
     void FixedUpdate()
     {
+        // Particle Effect
+        _inst_FX.SetActive(false);
+        //Shader FX
+        material = objectInBeam.gameObject.GetComponent<Renderer>().material;
+        material.SetFloat(_activateEmssionID, 0);
+        //////////////////////////////////////////////////////////////////////////////////////////////////////
+
         if (isOccupied)
         {
             // displace center of gravitation according to scroll and windup and correct for the length of the beam
@@ -41,7 +60,17 @@ public class TheBeam : MonoBehaviour
             Vector3 targetPos = transform.position + transform.TransformDirection(localPos) + transform.TransformDirection(lPos) + transform.TransformDirection(displace);
 
             Vector3 objectPos = objectInBeam.transform.position;
-            laserEffect.point3 = objectInBeam.transform;
+            Quaternion objectRot = objectInBeam.transform.rotation;
+
+            laserEffect.point3 = objectInBeam.transform; //laser position
+            
+            // Sphere VFX And Shader FX
+            _inst_FX.transform.SetPositionAndRotation(objectPos, objectRot);
+            Vector3 rb_size = objectInBeam.bounds.size;
+            _inst_FX.transform.localScale = new Vector3(rb_size.magnitude, rb_size.magnitude, rb_size.magnitude);
+            _inst_FX.SetActive(true);
+            material.SetFloat(_activateEmssionID, 1);
+            //////////////////////////////////////////////////////////////////////////////////////////////////////
 
             float dx = objectPos.x - targetPos.x;
             float dy = objectPos.y - targetPos.y;
@@ -84,10 +113,12 @@ public class TheBeam : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        
         if ((!isOccupied) && (other.GetComponent("GravityObject") != null))
         {
             objectInBeam = other.GetComponent<Collider>();
             isOccupied = true;
+            
         }
     }
 
@@ -98,12 +129,20 @@ public class TheBeam : MonoBehaviour
         scrollDisplacement = 0;
         windUpStrength = 0;
         laserEffect.point3 = beamStart;
+        // Shader
+        _inst_FX.SetActive(false);
         gameObject.SetActive(false);
+        material.SetFloat(_activateEmssionID, 0);
+        //////////////////////////////////////////////////////////////////////////////////////////////////////
+
     }
 
     public void turnOnBeam()
     {
         gameObject.SetActive(true);
+        // VFx Shader
+        _inst_FX.SetActive(true);
+        //////////////////////////////////////////////////////////////////////////////////////////////////////
     }
 
     // This function should only be called along with turnOffBeam
