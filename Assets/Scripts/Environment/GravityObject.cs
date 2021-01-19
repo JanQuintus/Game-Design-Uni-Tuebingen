@@ -3,6 +3,8 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class GravityObject : MonoBehaviour
 {
+    public System.Action OnGravityChanged;
+
     [SerializeField] private Vector3 localGravity = new Vector3(0, -9.81f, 0); //initialization with standard gravity
     private Rigidbody rb;
 
@@ -15,5 +17,9 @@ public class GravityObject : MonoBehaviour
     }
 
     public Vector3 GetLocalGravity() => localGravity;
-    public void SetLocalGravity(Vector3 newGravityVector) => localGravity = newGravityVector;
+    public void SetLocalGravity(Vector3 newGravityVector) {
+        if (localGravity != newGravityVector)
+            OnGravityChanged?.Invoke();
+        localGravity = newGravityVector;
+    }
 }

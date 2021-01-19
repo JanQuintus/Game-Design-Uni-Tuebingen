@@ -60,6 +60,8 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
 
     private bool _isGrounded = false;
     private bool _isCrouching = false;
+    private bool _inputEnabled = true;
+    private float _gravityChangeMoveBlockCD = 0;
     private Vector2 _smoothMove = Vector2.zero;
 
     // From Input
@@ -108,6 +110,8 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
         _tbInitialDefaultPosY = toolHolder.localPosition.y;
         _tbDefaultPosX = toolHolder.localPosition.x;
         _tbDefaultPosZ = toolHolder.localPosition.z;
+
+        _gravity.OnGravityChanged += () => _gravityChangeMoveBlockCD = 0.4f;
     }
 
     private void FixedUpdate()
@@ -138,6 +142,11 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
         Vector3 upVelocity = transform.TransformDirection(new Vector3(0, localVelocity.y, 0));
         _smoothMove = Vector2.Lerp(_smoothMove, _move, Time.fixedDeltaTime * moveDamping);
         float speed = walkSpeed * (_isCrouching ? crouchSpeedMult : (_sprint ? sprintSpeedMult : 1));
+        if (_gravityChangeMoveBlockCD > 0)
+        {
+            _gravityChangeMoveBlockCD -= Time.deltaTime;
+            _smoothMove = Vector2.zero;
+        }
         Vector3 move = transform.TransformDirection(new Vector3(_smoothMove.x, 0, _smoothMove.y) * Time.fixedDeltaTime * speed) + upVelocity;
         _rb.velocity = move;
 
@@ -269,6 +278,19 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
     public Vector3 GetHeadPosition() => head.position;
 
     public AITarget GetAITarget() => _target;
+
+    public void BlockInput()
+    {
+        _inputEnabled = false;
+        _inputActions.Disable();
+        _move = Vector2.zero;
+    }
+
+    public void UnblockInput()
+    {
+        _inputEnabled = true;
+        _inputActions.Enable();
+    }
     #endregion
 
     private void CheckIsGrounded()
