@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using DG.Tweening;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class DummyDialogue : AInteractive
 {
@@ -34,7 +35,28 @@ public class DummyDialogue : AInteractive
     private int _globalProgress = GameManager.globalProgress;
     private bool _hasGlobalTrimmed = false; // set to true once global culling has set place
     private bool _choosingDialogue = false; // set to true once we have text choices
+    private PlayerInputActions _inputActions;
 
+    private void Awake()
+    {
+        _inputActions = new PlayerInputActions();
+        _inputActions.UI.Interact.performed += (InputAction.CallbackContext context) =>
+        {
+            if (context.performed)
+            {
+                if (_choosingDialogue)
+                {
+                    chooseDialogue();
+                }
+                else
+                {
+                    _textToReturn = _npcText;
+                    loadStringByGlobalProgress(); // parse string based on global progress ( see below, culls on progress before delimiter )
+                    localTextProcessing(); // parse string based on conversation path progress ( see below, culls per press )
+                }
+            }
+        };
+    }
 
     public override void Interact(bool isRelease) // on Interact
     {
@@ -50,6 +72,8 @@ public class DummyDialogue : AInteractive
                 loadStringByGlobalProgress(); // parse string based on global progress ( see below, culls on progress before delimiter )
                 localTextProcessing(); // parse string based on conversation path progress ( see below, culls per press )
             }
+            PlayerController.Instance.BlockInput();
+            _inputActions.Enable();
         }
     }
 
@@ -228,6 +252,8 @@ public class DummyDialogue : AInteractive
 
         // also reset the string in case we wanna talk again
         _npcText = DummyDialogueScriptableObject.dummyText;
+        PlayerController.Instance.UnblockInput();
+        _inputActions.Disable();
     }
 
     private void hideChoices() // self-xpl
