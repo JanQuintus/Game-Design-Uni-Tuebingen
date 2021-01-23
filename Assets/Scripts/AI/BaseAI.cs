@@ -4,6 +4,8 @@
 
 public class BaseAI : MonoBehaviour
 {
+    [SerializeField] protected Animator animator;
+
     [Header("Walking")]
     [SerializeField] private float walkSpeed = 4.5f;
     [SerializeField] private float moveDamping = 5f;
@@ -20,6 +22,7 @@ public class BaseAI : MonoBehaviour
     protected bool _isAlive = true;
 
     protected AITarget _target;
+    protected bool _canMove = true;
     protected Vector3 _nextPosition;
     protected Vector3 _lookPosition;
     protected Vector3 _smoothMove;
@@ -28,6 +31,7 @@ public class BaseAI : MonoBehaviour
     protected CapsuleCollider _collider;
     protected bool _isGrounded = false;
     protected float _gravityChangeMoveBlockCD = 0;
+    protected bool _atTarget = false;
 
     protected virtual void Awake()
     {
@@ -43,6 +47,10 @@ public class BaseAI : MonoBehaviour
     {
         if (!_isAlive)
             return;
+
+        animator.SetFloat("Speed", _rb.velocity.magnitude);
+        animator.SetBool("isGrounded", _isGrounded);
+
         IsGrounded();
         Vector3 localVelocity = transform.InverseTransformDirection(_rb.velocity);
         if (_isGrounded && localVelocity.y <= 0)
@@ -56,8 +64,18 @@ public class BaseAI : MonoBehaviour
             _collider.material.frictionCombine = PhysicMaterialCombine.Minimum;
         }
 
+
+        if (_atTarget)
+        {
+            _collider.material.frictionCombine = PhysicMaterialCombine.Maximum;
+        }
+
+
         if (_target == null)
+        {
+            _atTarget = false;
             return;
+        }
 
         if (_isGrounded)
         {
@@ -66,12 +84,25 @@ public class BaseAI : MonoBehaviour
                 Vector3 lookPosOnSurface = Vector3.ProjectOnPlane(_nextPosition, hit.normal) + (hit.distance + 0.01f - transform.TransformDirection(gcOffset).y) * hit.normal;
                 Vector3 rayDir = lookPosOnSurface - transform.position;
 
-                if (Physics.Raycast(transform.position + (0.01f * transform.up), rayDir, out RaycastHit obstacle, 3f))
+                if (!Physics.Raycast(transform.position + transform.TransformDirection(gcOffset) + transform.forward, -transform.up, gcDistance, obstacleLayerMask))
+                {
+                    _rb.AddForce(transform.up * _rb.mass * 6f, ForceMode.Impulse);
+                    _isGrounded = false;
+                    animator.SetTrigger("Jump");
+                }else if (Physics.CapsuleCast(
+                    transform.position + (_collider.radius + maxSlope) * transform.up,
+                    transform.position + (_collider.height - _collider.radius - maxSlope) * transform.up,
+                    _collider.radius,
+                    rayDir,
+                    out RaycastHit obstacle,
+                    2f,
+                    obstacleLayerMask))
                 {
                     if(obstacleLayerMask == (obstacleLayerMask | (1 << obstacle.transform.gameObject.layer)))
                     {
                         _rb.AddForce(transform.up * _rb.mass * 6f, ForceMode.Impulse);
                         _isGrounded = false;
+                        animator.SetTrigger("Jump");
                     }
                 }
             }
@@ -79,6 +110,9 @@ public class BaseAI : MonoBehaviour
 
         if (Vector3.Distance(transform.position, _target.transform.position) >= stoppingDistance)
         {
+            _atTarget = false;
+            if (!_canMove)
+                return;
             FindNextPosition();
             if (_isGrounded)
             {
@@ -96,6 +130,8 @@ public class BaseAI : MonoBehaviour
                 _rb.velocity = move;
             }
         }
+        else
+            _atTarget = true;
     }
 
     private void LateUpdate()
@@ -107,6 +143,8 @@ public class BaseAI : MonoBehaviour
         if (!_isGrounded)
             _lookPosition = transform.position + transform.forward;
 
+        if (_target == null)
+            return;
         Vector3 localTarget;
         if (Vector3.Distance(transform.position, _target.transform.position) >= stoppingDistance)
             localTarget = transform.InverseTransformPoint(_lookPosition);
@@ -145,10 +183,6 @@ public class BaseAI : MonoBehaviour
         for (int i = waypoints.Length - 1; i > 0; i--)
         {
             Vector3 wp = waypoints[i];
-            Vector3 localWP = transform.InverseTransformPoint(wp);
-            if(localWP.y > maxSlope)
-                continue;
-
             if (!Physics.CapsuleCast(
                 transform.position + (_collider.radius + 0.01f) * transform.up,
                 transform.position + (_collider.height - _collider.radius - maxSlope) * transform.up,
