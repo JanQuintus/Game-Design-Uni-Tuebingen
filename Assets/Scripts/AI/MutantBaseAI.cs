@@ -4,8 +4,15 @@ using UnityEngine;
 [RequireComponent(typeof(Health))]
 public class MutantBaseAI : BaseAI
 {
+    [Header("Mutant AI")]
+    [SerializeField] protected float attackTime = 1;
+    [SerializeField] protected int attacks = 3;
+    [SerializeField] protected RagdollController ragdollController;
+
+
     private float maxPlayerDistance = 30f;
     private Health _health;
+    private float _attackTimeCD;
 
     private float _mpd2;
 
@@ -14,6 +21,13 @@ public class MutantBaseAI : BaseAI
         base.Awake();
         _mpd2 = maxPlayerDistance * maxPlayerDistance;
         _health = GetComponent<Health>();
+        _health.OnDamaged.AddListener((dmg) =>
+        {
+            if (_isAlive)
+            {
+                animator.SetTrigger("Hit");
+            }
+        });
         _health.OnDeath.AddListener(() =>
         {
             _isAlive = false;
@@ -22,6 +36,10 @@ public class MutantBaseAI : BaseAI
             _collider.material.staticFriction = 1f;
             _collider.material.dynamicFriction = 1f;
             _collider.material.frictionCombine = PhysicMaterialCombine.Average;
+            animator.enabled = false;
+            _rb.isKinematic = true;
+            _collider.enabled = false;
+            ragdollController.EnableRagdoll(_rb.useGravity, _rb.mass);
         });
     }
 
@@ -34,6 +52,32 @@ public class MutantBaseAI : BaseAI
             SetTarget(PlayerController.Instance.GetAITarget());
         else if (_target != null && Vector3.SqrMagnitude(transform.position - PlayerController.Instance.transform.position) > _mpd2)
             SetTarget(null);
+
+        if (_atTarget)
+        {
+            _attackTimeCD -= Time.deltaTime;
+            if(_attackTimeCD <= 0)
+            {
+                _attackTimeCD = attackTime;
+                _canMove = false;
+                animator.SetInteger("AttackIndex", Random.Range(0, attacks));
+                animator.SetTrigger("Attack");
+            }
+        }
+        else
+        {
+            if(!_canMove && _attackTimeCD > 0)
+            {
+                _attackTimeCD -= Time.deltaTime;
+                if (_attackTimeCD <= 0)
+                    _canMove = true;
+            }
+            else
+            {
+                _attackTimeCD = .5f;
+                animator.ResetTrigger("Attack");
+            }
+        }
     }
 
 

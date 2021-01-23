@@ -63,6 +63,7 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
     private bool _inputEnabled = true;
     private float _gravityChangeMoveBlockCD = 0;
     private Vector2 _smoothMove = Vector2.zero;
+    private Health _health;
 
     // From Input
     private Vector2 _move = Vector2.zero;
@@ -110,6 +111,20 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
         _tbInitialDefaultPosY = toolHolder.localPosition.y;
         _tbDefaultPosX = toolHolder.localPosition.x;
         _tbDefaultPosZ = toolHolder.localPosition.z;
+        _health = GetComponentInParent<Health>();
+
+        _health.OnDeath.AddListener(() =>
+        {
+            Debug.Log("You died!");
+            _health.Heal(100);
+        });
+
+        _health.OnDamaged.AddListener((damage) =>
+        {
+            head.DOShakePosition(0.4f, 0.25f);
+            toolHolder.DOShakePosition(0.2f, 0.1f);
+        });
+
 
         _gravity.OnGravityChanged += () => _gravityChangeMoveBlockCD = 0.4f;
     }
