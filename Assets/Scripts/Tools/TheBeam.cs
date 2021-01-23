@@ -113,10 +113,10 @@ public class TheBeam : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        
-        if ((!isOccupied) && (other.GetComponent("GravityObject") != null))
+        if ((!isOccupied) && (other.GetComponent<GravityObject>() != null))
         {
             objectInBeam = other.GetComponent<Collider>();
+            other.GetComponent<GravityObject>().enabled = false;
             isOccupied = true;
             
         }
@@ -125,6 +125,8 @@ public class TheBeam : MonoBehaviour
     public void turnOffBeam()
     {
         isOccupied = false;
+        if (objectInBeam)
+            objectInBeam.GetComponent<GravityObject>().enabled = true;
         objectInBeam = null;
         scrollDisplacement = 0;
         windUpStrength = 0;

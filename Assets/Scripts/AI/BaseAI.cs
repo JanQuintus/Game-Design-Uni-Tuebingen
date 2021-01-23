@@ -27,6 +27,7 @@ public class BaseAI : MonoBehaviour
     protected Rigidbody _rb;
     protected CapsuleCollider _collider;
     protected bool _isGrounded = false;
+    protected float _gravityChangeMoveBlockCD = 0;
 
     protected virtual void Awake()
     {
@@ -34,6 +35,8 @@ public class BaseAI : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
         _collider = GetComponent<CapsuleCollider>();
         _nextPosition = transform.position;
+
+        _gravity.OnGravityChanged += () => _gravityChangeMoveBlockCD = 0.4f;
     }
 
     private void FixedUpdate()
@@ -63,25 +66,35 @@ public class BaseAI : MonoBehaviour
                 Vector3 lookPosOnSurface = Vector3.ProjectOnPlane(_nextPosition, hit.normal) + (hit.distance + 0.01f - transform.TransformDirection(gcOffset).y) * hit.normal;
                 Vector3 rayDir = lookPosOnSurface - transform.position;
 
-                if (Physics.Raycast(transform.position + (0.01f * transform.up), rayDir, 3f, obstacleLayerMask))
+                if (Physics.Raycast(transform.position + (0.01f * transform.up), rayDir, out RaycastHit obstacle, 3f))
                 {
-                    _rb.AddForce(transform.up * _rb.mass * 6f, ForceMode.Impulse);
-                    _isGrounded = false;
+                    if(obstacleLayerMask == (obstacleLayerMask | (1 << obstacle.transform.gameObject.layer)))
+                    {
+                        _rb.AddForce(transform.up * _rb.mass * 6f, ForceMode.Impulse);
+                        _isGrounded = false;
+                    }
                 }
             }
         }
 
-
         if (Vector3.Distance(transform.position, _target.transform.position) >= stoppingDistance)
         {
             FindNextPosition();
-            localVelocity = transform.InverseTransformDirection(_rb.velocity);
-            Vector3 upVelocity = transform.TransformDirection(new Vector3(0, localVelocity.y, 0));
-            Vector3 moveDir = transform.InverseTransformDirection((_nextPosition - transform.position).normalized);
-            _smoothMove = Vector3.Lerp(_smoothMove, moveDir, Time.fixedDeltaTime * moveDamping);
-            float speed = walkSpeed * 100f;
-            Vector3 move = transform.TransformDirection(new Vector3(_smoothMove.x, 0, _smoothMove.z) * Time.fixedDeltaTime * speed) + upVelocity;
-            _rb.velocity = move;
+            if (_isGrounded)
+            {
+                localVelocity = transform.InverseTransformDirection(_rb.velocity);
+                Vector3 upVelocity = transform.TransformDirection(new Vector3(0, localVelocity.y, 0));
+                Vector3 moveDir = transform.InverseTransformDirection((_nextPosition - transform.position).normalized);
+                _smoothMove = Vector3.Lerp(_smoothMove, moveDir, Time.fixedDeltaTime * moveDamping);
+                float speed = walkSpeed * 100f;
+                if (_gravityChangeMoveBlockCD > 0)
+                {
+                    _gravityChangeMoveBlockCD -= Time.deltaTime;
+                    _smoothMove = Vector2.zero;
+                }
+                Vector3 move = transform.TransformDirection(new Vector3(_smoothMove.x, 0, _smoothMove.z) * Time.fixedDeltaTime * speed) + upVelocity;
+                _rb.velocity = move;
+            }
         }
     }
 
@@ -93,7 +106,13 @@ public class BaseAI : MonoBehaviour
 
         if (!_isGrounded)
             _lookPosition = transform.position + transform.forward;
-        Vector3 localTarget = transform.InverseTransformPoint(_lookPosition);
+
+        Vector3 localTarget;
+        if (Vector3.Distance(transform.position, _target.transform.position) >= stoppingDistance)
+            localTarget = transform.InverseTransformPoint(_lookPosition);
+        else
+            localTarget = transform.InverseTransformPoint(_target.transform.position);
+
         localTarget.y = 0;
         Vector3 target = transform.TransformPoint(localTarget);
         transform.rotation = Quaternion.Lerp(transform.rotation,
