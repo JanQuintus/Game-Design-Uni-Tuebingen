@@ -13,12 +13,15 @@ public class ReloadStation : AInteractive
     [SerializeField] GameObject Window;
     [SerializeField] GameObject EndPos;
     [SerializeField] GameObject StartPos;
+    [SerializeField] Light Kühlschranklicht;
+    [SerializeField] float timeToLightTheCabin = 0.1f;
 
     private float _currentTime = 0.0f;
     [SerializeField] private static float reloadDuration = 5.0f;
     [SerializeField] private int duration = 1;
 
     private bool _isReloading = false;
+    private string _currentTool;
 
     public override void Interact(bool isRelease)
     {
@@ -29,6 +32,11 @@ public class ReloadStation : AInteractive
         {
             _isReloading = true;
             _currentTime = Time.fixedTime;
+            _currentTool = PlayerController.Instance.GetCurrentTool().name;
+
+            showAndDisableTool(_currentTool, true);
+            Kühlschranklicht.DOIntensity(0.04f, timeToLightTheCabin);
+
             CloseWindow();
         }
 
@@ -39,12 +47,14 @@ public class ReloadStation : AInteractive
     {
         if (_isReloading)
         {
-            if (_currentTime != 0 && (Time.fixedTime - _currentTime) > reloadDuration)
+            if (_currentTime != 0 && (Time.fixedTime - _currentTime) > reloadDuration) // reload finished
             {
                 OpenWindow();
                 _currentTime = 0;
                 PlayerController.Instance.GetCurrentTool()?.Reload();
                 _isReloading = false;
+                showAndDisableTool(_currentTool, false);
+                Kühlschranklicht.DOIntensity(0f, timeToLightTheCabin);
             }
         }
 
@@ -58,5 +68,25 @@ public class ReloadStation : AInteractive
     private void CloseWindow()
     {
         Window.transform.DOMove(StartPos.transform.position, duration);
+    }
+
+    private void showAndDisableTool(string currentTool, bool isActive)
+    {
+        if (currentTool == "GravityGun")
+        {
+            GravityGun.SetActive(isActive);
+        }
+        else if (currentTool == "TractorBeam")
+        {
+            TractorBeam.SetActive(isActive);
+        }
+        else if (currentTool == "MassExchanger")
+        {
+            MassExchanger.SetActive(isActive);
+        }
+        else if (currentTool == "GravityLauncher")
+        {
+            GravityLauncher.SetActive(isActive);
+        }
     }
 }
