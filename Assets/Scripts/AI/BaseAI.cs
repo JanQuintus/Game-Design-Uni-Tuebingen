@@ -5,6 +5,7 @@
 public class BaseAI : MonoBehaviour
 {
     [SerializeField] protected Animator animator;
+    [SerializeField] protected CapsuleCollider mainCollider;
 
     [Header("Walking")]
     [SerializeField] private float walkSpeed = 4.5f;
@@ -28,7 +29,6 @@ public class BaseAI : MonoBehaviour
     protected Vector3 _smoothMove;
     protected GravityObject _gravity;
     protected Rigidbody _rb;
-    protected CapsuleCollider _collider;
     protected bool _isGrounded = false;
     protected float _gravityChangeMoveBlockCD = 0;
     protected bool _atTarget = false;
@@ -37,7 +37,6 @@ public class BaseAI : MonoBehaviour
     {
         _gravity = GetComponent<GravityObject>();
         _rb = GetComponent<Rigidbody>();
-        _collider = GetComponent<CapsuleCollider>();
         _nextPosition = transform.position;
 
         _gravity.OnGravityChanged += () => _gravityChangeMoveBlockCD = 0.4f;
@@ -55,19 +54,19 @@ public class BaseAI : MonoBehaviour
         Vector3 localVelocity = transform.InverseTransformDirection(_rb.velocity);
         if (_isGrounded && localVelocity.y <= 0)
         {
-            _collider.material.staticFriction = Mathf.Clamp01(-_rb.velocity.y * -_rb.velocity.y);
-            _collider.material.frictionCombine = PhysicMaterialCombine.Average;
+            mainCollider.material.staticFriction = Mathf.Clamp01(-_rb.velocity.y * -_rb.velocity.y);
+            mainCollider.material.frictionCombine = PhysicMaterialCombine.Average;
         }
         else
         {
-            _collider.material.staticFriction = 0;
-            _collider.material.frictionCombine = PhysicMaterialCombine.Minimum;
+            mainCollider.material.staticFriction = 0;
+            mainCollider.material.frictionCombine = PhysicMaterialCombine.Minimum;
         }
 
 
         if (_atTarget)
         {
-            _collider.material.frictionCombine = PhysicMaterialCombine.Maximum;
+            mainCollider.material.frictionCombine = PhysicMaterialCombine.Maximum;
         }
 
 
@@ -90,9 +89,9 @@ public class BaseAI : MonoBehaviour
                     _isGrounded = false;
                     animator.SetTrigger("Jump");
                 }else if (Physics.CapsuleCast(
-                    transform.position + (_collider.radius + maxSlope) * transform.up,
-                    transform.position + (_collider.height - _collider.radius - maxSlope) * transform.up,
-                    _collider.radius,
+                    transform.position + (mainCollider.radius + maxSlope) * transform.up,
+                    transform.position + (mainCollider.height - mainCollider.radius - maxSlope) * transform.up,
+                    mainCollider.radius,
                     rayDir,
                     out RaycastHit obstacle,
                     2f,
@@ -184,9 +183,9 @@ public class BaseAI : MonoBehaviour
         {
             Vector3 wp = waypoints[i];
             if (!Physics.CapsuleCast(
-                transform.position + (_collider.radius + 0.01f) * transform.up,
-                transform.position + (_collider.height - _collider.radius - maxSlope) * transform.up,
-                _collider.radius,
+                transform.position + (mainCollider.radius + 0.01f) * transform.up,
+                transform.position + (mainCollider.height - mainCollider.radius - maxSlope) * transform.up,
+                mainCollider.radius,
                 wp - transform.position,
                 Vector3.Distance(transform.position, wp) - 1f,
                 obstacleLayerMask))

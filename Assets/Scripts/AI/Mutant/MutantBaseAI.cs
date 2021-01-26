@@ -15,10 +15,13 @@ public class MutantBaseAI : BaseAI
     private float _attackTimeCD;
 
     private float _mpd2;
+    private int _aiLayer;
+
 
     protected override void Awake()
     {
         base.Awake();
+        _aiLayer = LayerMask.NameToLayer("AI");
         _mpd2 = maxPlayerDistance * maxPlayerDistance;
         _health = GetComponent<Health>();
         _health.OnDamaged.AddListener((dmg) =>
@@ -33,13 +36,12 @@ public class MutantBaseAI : BaseAI
             _isAlive = false;
             if (_target != null)
                 _target.Untrack();
-            _collider.material.staticFriction = 1f;
-            _collider.material.dynamicFriction = 1f;
-            _collider.material.frictionCombine = PhysicMaterialCombine.Average;
+            mainCollider.material.staticFriction = 1f;
+            mainCollider.material.dynamicFriction = 1f;
+            mainCollider.material.frictionCombine = PhysicMaterialCombine.Average;
             animator.enabled = false;
             _rb.isKinematic = true;
-            _collider.enabled = false;
-            ragdollController.EnableRagdoll(_rb.useGravity, _rb.mass);
+            ragdollController.EnableRagdoll(mainCollider.transform);
         });
     }
 
@@ -86,13 +88,15 @@ public class MutantBaseAI : BaseAI
         if (!_isAlive)
             return;
 
-        if (collision.collider.gameObject.layer == LayerMask.GetMask("AI"))
+        if (collision.collider.gameObject.layer == _aiLayer)
             return;
 
-        if (collision.relativeVelocity.magnitude < 20f)
+        if (collision.relativeVelocity.magnitude < 15f)
             return;
         float mass = collision.rigidbody ? collision.rigidbody.mass : 1f;
-        _health.Damage((collision.relativeVelocity.magnitude - 20f) * mass);
+        if (collision.gameObject.isStatic)
+            mass = 50;
+        _health.Damage(collision.relativeVelocity.magnitude * mass);
     }
 
     public Health GetHealth => _health;

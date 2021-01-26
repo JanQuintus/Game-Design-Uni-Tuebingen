@@ -16,7 +16,21 @@ public class TheBeam : MonoBehaviour
     [SerializeField] private Transform beamStart;
     [SerializeField] private BezierCurve laserEffect;
 
-    private Collider objectInBeam;
+    private class ObjectInBeam
+    {
+        public Collider col;
+        public Rigidbody rb;
+        public GravityObject go;
+
+        public ObjectInBeam(Collider col, Rigidbody rb, GravityObject go)
+        {
+            this.col = col;
+            this.rb = rb;
+            this.go = go;
+        }
+    }
+
+    private ObjectInBeam objectInBeam;
     private float dist; // distance of objectinbeam to center ie. gravitation point of beam
     private bool isOccupied = false;
     private int scrollDisplacement = 0; // current displacement due to scroll
@@ -40,8 +54,8 @@ public class TheBeam : MonoBehaviour
             Vector3 displace = transform.InverseTransformDirection(transform.forward * -1) * displacementCorrection; // adjust floating to be closer to the player to allow the beam to have more range
             Vector3 targetPos = transform.position + transform.TransformDirection(localPos) + transform.TransformDirection(lPos) + transform.TransformDirection(displace);
 
-            Vector3 objectPos = objectInBeam.transform.position;
-            laserEffect.point3 = objectInBeam.transform;
+            Vector3 objectPos = objectInBeam.col.transform.position;
+            laserEffect.point3 = objectInBeam.col.transform;
 
             float dx = objectPos.x - targetPos.x;
             float dy = objectPos.y - targetPos.y;
@@ -50,7 +64,7 @@ public class TheBeam : MonoBehaviour
             dist = Mathf.Sqrt(dx * dx + dz * dz + dy * dy);
 
             Vector3 forceDirection = targetPos - objectPos;
-            Rigidbody rb = objectInBeam.GetComponent<Rigidbody>();
+            Rigidbody rb = objectInBeam.rb;
 
             if ((rb.mass <= maxWeightLiftable) || !(rb.useGravity))
             {
@@ -84,19 +98,23 @@ public class TheBeam : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if ((!isOccupied) && (other.GetComponent<GravityObject>() != null))
-        {
-            objectInBeam = other.GetComponent<Collider>();
-            other.GetComponent<GravityObject>().enabled = false;
-            isOccupied = true;
-        }
+        if (isOccupied)
+            return;
+
+        GravityObject go = Utils.findGravityObject(other);
+        if (go == null)
+            return;
+
+        objectInBeam = new ObjectInBeam(other, Utils.findRigidbody(other), Utils.findGravityObject(other));
+        go.enabled = false;
+        isOccupied = true;
     }
 
     public void turnOffBeam()
     {
+        if (isOccupied && objectInBeam != null)
+            objectInBeam.go.enabled = true;
         isOccupied = false;
-        if (objectInBeam)
-            objectInBeam.GetComponent<GravityObject>().enabled = true;
         objectInBeam = null;
         scrollDisplacement = 0;
         windUpStrength = 0;
@@ -114,7 +132,7 @@ public class TheBeam : MonoBehaviour
     {
         if (objectInBeam != null)
         {
-            Rigidbody rb = objectInBeam.GetComponent<Rigidbody>();
+            Rigidbody rb = objectInBeam.rb;
             rb.velocity = Vector3.zero;
             rb.AddForce(forceDirection.normalized * Mathf.Max(1, rb.mass/2) * Mathf.Max(0, shootForce - (scrollDisplacement*2)), ForceMode.Impulse);
         }

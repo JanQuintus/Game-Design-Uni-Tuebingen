@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 public class MassExchangerTool : ATool
 {
+    [SerializeField] private LayerMask layerMask;
     [SerializeField] private int maxEnergy = 20;
 
     // initialize 2 vars to keep "saved" rb masses from objects with -1
@@ -10,8 +11,8 @@ public class MassExchangerTool : ATool
     public float mEMassRight = -1.0f;
 
     // initialize 2 objects that keep "saved" objects so we can swap them later
-    public GameObject mERightObj;
-    public GameObject mELeftObj;
+    public Rigidbody mERightObj;
+    public Rigidbody mELeftObj;
 
     // initialize 2 stacks that store default values of objects so we can reset them
     private Stack<Rigidbody> mEObjStack = new Stack<Rigidbody>();
@@ -26,70 +27,61 @@ public class MassExchangerTool : ATool
             return;
 
         // Raycast
-        if (Physics.Raycast(ray, out RaycastHit hit))
+        if (Physics.Raycast(ray, out RaycastHit hit, 100f, layerMask))
         {
             // depending on what kinda click
             if (isRightClick) // rite click
             {
+                Rigidbody rb = Utils.findRigidbody(hit.collider);
                 // is the hit object of type rigidbody?
-                if (hit.transform.gameObject.GetComponent<Rigidbody>() != null)
+                if (rb != null)
                 {
                     // store ref to object
-                    mERightObj = hit.transform.gameObject;
+                    mERightObj = rb;
 
                     // store mass
-                    mEMassRight = Mathf.Round(hit.transform.gameObject.GetComponent<Rigidbody>().mass);
+                    mEMassRight = Mathf.Round(rb.mass);
 
                     // if other mass isn't -1 ( the default/unassigned value ), ignore swapping the masses of the same object, have ammo
                     if ((mEMassLeft != -1) && (mERightObj != mELeftObj) && (mEEnergy > 0))
-                    {
-                        // add values to the stack so we can reset them later
-                        mEObjStack.Push(mERightObj.GetComponent<Rigidbody>());
-                        mEMassStack.Push(mEMassRight);
-                        mEObjStack.Push(mELeftObj.GetComponent<Rigidbody>());
-                        mEMassStack.Push(mEMassLeft);
-
-                        // add this mass to other obj, add other mass to this obj, reset stored values to -1, deduct ammo
-                        mELeftObj.GetComponent<Rigidbody>().mass = mEMassRight;
-                        mERightObj.GetComponent<Rigidbody>().mass = mEMassLeft;
-                        mEEnergy -= 1;
-
-                        mEMassLeft = -1;
-                        mEMassRight = -1;
-                    }
+                        SwitchMasses();
                 }
             }
             else // teh other click
             {
+                Rigidbody rb = Utils.findRigidbody(hit.collider);
                 // is the hit object of type rigidbody?
-                if (hit.transform.gameObject.GetComponent<Rigidbody>() != null)
+                if (rb != null)
                 {
                     // store ref to object
-                    mELeftObj = hit.transform.gameObject;
+                    mELeftObj = rb;
 
                     // store mass
-                    mEMassLeft = Mathf.Round(hit.transform.gameObject.GetComponent<Rigidbody>().mass);
+                    mEMassLeft = Mathf.Round(rb.mass);
 
                     // if other mass isn't -1 ( the default/unassigned value ), ignore swapping the masses of the same object, have ammo
                     if ((mEMassRight != -1) && (mERightObj != mELeftObj) && (mEEnergy > 0))
-                    {
-                        // add values to the stack so we can reset them later
-                        mEObjStack.Push(mERightObj.GetComponent<Rigidbody>());
-                        mEMassStack.Push(mEMassRight);
-                        mEObjStack.Push(mELeftObj.GetComponent<Rigidbody>());
-                        mEMassStack.Push(mEMassLeft);
-
-                        // add this mass to other obj, add other mass to this obj, reset stored values to -1, deduct ammo
-                        mERightObj.GetComponent<Rigidbody>().mass = mEMassLeft;
-                        mELeftObj.GetComponent<Rigidbody>().mass = mEMassRight;
-                        mEEnergy -= 1;
-
-                        mEMassLeft = -1;
-                        mEMassRight = -1;
-                    }
+                        SwitchMasses();
                 }
             }
         }
+    }
+
+    private void SwitchMasses()
+    {
+        // add values to the stack so we can reset them later
+        mEObjStack.Push(mELeftObj);
+        mEMassStack.Push(mEMassRight);
+        mEObjStack.Push(mERightObj);
+        mEMassStack.Push(mEMassLeft);
+
+        // add this mass to other obj, add other mass to this obj, reset stored values to -1, deduct ammo
+        mELeftObj.mass = mEMassRight;
+        mERightObj.mass = mEMassLeft;
+        mEEnergy -= 1;
+
+        mEMassLeft = -1;
+        mEMassRight = -1;
     }
 
     public override void Reset(bool isRelease)

@@ -5310,6 +5310,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   growthRate: 20
   radius: 10
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 14337
 --- !u!54 &8848599608822713540
 Rigidbody:
   m_ObjectHideFlags: 0

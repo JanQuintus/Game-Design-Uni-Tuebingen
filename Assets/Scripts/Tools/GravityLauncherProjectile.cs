@@ -5,7 +5,19 @@ public class GravityLauncherProjectile : MonoBehaviour
 {
     [SerializeField] private float growthRate = 20f;
     [SerializeField] private float radius = 20f;
+    [SerializeField] private LayerMask layerMask;
 
+    private class ObjectInArea
+    {
+        public GravityObject Gravity;
+        public Collider Col;
+
+        public ObjectInArea(GravityObject gravity, Collider col)
+        {
+            Gravity = gravity;
+            Col = col;
+        }
+    }
 
     private bool _isLocked = false;
     private bool _active = false;
@@ -20,7 +32,7 @@ public class GravityLauncherProjectile : MonoBehaviour
 
     private MeshRenderer _meshRenderer;
     private Rigidbody _rb;
-    private List<GravityObject> _objectsInArea = new List<GravityObject>();
+    private Dictionary<GravityObject, ObjectInArea> _objectsInArea = new Dictionary<GravityObject, ObjectInArea>();
 
     private void Awake()
     {
@@ -42,14 +54,17 @@ public class GravityLauncherProjectile : MonoBehaviour
         if (!_active)
         {
             _liveTime -= Time.deltaTime;
-            transform.forward = _rb.velocity.normalized;
+            //transform.forward = _rb.velocity.normalized;
+            transform.rotation = Quaternion.LookRotation(_rb.velocity.normalized, transform.up);
+            Vector3 dir = transform.forward;
 
-            float w = Mathf.Max(0.1f, Mathf.Abs(transform.forward.x) + Mathf.Abs(transform.forward.y));
-            float l = Mathf.Max(0.1f, Mathf.Abs(transform.forward.z));
-            Vector4 skew = new Vector4(
+            float w = Mathf.Max(0.1f, Mathf.Abs(dir.x) + Mathf.Abs(dir.y));
+            float l = Mathf.Max(0.1f, Mathf.Abs(dir.z));
+            Vector3 skew = new Vector3(
                1f / ((4f / 3f) * Mathf.PI * w),
                1f / ((4f / 3f) * Mathf.PI * w),
                1f / ((4f / 3f) * Mathf.PI * l));
+
             _meshRenderer.material.SetVector("_Velocity", skew);
           
             if (_liveTime < 0)
@@ -57,29 +72,30 @@ public class GravityLauncherProjectile : MonoBehaviour
         }
         else
         {
-            Collider[] co = Physics.OverlapSphere(transform.position, radius);
+            Collider[] co = Physics.OverlapSphere(transform.position, radius, layerMask);
             foreach (Collider collider in co)
             {
-                GravityObject gravityObject = findGravityObject(collider);
+                GravityObject gravityObject = Utils.findGravityObject(collider);
                 if (!gravityObject)
                     continue;
                 double direction = Vector3.Dot(transform.up, (collider.transform.position - transform.position));
-                if (direction > -2 && !_objectsInArea.Contains(gravityObject)) _objectsInArea.Add(gravityObject);
+                if (direction > -2 && !_objectsInArea.ContainsKey(gravityObject)) _objectsInArea.Add(gravityObject, new ObjectInArea(gravityObject, collider));
             }
 
             List<GravityObject> toRemove = new List<GravityObject>();
-            foreach (GravityObject gravityObject in _objectsInArea)
+            foreach (ObjectInArea objInArea in _objectsInArea.Values)
             {
-                double direction = Vector3.Dot(transform.up, (gravityObject.transform.position - transform.position));
-                if (direction <= -2 || Vector3.SqrMagnitude(gravityObject.transform.position - transform.position) > _leaveRadius2)
+                double direction = Vector3.Dot(transform.up, (objInArea.Col.transform.position - transform.position));
+                if (direction <= -2 || Vector3.SqrMagnitude(objInArea.Col.transform.position - transform.position) > _leaveRadius2)
                 {
-                    gravityObject.SetLocalGravity(_defaultGravity);
-                    toRemove.Add(gravityObject);
+                    objInArea.Gravity.SetLocalGravity(_defaultGravity);
+                    toRemove.Add(objInArea.Gravity);
                     continue;
                 }
-                gravityObject.SetLocalGravity(transform.up * -9.81f);
+                objInArea.Gravity.SetLocalGravity(transform.up * -9.81f);
             }
-            _objectsInArea.RemoveAll(go => toRemove.Contains(go));
+            foreach(GravityObject rem in toRemove)
+                _objectsInArea.Remove(rem);
         }
         
         if (_active && _sphere.transform.localScale.x < radius)
@@ -120,16 +136,8 @@ public class GravityLauncherProjectile : MonoBehaviour
     private void OnDestroy()
     {
         Destroy(_sphere);
-        foreach (GravityObject gravityObject in _objectsInArea)
-            gravityObject.SetLocalGravity(_defaultGravity);
+        foreach (ObjectInArea objInArea in _objectsInArea.Values)
+            objInArea.Gravity.SetLocalGravity(_defaultGravity);
         _objectsInArea.Clear();
     }
-
-    private GravityObject findGravityObject(Collider collider)
-    {
-        GravityObject go = collider.GetComponent<GravityObject>();
-        if (!go) go = collider.GetComponentInParent<GravityObject>();
-        return go;
-    }
-
 }

@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class GravityGunTool : ATool
 {
+    [SerializeField] private LayerMask layerMask;
     [SerializeField] private float distance;
     [SerializeField] private float maxEnergy = 100;
 
@@ -24,9 +25,9 @@ public class GravityGunTool : ATool
     public override void Shoot(Ray ray, bool isRelease = false, bool isRightClick = false)
     {
         if (isRelease || isRightClick) return;
-        if (Physics.Raycast(ray, out RaycastHit hit))
+        if (Physics.Raycast(ray, out RaycastHit hit, 100f, layerMask))
         {
-            Rigidbody rb = hit.collider.GetComponent<Rigidbody>();
+            Rigidbody rb = Utils.findRigidbody(hit.collider);
             if (rb)
             {
                 rb.useGravity = !rb.useGravity;
