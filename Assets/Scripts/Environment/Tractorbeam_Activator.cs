@@ -9,8 +9,6 @@ public class Tractorbeam_Activator : MonoBehaviour
     [SerializeField] private int offTime = 50;
     [SerializeField] private int resetTime = 100;
 
-    private float _lastActivation = 0.0f;
-
     [SerializeField] private int _currentTime = 0;
 
     // Start is called before the first frame update
