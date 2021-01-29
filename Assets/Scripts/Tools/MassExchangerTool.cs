@@ -200,4 +200,8 @@ public class MassExchangerTool : ATool
         updateAllColor(chargerEffect, _shader_Mass_For_Rings, setMass);
     }
 
+    public override float getFillPercentage()
+    {
+        return 1;
+    }
 }

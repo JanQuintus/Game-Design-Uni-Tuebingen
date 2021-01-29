@@ -11,17 +11,6 @@ public class Tractorbeam_Activator : MonoBehaviour
 
     [SerializeField] private int _currentTime = 0;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        //shoot tractorbeam, raycast is nonsense, but not needed since shooting is only possible when in hand
-        turnOnBeam();
-        turnOffBeam();
-
-        //turn off tractorbeam, raycast is nonsense, but not needed since shooting is only possible when in hand
-        //Tractorbeam.Shoot(new Ray(Tractorbeam.transform.position, new Vector3(0, 0, 0)), true, true);
-    }
-
 
     void FixedUpdate()
     {

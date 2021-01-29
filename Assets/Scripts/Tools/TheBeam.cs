@@ -16,6 +16,7 @@ public class TheBeam : MonoBehaviour
     [SerializeField] private Transform beamStart;
     [SerializeField] private BezierCurve laserEffect;
     [SerializeField] private GameObject sphereEffect;
+    [SerializeField] private LayerMask layerMask;
 
     private class ObjectInBeam
     {
@@ -47,10 +48,9 @@ public class TheBeam : MonoBehaviour
     private Material material;
     //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    void Start()
+    private void Awake()
     {
-        // Gravity Paticle VFX
-        _inst_FX = Instantiate(sphereEffect, new Vector3(0, 0, 0), new Quaternion(0,0,0,0));
+        _inst_FX = Instantiate(sphereEffect, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
         _inst_FX.SetActive(false);
         gameObject.SetActive(false);
     }
@@ -74,18 +74,18 @@ public class TheBeam : MonoBehaviour
             Vector3 displace = transform.InverseTransformDirection(transform.forward * -1) * displacementCorrection; // adjust floating to be closer to the player to allow the beam to have more range
             Vector3 targetPos = transform.position + transform.TransformDirection(localPos) + transform.TransformDirection(lPos) + transform.TransformDirection(displace);
 
-            Vector3 objectPos = objectInBeam.transform.position;
-            Quaternion objectRot = objectInBeam.transform.rotation;
+            Vector3 objectPos = objectInBeam.col.transform.position;
+            Quaternion objectRot = objectInBeam.col.transform.rotation;
 
-            laserEffect.point3 = objectInBeam.transform; //laser position
+            laserEffect.point3 = objectInBeam.col.transform; //laser position
             
             // Sphere VFX And Shader FX
             _inst_FX.transform.SetPositionAndRotation(objectPos, objectRot);
-            Vector3 rb_size = objectInBeam.bounds.size;
+            Vector3 rb_size = objectInBeam.col.bounds.size;
             _inst_FX.transform.localScale = new Vector3(rb_size.magnitude, rb_size.magnitude, rb_size.magnitude);
             _inst_FX.SetActive(true);
             
-            material = objectInBeam.gameObject.GetComponent<Renderer>().material;
+            material = objectInBeam.col.GetComponent<Renderer>().material;
             material.SetFloat(_activateEmssionID, 1);
 
 
@@ -131,6 +131,9 @@ public class TheBeam : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (layerMask != (layerMask | (1 << other.gameObject.layer)))
+            return;
+
         if (isOccupied)
             return;
 
@@ -148,10 +151,10 @@ public class TheBeam : MonoBehaviour
         if (isOccupied && objectInBeam != null)
             objectInBeam.go.enabled = true;
         isOccupied = false;
-        if (objectInBeam)
+        if (objectInBeam != null)
         {
-            objectInBeam.GetComponent<GravityObject>().enabled = true;
-            objectInBeam.gameObject.GetComponent<Renderer>().material.SetFloat(_activateEmssionID, 0);
+            objectInBeam.go.enabled = true;
+            objectInBeam.col.gameObject.GetComponent<Renderer>().material.SetFloat(_activateEmssionID, 0);
         }
 
         objectInBeam = null;
