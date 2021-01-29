@@ -37,6 +37,7 @@ public class GravityLauncherTool : ATool
         if (!isRightClick && _ammo > 0)
         {
             _ammo--;
+            OnFillChanged?.Invoke();
             if (_newBullet)
             {
                 if (!_newBullet.GetComponent<GravityLauncherProjectile>().getActive())
@@ -52,8 +53,6 @@ public class GravityLauncherTool : ATool
             rb.velocity = ray.direction * 20;
         }
     }
-
-   
     
     public override void Reset(bool isRelease) {
         if(!isRelease)
@@ -63,7 +62,10 @@ public class GravityLauncherTool : ATool
         }
     }
 
-    public override void Reload() => _ammo = maxAmmo;
+    public override void Reload() { 
+        _ammo = maxAmmo;
+        OnFillChanged?.Invoke();
+    }
 
     public override void Scroll(float delta){}
 
@@ -73,4 +75,8 @@ public class GravityLauncherTool : ATool
     public override void OnUnequip()
     { }
 
+    public override float getFillPercentage()
+    {
+        return (float)_ammo / (float)maxAmmo;
+    }
 }

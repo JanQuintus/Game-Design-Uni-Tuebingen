@@ -38,11 +38,6 @@ public class TheBeam : MonoBehaviour
     private int iter = 0;
 
 
-    void Start()
-    {
-        gameObject.SetActive(false);
-    }
-
 
     void FixedUpdate()
     {
@@ -119,12 +114,11 @@ public class TheBeam : MonoBehaviour
         scrollDisplacement = 0;
         windUpStrength = 0;
         laserEffect.point3 = beamStart;
-        gameObject.SetActive(false);
     }
 
     public void turnOnBeam()
     {
-        gameObject.SetActive(true);
+        
     }
 
     // This function should only be called along with turnOffBeam

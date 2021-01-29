@@ -79,6 +79,7 @@ public class MassExchangerTool : ATool
         mELeftObj.mass = mEMassRight;
         mERightObj.mass = mEMassLeft;
         mEEnergy -= 1;
+        OnFillChanged?.Invoke();
 
         mEMassLeft = -1;
         mEMassRight = -1;
@@ -94,7 +95,10 @@ public class MassExchangerTool : ATool
         }
     }
 
-    public override void Reload() => mEEnergy = maxEnergy;
+    public override void Reload() { 
+        mEEnergy = maxEnergy;
+        OnFillChanged?.Invoke();
+    }
 
     public override void Scroll(float delta){}
 
@@ -103,4 +107,9 @@ public class MassExchangerTool : ATool
 
     public override void OnUnequip()
     { }
+
+    public override float getFillPercentage()
+    {
+        return mEEnergy / maxEnergy;
+    }
 }

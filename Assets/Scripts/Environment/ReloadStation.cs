@@ -21,26 +21,34 @@ public class ReloadStation : AInteractive
     [SerializeField] private int duration = 1;
 
     private bool _isReloading = false;
-    private string _currentTool;
+    private ATool _currentTool;
 
     public override void Interact(bool isRelease)
     {
         if (isRelease)
             return;
 
-        if (!_isReloading)
+        if (!_isReloading && PlayerController.Instance.GetCurrentTool() != null && _currentTool == null)
         {
-            _isReloading = true;
-            _currentTime = Time.fixedTime;
-            _currentTool = PlayerController.Instance.GetCurrentTool().name;
+            if(_currentTool == null)
+            {
+                _isReloading = true;
+                _currentTime = Time.fixedTime;
+                _currentTool = PlayerController.Instance.GetCurrentTool();
+                PlayerController.Instance.GetToolBelt().BlockTool(PlayerController.Instance.GetCurrentTool());
 
-            showAndDisableTool(_currentTool, true);
-            Kühlschranklicht.DOIntensity(0.04f, timeToLightTheCabin);
+                showAndDisableTool(_currentTool.name, true);
+                Kühlschranklicht.DOIntensity(0.04f, timeToLightTheCabin);
 
-            CloseWindow();
+                CloseWindow();
+            }
         }
-
-        
+        if(!_isReloading && _currentTool != null)
+        {
+            showAndDisableTool(_currentTool.name, false);
+            PlayerController.Instance.GetToolBelt().UnblockTool(_currentTool);
+            _currentTool = null;
+        }
     }
 
     private void Update()
@@ -51,9 +59,8 @@ public class ReloadStation : AInteractive
             {
                 OpenWindow();
                 _currentTime = 0;
-                PlayerController.Instance.GetCurrentTool()?.Reload();
+               _currentTool.Reload();
                 _isReloading = false;
-                showAndDisableTool(_currentTool, false);
                 Kühlschranklicht.DOIntensity(0f, timeToLightTheCabin);
             }
         }
@@ -88,5 +95,19 @@ public class ReloadStation : AInteractive
         {
             GravityLauncher.SetActive(isActive);
         }
+    }
+
+    public override string GetText()
+    {
+        if (PlayerController.Instance.GetCurrentTool() != null && !_isReloading && _currentTool == null)
+            return "E - Reload <b>" + PlayerController.Instance.GetCurrentTool().ToolName + "</b>";
+
+        if (_isReloading)
+            return "Please wait...";
+
+        if (!_isReloading && _currentTool != null)
+            return "E - Take <b>" + _currentTool.ToolName + "</b>";
+
+        return "";
     }
 }
