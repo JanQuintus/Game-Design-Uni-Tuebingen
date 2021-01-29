@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-8640616142965270365
+--- !u!114 &-7431284765770223695
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,9 +20,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: White_Tile_Wall
+  m_Name: DoorRight
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
-  m_ShaderKeywords: _NORMALMAP
+  m_ShaderKeywords: _METALLICSPECGLOSSMAP _NORMALMAP _OCCLUSIONMAP _RECEIVE_SHADOWS_OFF
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -34,11 +34,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: c96c93f3a9d9f6847ad20134163f56c0, type: 3}
+        m_Texture: {fileID: 2800000, guid: e62c2d4574ba87444b13106215f0499a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: a0e8b9d304956694085c2c27a21a2e4a, type: 3}
+        m_Texture: {fileID: 2800000, guid: 26834d3b109dd4240aa6409a14aafb96, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
@@ -46,15 +46,15 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: c96c93f3a9d9f6847ad20134163f56c0, type: 3}
+        m_Texture: {fileID: 2800000, guid: e62c2d4574ba87444b13106215f0499a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
-        m_Texture: {fileID: 2800000, guid: 66123bef9dcb7534c9d6f4ad41d36b0e, type: 3}
+        m_Texture: {fileID: 2800000, guid: 70e4e1c6183a18649b328407b766aecf, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: efbb1a193b569f140b5ad329b27c10e5, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
@@ -75,8 +75,8 @@ Material:
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _QueueOffset: 0
-    - _ReceiveShadows: 1
-    - _Smoothness: 0.8
+    - _ReceiveShadows: 0
+    - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
