@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: TractorBeamShader 2
+  m_Shader: {fileID: -6465566751694194690, guid: 74a18dfe7beecd5418141b3e5a701847, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - Texture2D_3AFA3C9E:
+        m_Texture: {fileID: 2800000, guid: ae8a09542ddd9784fbe0ec69cde2b207, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_B5E49E72:
+        m_Texture: {fileID: 2800000, guid: ae8a09542ddd9784fbe0ec69cde2b207, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - Vector1_61295878: 2
+    - Vector1_96C04126: 0
+    - Vector1_A0CCD8C1: 50
+    - Vector1_CC22C20D: 0.168
+    - Vector1_EE1E83AC: 0.431
+    - Vector1_F037A627: -0.7
+    m_Colors:
+    - Color_70C23F31: {r: 16.15101, g: 0, b: 16.65044, a: 1}
+    - Vector2_B3AC5A48: {r: 1, g: 0, b: 0, a: 0}
+    - Vector2_B8116A5A: {r: -1, g: 0, b: 0, a: 0}
+  m_BuildTextureStacks: []
