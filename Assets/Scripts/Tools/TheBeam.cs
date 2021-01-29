@@ -15,6 +15,7 @@ public class TheBeam : MonoBehaviour
     [SerializeField] private float maxWeightLiftable = 10;
     [SerializeField] private Transform beamStart;
     [SerializeField] private BezierCurve laserEffect;
+    [SerializeField] private GameObject sphereEffect;
 
     private class ObjectInBeam
     {
@@ -38,19 +39,55 @@ public class TheBeam : MonoBehaviour
     private int iter = 0;
 
 
+    // Shaderchange VFX
+    private int _activateEmssionID = Shader.PropertyToID("beamActive");
+
+    // Gravity Paticle VFX
+    private GameObject _inst_FX;
+    private Material material;
+    //////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    void Start()
+    {
+        // Gravity Paticle VFX
+        _inst_FX = Instantiate(sphereEffect, new Vector3(0, 0, 0), new Quaternion(0,0,0,0));
+        _inst_FX.SetActive(false);
+        gameObject.SetActive(false);
+    }
+
 
     void FixedUpdate()
     {
+        
+        
+        if (!isOccupied)
+        {
+            _inst_FX.SetActive(false);
+        }
+
         if (isOccupied)
         {
+
             // displace center of gravitation according to scroll and windup and correct for the length of the beam
             Vector3 localPos = transform.InverseTransformDirection(transform.forward) * scrollDisplacement;
             Vector3 lPos = transform.InverseTransformDirection(transform.forward * -1) * windUpStrength;
             Vector3 displace = transform.InverseTransformDirection(transform.forward * -1) * displacementCorrection; // adjust floating to be closer to the player to allow the beam to have more range
             Vector3 targetPos = transform.position + transform.TransformDirection(localPos) + transform.TransformDirection(lPos) + transform.TransformDirection(displace);
 
-            Vector3 objectPos = objectInBeam.col.transform.position;
-            laserEffect.point3 = objectInBeam.col.transform;
+            Vector3 objectPos = objectInBeam.transform.position;
+            Quaternion objectRot = objectInBeam.transform.rotation;
+
+            laserEffect.point3 = objectInBeam.transform; //laser position
+            
+            // Sphere VFX And Shader FX
+            _inst_FX.transform.SetPositionAndRotation(objectPos, objectRot);
+            Vector3 rb_size = objectInBeam.bounds.size;
+            _inst_FX.transform.localScale = new Vector3(rb_size.magnitude, rb_size.magnitude, rb_size.magnitude);
+            _inst_FX.SetActive(true);
+            
+            material = objectInBeam.gameObject.GetComponent<Renderer>().material;
+            material.SetFloat(_activateEmssionID, 1);
+
 
             float dx = objectPos.x - targetPos.x;
             float dy = objectPos.y - targetPos.y;
@@ -86,7 +123,8 @@ public class TheBeam : MonoBehaviour
                 }
             }
 
-        }
+        } 
+        
 
     }
 
@@ -110,10 +148,20 @@ public class TheBeam : MonoBehaviour
         if (isOccupied && objectInBeam != null)
             objectInBeam.go.enabled = true;
         isOccupied = false;
+        if (objectInBeam)
+        {
+            objectInBeam.GetComponent<GravityObject>().enabled = true;
+            objectInBeam.gameObject.GetComponent<Renderer>().material.SetFloat(_activateEmssionID, 0);
+        }
+
         objectInBeam = null;
         scrollDisplacement = 0;
         windUpStrength = 0;
         laserEffect.point3 = beamStart;
+        // Shader
+        _inst_FX.SetActive(false);
+        gameObject.SetActive(false);
+
     }
 
     public void turnOnBeam()
