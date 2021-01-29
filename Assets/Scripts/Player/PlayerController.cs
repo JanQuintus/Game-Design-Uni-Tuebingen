@@ -2,14 +2,15 @@
 using UnityEngine.InputSystem;
 using DG.Tweening;
 
-[RequireComponent(typeof(Rigidbody), typeof(GravityObject))]
+[RequireComponent(typeof(Rigidbody), typeof(GravityObject), typeof(Interactor))]
 public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
 {
     public static PlayerController Instance;
 
     [SerializeField] private CapsuleCollider col;
     [SerializeField] private float height = 1.8f;
-    [SerializeField] private WeaponBelt weaponBelt;
+    [SerializeField] private ToolBelt toolBelt;
+    [SerializeField] private SpriteRenderer damageScreenOverlay;
 
     [Header("Movement")]
     [SerializeField] private float moveDamping = 5f;
@@ -32,7 +33,6 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
 
     [Header("Tool")]
     [SerializeField] private Transform toolHolder;
-    [SerializeField] private ATool currentTool;
     [SerializeField] private float toolBobbingSpeed = 14f;
     [SerializeField] private Vector2 toolBobbingAmount = new Vector2(0.025f, 0.05f);
 
@@ -49,14 +49,11 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
     [SerializeField] private float ccRadius = .3f;
     [SerializeField] private LayerMask ccLayerMask;
 
-    [Header("Interact")]
-    [SerializeField] private float interactDistance = 2;
-    [SerializeField] private LayerMask interactLayerMask;
-
     private PlayerInputActions _inputActions;
     private Rigidbody _rb;
     private GravityObject _gravity;
     private AITarget _target;
+    private Interactor _interactor;
 
     private bool _isGrounded = false;
     private bool _isCrouching = false;
@@ -99,6 +96,7 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
         _gravity = GetComponent<GravityObject>();
         _target = GetComponent<AITarget>();
         _inputActions = new PlayerInputActions();
+        _interactor = GetComponent<Interactor>();
         _inputActions.Player.SetCallbacks(this);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -116,15 +114,19 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
         _health.OnDeath.AddListener(() =>
         {
             Debug.Log("You died!");
-            _health.Heal(100);
+            _health.Revive();
         });
 
         _health.OnDamaged.AddListener((damage) =>
         {
             head.DOShakePosition(0.4f, 0.25f);
             toolHolder.DOShakePosition(0.2f, 0.1f);
+            damageScreenOverlay?.material.SetFloat("_Strength", 1f - _health.getHealthPercentage());
         });
-
+        _health.OnHealed.AddListener((damage) =>
+        {
+            damageScreenOverlay?.material.SetFloat("_Strength", 1f - _health.getHealthPercentage());
+        });
 
         _gravity.OnGravityChanged += () => _gravityChangeMoveBlockCD = 0.4f;
     }
@@ -209,9 +211,6 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
 
     private void LateUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.T))
-            SetCurrentTool(currentTool);
-
         transform.Rotate(new Vector3(0, _rotate.x, 0) * mouseSensitivity);
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.FromToRotation(transform.up, -_gravity.GetLocalGravity().normalized) * transform.rotation, 4f * Time.deltaTime);
         // Head
@@ -272,27 +271,34 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
     #region Public Methods
     public void SetCurrentTool(ATool tool)
     {
-        if (currentTool != null && currentTool.GetType() == tool.GetType())
+        if (tool != null && toolBelt.GetCurrentSlot() != null && toolBelt.GetCurrentSlot().Tool != null && toolBelt.GetCurrentSlot().Tool.GetType() == tool.GetType())
             return;
 
-        currentTool?.OnUnequip();
+        if (toolBelt.GetCurrentSlot() != null && toolBelt.GetCurrentSlot().Tool != null)
+            toolBelt.GetCurrentSlot().Tool?.OnUnequip();
 
         toolHolder.DOKill();
         toolHolder.DOLocalMove(new Vector3(_tbDefaultPosX + 0.5f, _tbDefaultPosY - 0.5f, _tbDefaultPosZ - 0.5f), 0.25f).OnComplete(() =>
         {
-            if (currentTool != null) currentTool.transform.localScale = Vector3.zero;
+            foreach (ToolBelt.ToolSlot slot in toolBelt.GetToolSlots())
+                slot.Tool.transform.localScale = Vector3.zero;
+
             toolHolder.DOLocalMoveZ(_tbDefaultPosZ, 0.25f);
-            currentTool = tool;
-            currentTool?.OnEquip();
-            currentTool.transform.localScale = Vector3.one;
+            if (toolBelt.GetCurrentSlot() != null && toolBelt.GetCurrentSlot().Tool != null)
+            {
+                toolBelt.GetCurrentSlot().Tool?.OnEquip();
+                toolBelt.GetCurrentSlot().Tool.transform.localScale = Vector3.one;
+            }
         });
     }
 
-    public ATool GetCurrentTool() => currentTool;
+    public ATool GetCurrentTool() => toolBelt.GetCurrentSlot().Tool;
 
     public Vector3 GetHeadPosition() => head.position;
 
     public AITarget GetAITarget() => _target;
+
+    public ToolBelt GetToolBelt() => toolBelt;
 
     public void BlockInput()
     {
@@ -337,20 +343,38 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
 
     public void OnCrouch(InputAction.CallbackContext context) => _crouch = !_crouch;
 
-    public void OnShoot(InputAction.CallbackContext context) { if(context.performed || context.canceled) currentTool?.Shoot(new Ray(head.position, head.forward), context.canceled); }
-    public void OnRightClick(InputAction.CallbackContext context) { if (context.performed || context.canceled) currentTool?.Shoot(new Ray(head.position, head.forward), context.canceled, true); }
-    public void OnMiddleClick(InputAction.CallbackContext context) { if (context.performed || context.canceled) currentTool?.Reset(context.canceled); }
-    public void OnScroll(InputAction.CallbackContext context) { currentTool?.Scroll(context.ReadValue<Vector2>().y); }
+    public void OnShoot(InputAction.CallbackContext context) {
+        if (toolBelt.GetCurrentSlot() == null || toolBelt.GetCurrentSlot().Tool == null)
+            return;
+        if (context.performed || context.canceled)
+            toolBelt.GetCurrentSlot().Tool.Shoot(new Ray(head.position, head.forward), context.canceled);
+     }
+    public void OnRightClick(InputAction.CallbackContext context) {
+        if (toolBelt.GetCurrentSlot() == null || toolBelt.GetCurrentSlot().Tool == null)
+            return;
+        if (context.performed || context.canceled) 
+            toolBelt.GetCurrentSlot().Tool.Shoot(new Ray(head.position, head.forward), context.canceled, true); 
+    }
+    public void OnMiddleClick(InputAction.CallbackContext context) {
+        if (toolBelt.GetCurrentSlot() == null || toolBelt.GetCurrentSlot().Tool == null)
+            return;
+        if (context.performed || context.canceled) 
+            toolBelt.GetCurrentSlot().Tool.Reset(context.canceled); 
+    }
+    public void OnScroll(InputAction.CallbackContext context) {
+        if (toolBelt.GetCurrentSlot() == null || toolBelt.GetCurrentSlot().Tool == null)
+            return;
+        toolBelt.GetCurrentSlot().Tool.Scroll(context.ReadValue<Vector2>().y); 
+    }
 
-    public void OnNum1(InputAction.CallbackContext context) { if (context.performed) weaponBelt?.SetWeapon(0); }
-    public void OnNum2(InputAction.CallbackContext context) { if (context.performed) weaponBelt?.SetWeapon(1); }
-    public void OnNum3(InputAction.CallbackContext context) { if (context.performed) weaponBelt?.SetWeapon(2); }
-    public void OnNum4(InputAction.CallbackContext context) { if (context.performed) weaponBelt?.SetWeapon(3); }
+    public void OnNum1(InputAction.CallbackContext context) { if (context.performed) toolBelt?.SetTool(1); }
+    public void OnNum2(InputAction.CallbackContext context) { if (context.performed) toolBelt?.SetTool(2); }
+    public void OnNum3(InputAction.CallbackContext context) { if (context.performed) toolBelt?.SetTool(3); }
+    public void OnNum4(InputAction.CallbackContext context) { if (context.performed) toolBelt?.SetTool(4); }
 
     public void OnInteract(InputAction.CallbackContext context) { 
-        if(Physics.Raycast(head.position, head.forward, out RaycastHit hit, interactDistance, interactLayerMask))
-            if (context.performed || context.canceled)
-                hit.collider.GetComponent<AInteractive>()?.Interact(context.canceled);
+        if (context.performed || context.canceled)
+            _interactor.PerformInteract(context.canceled);
     }
 
     #endregion

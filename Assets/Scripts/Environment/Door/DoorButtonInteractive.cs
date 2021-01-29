@@ -26,4 +26,9 @@ public class DoorButtonInteractive : AInteractive
             door.OpenDoor();
         }
     }
+
+    public override string GetText()
+    {
+        return "Open Door";
+    }
 }

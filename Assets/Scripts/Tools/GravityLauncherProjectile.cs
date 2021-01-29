@@ -56,14 +56,13 @@ public class GravityLauncherProjectile : MonoBehaviour
             _liveTime -= Time.deltaTime;
             //transform.forward = _rb.velocity.normalized;
             transform.rotation = Quaternion.LookRotation(_rb.velocity.normalized, transform.up);
-            Vector3 dir = transform.forward;
 
-            float w = Mathf.Max(0.1f, Mathf.Abs(dir.x) + Mathf.Abs(dir.y));
-            float l = Mathf.Max(0.1f, Mathf.Abs(dir.z));
+            float l = _rb.velocity.magnitude / 10f;
+
             Vector3 skew = new Vector3(
-               1f / ((4f / 3f) * Mathf.PI * w),
-               1f / ((4f / 3f) * Mathf.PI * w),
-               1f / ((4f / 3f) * Mathf.PI * l));
+               1f / ((4f / 3f) * Mathf.PI * l),
+               1f / ((4f / 3f) * Mathf.PI * l),
+               l);
 
             _meshRenderer.material.SetVector("_Velocity", skew);
           
@@ -85,6 +84,11 @@ public class GravityLauncherProjectile : MonoBehaviour
             List<GravityObject> toRemove = new List<GravityObject>();
             foreach (ObjectInArea objInArea in _objectsInArea.Values)
             {
+                if(!objInArea.Col)
+                {
+                    toRemove.Add(objInArea.Gravity);
+                    continue;
+                }
                 double direction = Vector3.Dot(transform.up, (objInArea.Col.transform.position - transform.position));
                 if (direction <= -2 || Vector3.SqrMagnitude(objInArea.Col.transform.position - transform.position) > _leaveRadius2)
                 {

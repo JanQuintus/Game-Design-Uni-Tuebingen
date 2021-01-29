@@ -12,8 +12,9 @@ public class GravityGunTool : ATool
 
     private void Update()
     {
-        if (_changedBodies.Count > 0){
+        if (_changedBodies.Count > 0) {
             _energy -= Time.deltaTime * _changedBodies.Count;
+            OnFillChanged?.Invoke();
             if (_energy <= 0)
             {
                 _energy = 0;
@@ -31,7 +32,7 @@ public class GravityGunTool : ATool
             if (rb)
             {
                 rb.useGravity = !rb.useGravity;
-                if(_changedBodies.Contains(rb))
+                if (_changedBodies.Contains(rb))
                 {
                     _changedBodies.Remove(rb);
                 }
@@ -52,7 +53,10 @@ public class GravityGunTool : ATool
         }
     }
 
-    public override void Reload() => _energy = maxEnergy;
+    public override void Reload(){
+        _energy = maxEnergy;
+        OnFillChanged?.Invoke();
+    }
 
     public override void Scroll(float delta) { }
 
@@ -61,4 +65,9 @@ public class GravityGunTool : ATool
 
     public override void OnUnequip()
     {}
+
+    public override float getFillPercentage()
+    {
+        return _energy / maxEnergy;
+    }
 }
