@@ -19,6 +19,7 @@ public class ReloadStation : AInteractive
     private float _currentTime = 0.0f;
     [SerializeField] private static float reloadDuration = 5.0f;
     [SerializeField] private int duration = 1;
+    [SerializeField] private float lightintensity = 0.04f;
 
     private bool _isReloading = false;
     private string _currentTool;
@@ -33,9 +34,10 @@ public class ReloadStation : AInteractive
             _isReloading = true;
             _currentTime = Time.fixedTime;
             _currentTool = PlayerController.Instance.GetCurrentTool().name;
+            PlayerController.Instance.GetCurrentTool()?.Reload();
 
             showAndDisableTool(_currentTool, true);
-            Kühlschranklicht.DOIntensity(0.04f, timeToLightTheCabin);
+            Kühlschranklicht.DOIntensity(lightintensity, timeToLightTheCabin);
 
             CloseWindow();
         }
@@ -51,7 +53,6 @@ public class ReloadStation : AInteractive
             {
                 OpenWindow();
                 _currentTime = 0;
-                PlayerController.Instance.GetCurrentTool()?.Reload();
                 _isReloading = false;
                 showAndDisableTool(_currentTool, false);
                 Kühlschranklicht.DOIntensity(0f, timeToLightTheCabin);
