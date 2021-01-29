@@ -18,8 +18,5 @@ public abstract class AInteractive : MonoBehaviour
             outlineMaterial.SetFloat("_Outline", 0f);
     }
 
-    public virtual string GetText()
-    {
-        return "E";
-    }
+    public virtual string GetText() => "";
 }

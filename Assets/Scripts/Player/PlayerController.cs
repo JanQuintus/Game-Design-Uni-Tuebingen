@@ -269,7 +269,7 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
     #endregion
 
     #region Public Methods
-    public void SwitchTool(ATool tool)
+    public void SetCurrentTool(ATool tool)
     {
         if (tool != null && toolBelt.GetCurrentSlot() != null && toolBelt.GetCurrentSlot().Tool != null && toolBelt.GetCurrentSlot().Tool.GetType() == tool.GetType())
             return;

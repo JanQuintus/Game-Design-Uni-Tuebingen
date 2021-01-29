@@ -100,13 +100,13 @@ public class ReloadStation : AInteractive
     public override string GetText()
     {
         if (PlayerController.Instance.GetCurrentTool() != null && !_isReloading && _currentTool == null)
-            return "E - Reload <b>" + PlayerController.Instance.GetCurrentTool().ToolName + "</b>";
+            return "Reload <b>" + PlayerController.Instance.GetCurrentTool().ToolName + "</b>";
 
         if (_isReloading)
             return "Please wait...";
 
         if (!_isReloading && _currentTool != null)
-            return "E - Take <b>" + _currentTool.ToolName + "</b>";
+            return "Take <b>" + _currentTool.ToolName + "</b>";
 
         return "";
     }
