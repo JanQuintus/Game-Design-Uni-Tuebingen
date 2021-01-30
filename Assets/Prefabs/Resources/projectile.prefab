@@ -125,7 +125,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6206034311719703969
 Transform:
   m_ObjectHideFlags: 0
@@ -392,7 +392,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 9
+      scalar: 2
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -4898,7 +4898,7 @@ ParticleSystemRenderer:
   m_RenderMode: 0
   m_SortMode: 0
   m_MinParticleSize: 0
-  m_MaxParticleSize: 0.5
+  m_MaxParticleSize: 50
   m_CameraVelocityScale: 0
   m_VelocityScale: 0
   m_LengthScale: 2
@@ -5175,7 +5175,7 @@ GameObject:
   - component: {fileID: 301326214834407046}
   - component: {fileID: 5337886021576492798}
   m_Layer: 12
-  m_Name: Point Light
+  m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5313,6 +5313,7 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 14337
+  activeLifeTime: 30
 --- !u!54 &8848599608822713540
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5395,7 +5396,7 @@ VisualEffect:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9176940395233880105}
   m_Enabled: 1
-  m_Asset: {fileID: 8926484042661614526, guid: d467ff602179ece4c816011521ded02b, type: 3}
+  m_Asset: {fileID: 0}
   m_InitialEventName: OnPlay
   m_InitialEventNameOverriden: 0
   m_StartSeed: 0
@@ -5444,8 +5445,7 @@ VFXRenderer:
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 0}
+  m_Materials: []
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

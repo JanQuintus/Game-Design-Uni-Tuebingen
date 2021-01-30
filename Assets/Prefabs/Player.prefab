@@ -3078,6 +3078,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 435276535253156492}
     m_Modifications:
+    - target: {fileID: 5080426469161422887, guid: 738947f1c383a664fa067e7b2a0e44de, type: 3}
+      propertyPath: beamSource
+      value: 
+      objectReference: {fileID: 435276535253156492}
     - target: {fileID: 5080426469374121937, guid: 738947f1c383a664fa067e7b2a0e44de, type: 3}
       propertyPath: m_RootOrder
       value: 2

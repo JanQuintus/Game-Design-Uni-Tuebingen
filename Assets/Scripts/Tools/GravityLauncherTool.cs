@@ -1,32 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class GravityLauncherTool : ATool
 {
     [SerializeField] private int maxAmmo = 25;
-    GameObject _projectile;
-    GameObject _bullet;
-    GameObject _newBullet;
+    GameObject _projectilePrefab;
+    List<GameObject> _shotProjectiles = new List<GameObject>();
     private int _ammo = 25;
 
     private void Awake()
     {
-        _projectile = Resources.Load("Projectile") as GameObject;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (_newBullet)
-        {
-            if (_newBullet.GetComponent<GravityLauncherProjectile>().getIsLocked())
-            {
-                if (_bullet) Destroy(_bullet);
-                _bullet = _newBullet;
-                _bullet.GetComponent<GravityLauncherProjectile>().setIsLocked(false);
-            }
-        }
+        _projectilePrefab = Resources.Load("Projectile") as GameObject;
     }
 
     public override void Shoot(Ray ray, bool isRelease = false, bool isRightClick = false)
@@ -38,18 +22,12 @@ public class GravityLauncherTool : ATool
         {
             _ammo--;
             OnFillChanged?.Invoke();
-            if (_newBullet)
-            {
-                if (!_newBullet.GetComponent<GravityLauncherProjectile>().getActive())
-                {
-                    Destroy(_newBullet);
-                }
-            }
-            _newBullet = Instantiate(_projectile);
-            _newBullet.transform.right = ray.direction;
-            _newBullet.name = "GravityBomb";
-            _newBullet.transform.position = transform.position + Camera.main.transform.forward * 2;
-            Rigidbody rb = _newBullet.GetComponent<Rigidbody>();
+            GameObject projectile = Instantiate(_projectilePrefab);
+            projectile.transform.right = ray.direction;
+            projectile.name = "GravityBomb";
+            projectile.transform.position = transform.position + Camera.main.transform.forward * 2;
+            Rigidbody rb = projectile.GetComponent<Rigidbody>();
+            _shotProjectiles.Add(projectile);
             rb.velocity = ray.direction * 20;
         }
     }
@@ -57,8 +35,11 @@ public class GravityLauncherTool : ATool
     public override void Reset(bool isRelease) {
         if(!isRelease)
         {
-            if (_bullet) Destroy(_bullet);
-            if (_newBullet) Destroy(_newBullet);
+            foreach(GameObject projectile in _shotProjectiles)
+            {
+                Destroy(projectile);
+            }
+            _shotProjectiles.Clear();
         }
     }
 

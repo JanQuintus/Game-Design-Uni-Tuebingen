@@ -5,22 +5,16 @@ using UnityEngine;
 public class TractorBeamTool : ATool
 {
     [SerializeField] private TheBeam TheBeam;
-
+    [SerializeField] private float range = 100f;
     [SerializeField] private float maximalShootForce = 20f;
 
     [SerializeField] private float maximalHeat = 300;
     [SerializeField] private float heatUpPerTick = 1;
     [SerializeField] private float coolDownPerTick = 2;
 
-    private bool _isBeamOn = false;
     private float _heat = 0;
     private bool _windUp;
     private float _shootForce = 1; // current shoot force
-
-    private void Awake()
-    {
-        TheBeam.gameObject.SetActive(false);
-    }
 
     void FixedUpdate()
     {
@@ -32,7 +26,7 @@ public class TractorBeamTool : ATool
         }
 
         // overheating mechanics
-        if (_isBeamOn)
+        if (TheBeam.IsActive())
         {
             _heat = _heat + heatUpPerTick;
             OnFillChanged?.Invoke();
@@ -43,9 +37,7 @@ public class TractorBeamTool : ATool
         }
 
         if (_heat >= maximalHeat)
-        {
-            turnOff();
-        }
+            TheBeam.turnOffBeam();
     }
 
     public override void Shoot(Ray ray, bool isRelease = false, bool isRightClick = false)
@@ -53,15 +45,11 @@ public class TractorBeamTool : ATool
 
         //rmb pressed
         if (isRightClick && !isRelease)
-        {
-            turnOn();
-        }
+            TheBeam.turnOnBeam(range);
 
         //rmb released
         if (isRightClick && isRelease)
-        {
-            turnOff();
-        }
+            TheBeam.turnOffBeam();
 
         //lmb released
         if (!isRightClick && isRelease)
@@ -69,8 +57,7 @@ public class TractorBeamTool : ATool
             //shoot object in beam
             Vector3 shootDirection = ray.direction;
             TheBeam.shoot(_shootForce, shootDirection);
-            turnOff();
-
+            TheBeam.turnOffBeam();
 
             // reset windup
             _windUp = false;
@@ -79,23 +66,7 @@ public class TractorBeamTool : ATool
 
         //lmb pressed
         if (!isRightClick && !isRelease)
-        {
             _windUp = true;
-        }
-    }
-
-    private void turnOn()
-    {
-        TheBeam.gameObject.SetActive(true);
-        TheBeam.turnOnBeam();
-        _isBeamOn = true;
-    }
-
-    private void turnOff()
-    {
-        TheBeam.turnOffBeam();
-        TheBeam.gameObject.SetActive(false);
-        _isBeamOn = false;
     }
 
     public override void Scroll(float delta)
@@ -107,13 +78,9 @@ public class TractorBeamTool : ATool
 
     public override void Reset(bool isRelease) {}
 
-    public override void OnEquip()
-    { }
+    public override void OnEquip() { }
 
-    public override void OnUnequip()
-    {
-        turnOff();
-    }
+    public override void OnUnequip() => TheBeam.turnOffBeam();
 
     public override float getFillPercentage()
     {

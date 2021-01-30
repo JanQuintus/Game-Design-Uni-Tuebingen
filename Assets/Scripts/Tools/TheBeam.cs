@@ -5,6 +5,7 @@ using UnityEngine;
 public class TheBeam : MonoBehaviour
 {
 
+    [SerializeField] private Transform beamSource;
     [SerializeField] private float pullForce = 4;
     [SerializeField] private float minDist = 3f; // value which tells the distance to the gravitation point to start slowing down the object
     [SerializeField] private float maxDisplacementTo = 3; // maximal displacement due to scroll
@@ -16,6 +17,7 @@ public class TheBeam : MonoBehaviour
     [SerializeField] private Transform beamStart;
     [SerializeField] private BezierCurve laserEffect;
     [SerializeField] private GameObject sphereEffect;
+    [SerializeField] private GameObject activeEffect;
     [SerializeField] private LayerMask layerMask;
 
     private class ObjectInBeam
@@ -38,13 +40,15 @@ public class TheBeam : MonoBehaviour
     private int scrollDisplacement = 0; // current displacement due to scroll
     private float windUpStrength = 0; // this is the number which is decreased to visualize windup (stronger windup = object is closer to player)
     private int iter = 0;
+    private bool _isActive = false;
+    private float _distance = 100f;
 
 
     // Shaderchange VFX
     private int _activateEmssionID = Shader.PropertyToID("beamActive");
 
     // Gravity Paticle VFX
-    private GameObject _inst_FX;
+    private GameObject _inst_FX = null;
     private Material material;
     //////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -52,22 +56,36 @@ public class TheBeam : MonoBehaviour
     {
         _inst_FX = Instantiate(sphereEffect, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
         _inst_FX.SetActive(false);
-        gameObject.SetActive(false);
+        activeEffect.SetActive(false);
     }
-
 
     void FixedUpdate()
     {
-        
-        
+        if (!_isActive)
+            return;
+
         if (!isOccupied)
         {
             _inst_FX.SetActive(false);
+            if (Physics.Raycast(beamSource.position, beamSource.forward, out RaycastHit hit, _distance, layerMask))
+            {
+                Rigidbody rb = Utils.findRigidbody(hit.collider);
+                if (rb == null)
+                    return;
+
+                GravityObject go = Utils.findGravityObject(hit.collider);
+                if (go == null)
+                    return;
+
+                objectInBeam = new ObjectInBeam(hit.collider, rb, go);
+                go.enabled = false;
+                isOccupied = true;
+            }
         }
+        
 
         if (isOccupied)
         {
-
             // displace center of gravitation according to scroll and windup and correct for the length of the beam
             Vector3 localPos = transform.InverseTransformDirection(transform.forward) * scrollDisplacement;
             Vector3 lPos = transform.InverseTransformDirection(transform.forward * -1) * windUpStrength;
@@ -122,28 +140,7 @@ public class TheBeam : MonoBehaviour
                     rb.AddForce(forceDirection.normalized * pullForceInProximity * rb.mass, ForceMode.Impulse);
                 }
             }
-
         } 
-        
-
-    }
-
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (layerMask != (layerMask | (1 << other.gameObject.layer)))
-            return;
-
-        if (isOccupied)
-            return;
-
-        GravityObject go = Utils.findGravityObject(other);
-        if (go == null)
-            return;
-
-        objectInBeam = new ObjectInBeam(other, Utils.findRigidbody(other), Utils.findGravityObject(other));
-        go.enabled = false;
-        isOccupied = true;
     }
 
     public void turnOffBeam()
@@ -162,14 +159,16 @@ public class TheBeam : MonoBehaviour
         windUpStrength = 0;
         laserEffect.point3 = beamStart;
         // Shader
-        _inst_FX.SetActive(false);
-        gameObject.SetActive(false);
-
+        _inst_FX?.SetActive(false);
+        _isActive = false;
+        activeEffect.SetActive(false);
     }
 
-    public void turnOnBeam()
+    public void turnOnBeam(float distance)
     {
-        
+        _isActive = true;
+        _distance = distance;
+        activeEffect.SetActive(true);
     }
 
     // This function should only be called along with turnOffBeam
@@ -190,24 +189,18 @@ public class TheBeam : MonoBehaviour
         if (scrollDisplacement <= maxDisplacementAway)
         {
             if (delta > 0)
-            {
                 scrollDisplacement = scrollDisplacement + 1;
-            }
-
         }
 
         //move object closer to the player
         if (scrollDisplacement >= -1 * maxDisplacementTo)
         {
             if (delta < 0)
-            {
                 scrollDisplacement = scrollDisplacement - 1;
-            }
         }
     }
 
-    public void setWindup(float value)
-    {
-        windUpStrength = value;
-    }
+    public bool IsActive() => _isActive;
+
+    public void setWindup(float value) =>  windUpStrength = value;
 }

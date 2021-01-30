@@ -47,12 +47,13 @@ public class GravityGunTool : ATool
     public override void Shoot(Ray ray, bool isRelease = false, bool isRightClick = false)
     {
         if (isRelease || isRightClick) return;
+        if (_energy <= 0) return;
         if (Physics.Raycast(ray, out RaycastHit hit, 100f, layerMask))
         {
             Rigidbody rb = hit.collider.GetComponent<Rigidbody>();
 
             
-            if (rb && _energy > 0)
+            if (rb)
             {
                 rb.useGravity = !rb.useGravity;
                 fxActivate(hit);
