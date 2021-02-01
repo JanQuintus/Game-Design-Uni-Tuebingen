@@ -9178,6 +9178,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outlineMaterial: {fileID: 0}
+  hoverClip: {fileID: 0}
   DialoguePanel: {fileID: 149642666}
   ChoicePanel1: {fileID: 1951952252}
   ChoicePanel2: {fileID: 1312565887}
@@ -9761,6 +9762,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 444225736}
     m_Modifications:
+    - target: {fileID: 6874168421516381653, guid: 7f564a5098c8114478e519b905361ab1, type: 3}
+      propertyPath: hoverClip
+      value: 
+      objectReference: {fileID: 8300000, guid: d6601e34edecb804fa7a533842756740, type: 3}
     - target: {fileID: 6874168421563379476, guid: 7f564a5098c8114478e519b905361ab1, type: 3}
       propertyPath: m_Name
       value: reload_station

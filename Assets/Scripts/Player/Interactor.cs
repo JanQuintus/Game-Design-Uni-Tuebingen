@@ -21,10 +21,12 @@ public class Interactor : MonoBehaviour
         {
             if(hit.transform.GetComponent<AInteractive>() != null)
             {
+                if (hit.transform.GetComponent<AInteractive>() == _current)
+                    return;
                 _current = hit.transform.GetComponent<AInteractive>();
                 interactText.gameObject.SetActive(true);
                 interactText.SetText(_current.GetText());
-                _current.ShowOutline();
+                _current.Hover();
             }
             else
             {
@@ -32,7 +34,7 @@ public class Interactor : MonoBehaviour
                 {
                     interactText.SetText("");
                     interactText.gameObject.SetActive(false);
-                    _current.HideOutline(); 
+                    _current.Unhover(); 
                     _current = null;
                 }
             }
@@ -43,7 +45,7 @@ public class Interactor : MonoBehaviour
             {
                 interactText.SetText("");
                 interactText.gameObject.SetActive(false);
-                _current.HideOutline();
+                _current.Unhover();
                 _current = null;
             }
         }
