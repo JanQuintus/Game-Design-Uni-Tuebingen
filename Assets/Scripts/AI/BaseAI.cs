@@ -19,6 +19,13 @@ public class BaseAI : MonoBehaviour
     [SerializeField] private LayerMask obstacleLayerMask;
     [SerializeField] private float maxSlope = .4f;
     [SerializeField] private float stoppingDistance = .4f;
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip footStepClip;
+    [SerializeField] private AudioClip jumpClip;
+    [SerializeField] private AudioClip landClip;
+    [SerializeField] private float footStepDistance = 0.5f;
+
 
     protected bool _isAlive = true;
 
@@ -32,6 +39,8 @@ public class BaseAI : MonoBehaviour
     protected bool _isGrounded = false;
     protected float _gravityChangeMoveBlockCD = 0;
     protected bool _atTarget = false;
+
+    private float _nextFoodStep;
 
     protected virtual void Awake()
     {
@@ -50,7 +59,15 @@ public class BaseAI : MonoBehaviour
         animator.SetFloat("Speed", _rb.velocity.magnitude);
         animator.SetBool("isGrounded", _isGrounded);
 
+        bool wasGrounded = _isGrounded;
         IsGrounded();
+
+        if(!wasGrounded && _isGrounded)
+        {
+            audioSource.pitch = Random.Range(0.9f, 1.1f);
+            audioSource.PlayOneShot(landClip);
+        }
+
         Vector3 localVelocity = transform.InverseTransformDirection(_rb.velocity);
         if (_isGrounded && localVelocity.y <= 0)
         {
@@ -102,6 +119,8 @@ public class BaseAI : MonoBehaviour
                         _rb.AddForce(transform.up * _rb.mass * 6f, ForceMode.Impulse);
                         _isGrounded = false;
                         animator.SetTrigger("Jump");
+                        audioSource.pitch = 1;
+                        audioSource.PlayOneShot(jumpClip);
                     }
                 }
             }
@@ -127,6 +146,20 @@ public class BaseAI : MonoBehaviour
                 }
                 Vector3 move = transform.TransformDirection(new Vector3(_smoothMove.x, 0, _smoothMove.z) * Time.fixedDeltaTime * speed) + upVelocity;
                 _rb.velocity = move;
+
+                _nextFoodStep -= _smoothMove.magnitude * speed;
+                if (_nextFoodStep <= 0)
+                {
+                    _nextFoodStep = footStepDistance;
+                    audioSource.pitch = Random.Range(0.9f, 1.1f);
+                    if (Physics.Raycast(transform.position + transform.up, -transform.up, out RaycastHit hit, 2f))
+                    {
+                        if (hit.collider.GetComponent<CollisionSound>() != null)
+                            audioSource.PlayOneShot(hit.collider.GetComponent<CollisionSound>().GetCollisionClip(), Random.Range(0.04f, 0.05f));
+                    }
+
+                    audioSource.PlayOneShot(footStepClip, Random.Range(0.5f, 1f));
+                }
             }
         }
         else

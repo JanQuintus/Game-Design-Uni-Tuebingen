@@ -5,6 +5,9 @@ using UnityEngine;
 public class TheBeam : MonoBehaviour
 {
 
+    public System.Action OnCatchObject;
+
+    [SerializeField] private Transform beamSource;
     [SerializeField] private float pullForce = 4;
     [SerializeField] private float minDist = 3f; // value which tells the distance to the gravitation point to start slowing down the object
     [SerializeField] private float maxDisplacementTo = 3; // maximal displacement due to scroll
@@ -16,35 +19,24 @@ public class TheBeam : MonoBehaviour
     [SerializeField] private Transform beamStart;
     [SerializeField] private BezierCurve laserEffect;
     [SerializeField] private GameObject sphereEffect;
+    [SerializeField] private GameObject activeEffect;
     [SerializeField] private LayerMask layerMask;
 
-    private class ObjectInBeam
-    {
-        public Collider col;
-        public Rigidbody rb;
-        public GravityObject go;
-
-        public ObjectInBeam(Collider col, Rigidbody rb, GravityObject go)
-        {
-            this.col = col;
-            this.rb = rb;
-            this.go = go;
-        }
-    }
-
-    private ObjectInBeam objectInBeam;
+    private GravityObject objectInBeam;
     private float dist; // distance of objectinbeam to center ie. gravitation point of beam
     private bool isOccupied = false;
     private int scrollDisplacement = 0; // current displacement due to scroll
     private float windUpStrength = 0; // this is the number which is decreased to visualize windup (stronger windup = object is closer to player)
     private int iter = 0;
+    private bool _isActive = false;
+    private float _distance = 100f;
 
 
     // Shaderchange VFX
     private int _activateEmssionID = Shader.PropertyToID("beamActive");
 
     // Gravity Paticle VFX
-    private GameObject _inst_FX;
+    private GameObject _inst_FX = null;
     private Material material;
     //////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -52,41 +44,51 @@ public class TheBeam : MonoBehaviour
     {
         _inst_FX = Instantiate(sphereEffect, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
         _inst_FX.SetActive(false);
-        gameObject.SetActive(false);
+        activeEffect.SetActive(false);
     }
-
 
     void FixedUpdate()
     {
-        
-        
+        if (!_isActive)
+            return;
+
         if (!isOccupied)
         {
             _inst_FX.SetActive(false);
+            if (Physics.Raycast(beamSource.position, beamSource.forward, out RaycastHit hit, _distance, layerMask))
+            {
+                GravityObject go = Utils.FindGravityObject(hit.collider);
+                if (go == null)
+                    return;
+
+                objectInBeam = go;
+                go.goEnabled = false;
+                isOccupied = true;
+                OnCatchObject?.Invoke();
+            }
         }
+        
 
         if (isOccupied)
         {
-
             // displace center of gravitation according to scroll and windup and correct for the length of the beam
             Vector3 localPos = transform.InverseTransformDirection(transform.forward) * scrollDisplacement;
             Vector3 lPos = transform.InverseTransformDirection(transform.forward * -1) * windUpStrength;
             Vector3 displace = transform.InverseTransformDirection(transform.forward * -1) * displacementCorrection; // adjust floating to be closer to the player to allow the beam to have more range
             Vector3 targetPos = transform.position + transform.TransformDirection(localPos) + transform.TransformDirection(lPos) + transform.TransformDirection(displace);
 
-            Vector3 objectPos = objectInBeam.col.transform.position;
-            Quaternion objectRot = objectInBeam.col.transform.rotation;
+            Vector3 objectPos = objectInBeam.GetMainCollider().transform.position;
+            Quaternion objectRot = objectInBeam.GetMainCollider().transform.rotation;
 
-            laserEffect.point3 = objectInBeam.col.transform; //laser position
+            laserEffect.point3 = objectInBeam.GetMainCollider().transform; //laser position
             
             // Sphere VFX And Shader FX
             _inst_FX.transform.SetPositionAndRotation(objectPos, objectRot);
-            Vector3 rb_size = objectInBeam.col.bounds.size;
+            Vector3 rb_size = objectInBeam.GetMainCollider().bounds.size;
             _inst_FX.transform.localScale = new Vector3(rb_size.magnitude, rb_size.magnitude, rb_size.magnitude);
             _inst_FX.SetActive(true);
             
-            material = objectInBeam.col.GetComponent<Renderer>().material;
-            material.SetFloat(_activateEmssionID, 1);
+            Utils.SetMaterialPropertyFloat(objectInBeam.GetMainRenderer(), _activateEmssionID, 1);
 
 
             float dx = objectPos.x - targetPos.x;
@@ -96,7 +98,7 @@ public class TheBeam : MonoBehaviour
             dist = Mathf.Sqrt(dx * dx + dz * dz + dy * dy);
 
             Vector3 forceDirection = targetPos - objectPos;
-            Rigidbody rb = objectInBeam.rb;
+            Rigidbody rb = objectInBeam.GetRB();
 
             if ((rb.mass <= maxWeightLiftable) || !(rb.useGravity))
             {
@@ -122,39 +124,16 @@ public class TheBeam : MonoBehaviour
                     rb.AddForce(forceDirection.normalized * pullForceInProximity * rb.mass, ForceMode.Impulse);
                 }
             }
-
         } 
-        
-
-    }
-
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (layerMask != (layerMask | (1 << other.gameObject.layer)))
-            return;
-
-        if (isOccupied)
-            return;
-
-        GravityObject go = Utils.findGravityObject(other);
-        if (go == null)
-            return;
-
-        objectInBeam = new ObjectInBeam(other, Utils.findRigidbody(other), Utils.findGravityObject(other));
-        go.enabled = false;
-        isOccupied = true;
     }
 
     public void turnOffBeam()
     {
-        if (isOccupied && objectInBeam != null)
-            objectInBeam.go.enabled = true;
         isOccupied = false;
         if (objectInBeam != null)
         {
-            objectInBeam.go.enabled = true;
-            objectInBeam.col.gameObject.GetComponent<Renderer>().material.SetFloat(_activateEmssionID, 0);
+            objectInBeam.goEnabled = true;
+            Utils.SetMaterialPropertyFloat(objectInBeam.GetMainRenderer(), _activateEmssionID, 0);
         }
 
         objectInBeam = null;
@@ -162,14 +141,16 @@ public class TheBeam : MonoBehaviour
         windUpStrength = 0;
         laserEffect.point3 = beamStart;
         // Shader
-        _inst_FX.SetActive(false);
-        gameObject.SetActive(false);
-
+        _inst_FX?.SetActive(false);
+        _isActive = false;
+        activeEffect.SetActive(false);
     }
 
-    public void turnOnBeam()
+    public void turnOnBeam(float distance)
     {
-        
+        _isActive = true;
+        _distance = distance;
+        activeEffect.SetActive(true);
     }
 
     // This function should only be called along with turnOffBeam
@@ -177,7 +158,7 @@ public class TheBeam : MonoBehaviour
     {
         if (objectInBeam != null)
         {
-            Rigidbody rb = objectInBeam.rb;
+            Rigidbody rb = objectInBeam.GetRB();
             rb.velocity = Vector3.zero;
             rb.AddForce(forceDirection.normalized * Mathf.Max(1, rb.mass/2) * Mathf.Max(0, shootForce - (scrollDisplacement*2)), ForceMode.Impulse);
         }
@@ -190,24 +171,18 @@ public class TheBeam : MonoBehaviour
         if (scrollDisplacement <= maxDisplacementAway)
         {
             if (delta > 0)
-            {
                 scrollDisplacement = scrollDisplacement + 1;
-            }
-
         }
 
         //move object closer to the player
         if (scrollDisplacement >= -1 * maxDisplacementTo)
         {
             if (delta < 0)
-            {
                 scrollDisplacement = scrollDisplacement - 1;
-            }
         }
     }
 
-    public void setWindup(float value)
-    {
-        windUpStrength = value;
-    }
+    public bool IsActive() => _isActive;
+
+    public void setWindup(float value) =>  windUpStrength = value;
 }

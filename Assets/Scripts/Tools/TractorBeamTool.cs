@@ -5,21 +5,29 @@ using UnityEngine;
 public class TractorBeamTool : ATool
 {
     [SerializeField] private TheBeam TheBeam;
-
+    [SerializeField] private float range = 100f;
     [SerializeField] private float maximalShootForce = 20f;
 
     [SerializeField] private float maximalHeat = 300;
     [SerializeField] private float heatUpPerTick = 1;
     [SerializeField] private float coolDownPerTick = 2;
 
-    private bool _isBeamOn = false;
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip beamOnClip;
+    [SerializeField] private AudioClip beamLoop;
+    [SerializeField] private AudioClip beamOffClip;
+    [SerializeField] private AudioClip catchObjectClip;
+    [SerializeField] private AudioClip shootObjectClip;
+    [SerializeField] private AudioClip windupClip;
+
     private float _heat = 0;
     private bool _windUp;
     private float _shootForce = 1; // current shoot force
 
     private void Awake()
     {
-        TheBeam.gameObject.SetActive(false);
+        TheBeam.OnCatchObject += () => audioSource.PlayOneShot(catchObjectClip);
     }
 
     void FixedUpdate()
@@ -32,7 +40,7 @@ public class TractorBeamTool : ATool
         }
 
         // overheating mechanics
-        if (_isBeamOn)
+        if (TheBeam.IsActive())
         {
             _heat = _heat + heatUpPerTick;
             OnFillChanged?.Invoke();
@@ -43,9 +51,7 @@ public class TractorBeamTool : ATool
         }
 
         if (_heat >= maximalHeat)
-        {
-            turnOff();
-        }
+            TurnOffBeam();
     }
 
     public override void Shoot(Ray ray, bool isRelease = false, bool isRightClick = false)
@@ -53,24 +59,22 @@ public class TractorBeamTool : ATool
 
         //rmb pressed
         if (isRightClick && !isRelease)
-        {
-            turnOn();
-        }
+            TurnOnBeam();
 
         //rmb released
         if (isRightClick && isRelease)
-        {
-            turnOff();
-        }
+            TurnOffBeam();
 
         //lmb released
         if (!isRightClick && isRelease)
         {
+            if (!TheBeam.IsActive())
+                return;
             //shoot object in beam
             Vector3 shootDirection = ray.direction;
             TheBeam.shoot(_shootForce, shootDirection);
-            turnOff();
-
+            TurnOffBeam();
+            audioSource.PlayOneShot(shootObjectClip);
 
             // reset windup
             _windUp = false;
@@ -80,22 +84,31 @@ public class TractorBeamTool : ATool
         //lmb pressed
         if (!isRightClick && !isRelease)
         {
+            if (!TheBeam.IsActive())
+                return;
             _windUp = true;
+            audioSource.PlayOneShot(windupClip);
         }
     }
 
-    private void turnOn()
+    private void TurnOnBeam()
     {
-        TheBeam.gameObject.SetActive(true);
-        TheBeam.turnOnBeam();
-        _isBeamOn = true;
+        audioSource.pitch = 1;
+        TheBeam.turnOnBeam(range);
+        audioSource.PlayOneShot(beamOnClip);
+        audioSource.clip = beamLoop;
+        audioSource.loop = true;
+        audioSource.Play();
     }
-
-    private void turnOff()
+    private void TurnOffBeam()
     {
+        if (!TheBeam.IsActive())
+            return;
         TheBeam.turnOffBeam();
-        TheBeam.gameObject.SetActive(false);
-        _isBeamOn = false;
+        audioSource.Stop();
+        audioSource.clip = null;
+        audioSource.loop = false;
+        audioSource.PlayOneShot(beamOffClip);
     }
 
     public override void Scroll(float delta)
@@ -107,13 +120,9 @@ public class TractorBeamTool : ATool
 
     public override void Reset(bool isRelease) {}
 
-    public override void OnEquip()
-    { }
+    public override void OnEquip() { }
 
-    public override void OnUnequip()
-    {
-        turnOff();
-    }
+    public override void OnUnequip() => TurnOffBeam();
 
     public override float getFillPercentage()
     {
