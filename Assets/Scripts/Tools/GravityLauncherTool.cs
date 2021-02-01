@@ -4,6 +4,11 @@ using UnityEngine;
 public class GravityLauncherTool : ATool
 {
     [SerializeField] private int maxAmmo = 25;
+
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip shootClip;
+
     GameObject _projectilePrefab;
     List<GameObject> _shotProjectiles = new List<GameObject>();
     private int _ammo = 25;
@@ -29,6 +34,8 @@ public class GravityLauncherTool : ATool
             Rigidbody rb = projectile.GetComponent<Rigidbody>();
             _shotProjectiles.Add(projectile);
             rb.velocity = ray.direction * 20;
+            audioSource.pitch = Random.Range(0.9f, 1.1f);
+            audioSource.PlayOneShot(shootClip, Random.Range(0.5f, 1f));
         }
     }
     

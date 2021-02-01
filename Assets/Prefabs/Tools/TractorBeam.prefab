@@ -52,6 +52,13 @@ MonoBehaviour:
   maximalHeat: 500
   heatUpPerTick: 1
   coolDownPerTick: 3
+  audioSource: {fileID: 0}
+  beamOnClip: {fileID: 8300000, guid: 4d33449d6598d2b4db021fecc71f15e2, type: 3}
+  beamLoop: {fileID: 8300000, guid: b806f0dab3405e74fa9200fff0bb53fe, type: 3}
+  beamOffClip: {fileID: 8300000, guid: 01cfcfc3a2032c84e981bc9ef5ca4ece, type: 3}
+  catchObjectClip: {fileID: 8300000, guid: 15b1e885471863a4b959aad1a20a5b46, type: 3}
+  shootObjectClip: {fileID: 8300000, guid: bf4a5f09ae5865049829bc3c6513461a, type: 3}
+  windupClip: {fileID: 8300000, guid: 6e9643c714e7a164aba60f207277c246, type: 3}
 --- !u!1 &9095880645518384650
 GameObject:
   m_ObjectHideFlags: 0

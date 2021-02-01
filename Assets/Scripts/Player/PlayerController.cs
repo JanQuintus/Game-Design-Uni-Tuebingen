@@ -49,6 +49,16 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
     [SerializeField] private float ccRadius = .3f;
     [SerializeField] private LayerMask ccLayerMask;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip footStepClip;
+    [SerializeField] private AudioClip jumpClip;
+    [SerializeField] private AudioClip landClip;
+    [SerializeField] private AudioClip damageClip;
+    [SerializeField] private AudioClip crouchClip;
+    [SerializeField] private AudioClip standUpClip;
+    [SerializeField] private float footStepDistance = 0.5f;
+
     private PlayerInputActions _inputActions;
     private Rigidbody _rb;
     private GravityObject _gravity;
@@ -81,6 +91,8 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
     private float _tbDefaultPosZ = 0;
     private float _tbTimer = 0;
 
+    private float _nextFoodStep;
+
     #region Unity Functions
 
     private void Awake()
@@ -110,6 +122,7 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
         _tbDefaultPosX = toolHolder.localPosition.x;
         _tbDefaultPosZ = toolHolder.localPosition.z;
         _health = GetComponentInParent<Health>();
+        _nextFoodStep = footStepDistance;
 
         _health.OnDeath.AddListener(() =>
         {
@@ -122,6 +135,8 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
             head.DOShakePosition(0.4f, 0.25f);
             toolHolder.DOShakePosition(0.2f, 0.1f);
             damageScreenOverlay?.material.SetFloat("_Strength", 1f - _health.getHealthPercentage());
+            audioSource.pitch = Random.Range(0.9f, 1.1f);
+            audioSource.PlayOneShot(damageClip, Mathf.Clamp01(damage / 10f));
         });
         _health.OnHealed.AddListener((damage) =>
         {
@@ -137,11 +152,24 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
         CheckIsGrounded();
 
         bool wasCrouching = _isCrouching;
+
         if (_crouch || (wasCrouching && KeepCrouching()))
             _isCrouching = true;
         else
             _isCrouching = false;
-            
+
+        if (!wasCrouching && _isCrouching)
+        {
+            audioSource.pitch = 1;
+            audioSource.PlayOneShot(crouchClip);
+        }
+        if (wasCrouching && !_isCrouching)
+        {
+            audioSource.pitch = 1;
+            audioSource.PlayOneShot(standUpClip);
+        }
+        
+
         if (_isCrouching)
         {
             col.height = crouchHeight;
@@ -166,6 +194,22 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
         }
         Vector3 move = transform.TransformDirection(new Vector3(_smoothMove.x, 0, _smoothMove.y) * Time.fixedDeltaTime * speed) + upVelocity;
         _rb.velocity = move;
+        _nextFoodStep -= _smoothMove.magnitude * speed;
+        if(_nextFoodStep <= 0)
+        {
+            _nextFoodStep = footStepDistance;
+            if (_isGrounded)
+            {
+                audioSource.pitch = Random.Range(0.9f, 1.1f);
+                if (Physics.Raycast(transform.position + transform.up, -transform.up, out RaycastHit hit, 2f))
+                {
+                    if (hit.collider.GetComponent<CollisionSound>() != null)
+                        audioSource.PlayOneShot(hit.collider.GetComponent<CollisionSound>().GetCollisionClip(), Random.Range(0.04f, 0.05f));
+                }
+                
+                audioSource.PlayOneShot(footStepClip, Random.Range(0.5f, 1f));
+            }
+        }
 
         if (_jumpRequest)
         {
@@ -174,6 +218,8 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
             {
                 Vector3 jumpVel = transform.TransformDirection(jumpVelocity);
                 _rb.AddForce(jumpVel, ForceMode.Impulse);
+                audioSource.pitch = 1;
+                audioSource.PlayOneShot(jumpClip);
             }
         }
 
@@ -202,6 +248,8 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
         {
             _tbDefaultPosY = _tbInitialDefaultPosY;
             head.DOLocalMoveY(head.localPosition.y - 0.25f, 0.1f);
+            audioSource.pitch = Random.Range(0.9f, 1.1f);
+            audioSource.PlayOneShot(landClip);
         }
         else if(!_isGrounded && wasGrounded)
         {

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5080426469374121937}
   - component: {fileID: 5080426469374121936}
+  - component: {fileID: 5026232254293878618}
   m_Layer: 0
   m_Name: ToolBelt
   m_TagString: Untagged
@@ -65,6 +66,102 @@ MonoBehaviour:
     Tool: {fileID: 5080426467752742213}
     IsAvailable: 1
     IsBlocked: 0
+--- !u!82 &5026232254293878618
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5080426469374121938}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -3176308983841283307, guid: 901e713bed13f83469857c2e0c839b9f, type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &1642868080095112586
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -120,6 +217,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GravityLauncher
       objectReference: {fileID: 0}
+    - target: {fileID: 5786544036138770091, guid: 822563a58b88bbb4fa27f4f1e37f31b2, type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 5026232254293878618}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 822563a58b88bbb4fa27f4f1e37f31b2, type: 3}
 --- !u!4 &5080426469563396898 stripped
@@ -193,6 +294,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GravityGun
       objectReference: {fileID: 0}
+    - target: {fileID: 7750204838824579871, guid: 2fa24991590fe464f998f98b134cb437, type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 5026232254293878618}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2fa24991590fe464f998f98b134cb437, type: 3}
 --- !u!4 &5080426468748757622 stripped
@@ -218,6 +323,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5080426469374121937}
     m_Modifications:
+    - target: {fileID: 9095880645004790324, guid: f14ac3e880211d74191436375df10c42, type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 5026232254293878618}
     - target: {fileID: 9095880645004790326, guid: f14ac3e880211d74191436375df10c42, type: 3}
       propertyPath: m_Name
       value: TractorBeam
@@ -295,6 +404,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MassExchanger
       objectReference: {fileID: 0}
+    - target: {fileID: 4311836051794745988, guid: f0648b375ec524344ad913ec1d783ad9, type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 5026232254293878618}
     - target: {fileID: 4311836051794745989, guid: f0648b375ec524344ad913ec1d783ad9, type: 3}
       propertyPath: m_RootOrder
       value: 2

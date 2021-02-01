@@ -46,6 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ToolName: Gravity Launcher
   maxAmmo: 25
+  audioSource: {fileID: 0}
+  shootClip: {fileID: 8300000, guid: c1cbe1a5e9152ac499d1d0a24e13b8f1, type: 3}
 --- !u!1001 &5786544034551364618
 PrefabInstance:
   m_ObjectHideFlags: 0

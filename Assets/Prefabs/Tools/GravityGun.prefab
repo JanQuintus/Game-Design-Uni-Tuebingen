@@ -100,6 +100,8 @@ MonoBehaviour:
   beamStart: {fileID: 7750204838720222128}
   gravityEffect: {fileID: 3728947119522636055, guid: c73754ec9617f75449570fe5e34a808e, type: 3}
   _inst_FX: {fileID: 0}
+  audioSource: {fileID: 0}
+  shootClip: {fileID: 8300000, guid: 27eba4ad545ee8a4bba513d0604728b2, type: 3}
 --- !u!1001 &7750204839095485468
 PrefabInstance:
   m_ObjectHideFlags: 0

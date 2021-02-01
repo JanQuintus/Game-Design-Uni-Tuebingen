@@ -4,17 +4,20 @@ using UnityEngine;
 
 public static class Utils
 {
-    public static GravityObject findGravityObject(Collider collider)
+    public static GravityObject FindGravityObject(Collider collider)
     {
         GravityObject go = collider.GetComponent<GravityObject>();
         if (!go) go = collider.GetComponentInParent<GravityObject>();
         return go;
     }
 
-    public static Rigidbody findRigidbody(Collider collider)
+    public static void SetMaterialPropertyFloat(Renderer input, int propertyID, float value)
     {
-        Rigidbody rb = collider.GetComponent<Rigidbody>();
-        if (!rb) rb = collider.GetComponentInParent<Rigidbody>();
-        return rb;
+
+        Renderer[] children;
+        children = input.GetComponentsInChildren<Renderer>();
+        input.material.SetFloat(propertyID, value);
+        foreach (Renderer rend in children)
+            rend.material.SetFloat(propertyID, value);
     }
 }

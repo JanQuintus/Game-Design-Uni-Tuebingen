@@ -361,11 +361,9 @@ MonoBehaviour:
   massExChangeEffect_Out: {fileID: 7020955315742506386}
   chargerEffect: {fileID: 2226852801961818}
   _inst_FX_hitFX: {fileID: 3607008034010819598, guid: 6ddb79b345fd9d94db1524150e2916f1, type: 3}
-  mEMassLeft: -1
-  mEMassRight: -1
-  mERightObj: {fileID: 0}
-  mELeftObj: {fileID: 0}
-  mEEnergy: 20
+  audioSource: {fileID: 0}
+  shootClip: {fileID: 8300000, guid: b31cd22f088b8b840990f50d366c44de, type: 3}
+  soakClip: {fileID: 8300000, guid: f50f177404004b84692dee2f669bb38c, type: 3}
 --- !u!1 &4311836051851395506
 GameObject:
   m_ObjectHideFlags: 0

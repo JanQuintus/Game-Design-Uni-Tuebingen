@@ -12,9 +12,23 @@ public class TractorBeamTool : ATool
     [SerializeField] private float heatUpPerTick = 1;
     [SerializeField] private float coolDownPerTick = 2;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip beamOnClip;
+    [SerializeField] private AudioClip beamLoop;
+    [SerializeField] private AudioClip beamOffClip;
+    [SerializeField] private AudioClip catchObjectClip;
+    [SerializeField] private AudioClip shootObjectClip;
+    [SerializeField] private AudioClip windupClip;
+
     private float _heat = 0;
     private bool _windUp;
     private float _shootForce = 1; // current shoot force
+
+    private void Awake()
+    {
+        TheBeam.OnCatchObject += () => audioSource.PlayOneShot(catchObjectClip);
+    }
 
     void FixedUpdate()
     {
@@ -37,7 +51,7 @@ public class TractorBeamTool : ATool
         }
 
         if (_heat >= maximalHeat)
-            TheBeam.turnOffBeam();
+            TurnOffBeam();
     }
 
     public override void Shoot(Ray ray, bool isRelease = false, bool isRightClick = false)
@@ -45,19 +59,22 @@ public class TractorBeamTool : ATool
 
         //rmb pressed
         if (isRightClick && !isRelease)
-            TheBeam.turnOnBeam(range);
+            TurnOnBeam();
 
         //rmb released
         if (isRightClick && isRelease)
-            TheBeam.turnOffBeam();
+            TurnOffBeam();
 
         //lmb released
         if (!isRightClick && isRelease)
         {
+            if (!TheBeam.IsActive())
+                return;
             //shoot object in beam
             Vector3 shootDirection = ray.direction;
             TheBeam.shoot(_shootForce, shootDirection);
-            TheBeam.turnOffBeam();
+            TurnOffBeam();
+            audioSource.PlayOneShot(shootObjectClip);
 
             // reset windup
             _windUp = false;
@@ -66,7 +83,32 @@ public class TractorBeamTool : ATool
 
         //lmb pressed
         if (!isRightClick && !isRelease)
+        {
+            if (!TheBeam.IsActive())
+                return;
             _windUp = true;
+            audioSource.PlayOneShot(windupClip);
+        }
+    }
+
+    private void TurnOnBeam()
+    {
+        audioSource.pitch = 1;
+        TheBeam.turnOnBeam(range);
+        audioSource.PlayOneShot(beamOnClip);
+        audioSource.clip = beamLoop;
+        audioSource.loop = true;
+        audioSource.Play();
+    }
+    private void TurnOffBeam()
+    {
+        if (!TheBeam.IsActive())
+            return;
+        TheBeam.turnOffBeam();
+        audioSource.Stop();
+        audioSource.clip = null;
+        audioSource.loop = false;
+        audioSource.PlayOneShot(beamOffClip);
     }
 
     public override void Scroll(float delta)
@@ -80,7 +122,7 @@ public class TractorBeamTool : ATool
 
     public override void OnEquip() { }
 
-    public override void OnUnequip() => TheBeam.turnOffBeam();
+    public override void OnUnequip() => TurnOffBeam();
 
     public override float getFillPercentage()
     {

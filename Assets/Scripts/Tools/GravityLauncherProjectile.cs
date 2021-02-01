@@ -10,17 +10,8 @@ public class GravityLauncherProjectile : MonoBehaviour
     [SerializeField] private LayerMask layerMask;
     [SerializeField] private float activeLifeTime = 30f;
 
-    private class ObjectInArea
-    {
-        public GravityObject Gravity;
-        public Collider Col;
-
-        public ObjectInArea(GravityObject gravity, Collider col)
-        {
-            Gravity = gravity;
-            Col = col;
-        }
-    }
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
 
     private float _initialRadius;
     private bool _active = false;
@@ -36,7 +27,7 @@ public class GravityLauncherProjectile : MonoBehaviour
 
     private MeshRenderer _meshRenderer;
     private Rigidbody _rb;
-    private Dictionary<GravityObject, ObjectInArea> _objectsInArea = new Dictionary<GravityObject, ObjectInArea>();
+    private List<GravityObject> _objectsInArea = new List<GravityObject>();
 
     private void Awake()
     {
@@ -87,30 +78,30 @@ public class GravityLauncherProjectile : MonoBehaviour
             Collider[] co = Physics.OverlapSphere(transform.position, radius, layerMask);
             foreach (Collider collider in co)
             {
-                GravityObject gravityObject = Utils.findGravityObject(collider);
+                GravityObject gravityObject = Utils.FindGravityObject(collider);
                 if (!gravityObject)
                     continue;
-                (bool affected, _) = IsAffactingObject(collider.transform);
-                if (affected && !_objectsInArea.ContainsKey(gravityObject))
-                    _objectsInArea.Add(gravityObject, new ObjectInArea(gravityObject, collider));
+                (bool affected, _) = IsAffactingObject(gravityObject.GetMainCollider().transform);
+                if (affected && !_objectsInArea.Contains(gravityObject))
+                    _objectsInArea.Add(gravityObject);
             }
 
             List<GravityObject> toRemove = new List<GravityObject>();
-            foreach (ObjectInArea objInArea in _objectsInArea.Values)
+            foreach (GravityObject go in _objectsInArea)
             {
-                if(!objInArea.Col)
+                if(!go.GetMainCollider())
                 {
-                    toRemove.Add(objInArea.Gravity);
+                    toRemove.Add(go);
                     continue;
                 }
-                (bool affected, bool resetGravity) = IsAffactingObject(objInArea.Col.transform);
+                (bool affected, bool resetGravity) = IsAffactingObject(go.GetMainCollider().transform);
                 if (affected)
-                    objInArea.Gravity.SetLocalGravity(transform.up * -9.81f);
+                    go.SetLocalGravity(transform.up * -9.81f);
                 else
                 {
                     if(resetGravity)
-                        objInArea.Gravity.SetLocalGravity(_defaultGravity);
-                    toRemove.Add(objInArea.Gravity);
+                        go.SetLocalGravity(_defaultGravity);
+                    toRemove.Add(go);
                 }
             }
             foreach(GravityObject rem in toRemove)
@@ -127,6 +118,7 @@ public class GravityLauncherProjectile : MonoBehaviour
             _meshRenderer.material.SetVector("_Velocity", new Vector4(.8f * (1f - _lifeTime / activeLifeTime), 0.1f * (1f - _lifeTime / activeLifeTime), .8f * (1f - _lifeTime / activeLifeTime)));
             radius = _initialRadius * (1f - _lifeTime / activeLifeTime);
             _leaveRadius2 = (radius + 4f) * (radius + 4f);
+            audioSource.volume = (1f - _lifeTime / activeLifeTime);
         }
 
     }
@@ -171,14 +163,15 @@ public class GravityLauncherProjectile : MonoBehaviour
             Destroy(GetComponent<GravityObject>());
             Destroy(GetComponent<Collider>());
             Destroy(_rb);
+            audioSource.Play();
         }
     }
 
     private void OnDestroy()
     {
         Destroy(_sphere);
-        foreach (ObjectInArea objInArea in _objectsInArea.Values)
-            objInArea.Gravity.SetLocalGravity(_defaultGravity);
+        foreach (GravityObject go in _objectsInArea)
+            go.SetLocalGravity(_defaultGravity);
         _objectsInArea.Clear();
     }
 }

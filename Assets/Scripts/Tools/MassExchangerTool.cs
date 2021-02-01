@@ -14,15 +14,20 @@ public class MassExchangerTool : ATool
     [SerializeField] private GameObject chargerEffect;
     [SerializeField] private GameObject _inst_FX_hitFX;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip shootClip;
+    [SerializeField] private AudioClip soakClip;
+
     // initialize 2 objects that keep "saved" objects so we can swap them later
-    public Rigidbody _rbSource;
-    public Rigidbody _rbTarget;
+    private GravityObject _source;
+    private GravityObject _target;
 
     // initialize 2 stacks that store default values of objects so we can reset them
-    private Dictionary<Rigidbody, float> _changedObjects = new Dictionary<Rigidbody, float>();
+    private Dictionary<GravityObject, float> _changedObjects = new Dictionary<GravityObject, float>();
 
     // initialize energy ( ammo )
-    public float _energy = 20;
+    private float _energy = 20;
 
     //Shader FX
     private int _shader_active = Shader.PropertyToID("massExchangerActive");
@@ -55,45 +60,49 @@ public class MassExchangerTool : ATool
 
         if (Physics.Raycast(ray, out RaycastHit hit, 100f, layerMask))
         {
-            Rigidbody rb = Utils.findRigidbody(hit.collider);
-            if (rb == null)
+            GravityObject go = Utils.FindGravityObject(hit.collider);
+            if (go == null)
                 return;
 
             if (isRightClick)
             {
-                _rbSource = rb;
+                _source = go;
                 fxActivate_getRay(hit);
+                audioSource.pitch = Random.Range(0.9f, 1.1f);
+                audioSource.PlayOneShot(shootClip, Random.Range(0.5f, 1f));
             }
             else
             {
-                if (_rbSource == null)
+                if (_source == null)
                     return;
 
-                _rbTarget = rb;
+                _target = go;
                 fxActivate_shootRay(hit);
                 SwitchMasses();
+                audioSource.pitch = Random.Range(0.9f, 1.1f);
+                audioSource.PlayOneShot(shootClip, Random.Range(0.5f, 1f));
             }
         }
     }
 
     private void SwitchMasses()
     {
-        if(!_changedObjects.ContainsKey(_rbSource))
-            _changedObjects.Add(_rbSource, _rbSource.mass);
-        if (!_changedObjects.ContainsKey(_rbTarget))
-            _changedObjects.Add(_rbTarget, _rbTarget.mass);
-        float sourceMass = _rbSource.mass;
-        _rbSource.mass = _rbTarget.mass;
-        _rbTarget.mass = sourceMass;
+        if(!_changedObjects.ContainsKey(_source))
+            _changedObjects.Add(_source, _source.GetRB().mass);
+        if (!_changedObjects.ContainsKey(_target))
+            _changedObjects.Add(_target, _target.GetRB().mass);
+        float sourceMass = _source.GetRB().mass;
+        _source.GetRB().mass = _target.GetRB().mass;
+        _target.GetRB().mass = sourceMass;
     }
 
     public override void Reset(bool isRelease)
     {
-        foreach(KeyValuePair<Rigidbody, float> changedObject in _changedObjects)
+        foreach(KeyValuePair<GravityObject, float> changedObject in _changedObjects)
         {
-            changedObject.Key.mass = changedObject.Value;
-            updateAllColor(changedObject.Key.gameObject, _shader_active, 0);
-            updateAllColor(changedObject.Key.gameObject, _shader_Mass, _rbTarget.mass);
+            changedObject.Key.GetRB().mass = changedObject.Value;
+            Utils.SetMaterialPropertyFloat(changedObject.Key.GetMainRenderer(), _shader_active, 0);
+            Utils.SetMaterialPropertyFloat(changedObject.Key.GetMainRenderer(), _shader_Mass, _target.GetRB().mass);
         }
         _changedObjects.Clear();
     }
@@ -107,14 +116,6 @@ public class MassExchangerTool : ATool
     public override void OnEquip() { }
     public override void OnUnequip() { }
 
-    private void updateAllColor(GameObject input, int propertyID, float mass) {
-
-        Renderer[] children;
-        children = input.GetComponentsInChildren<Renderer>();
-        foreach (Renderer rend in children)
-            rend.material.SetFloat(propertyID, mass);
-    }
-
     private void fxActivate_getRay(RaycastHit hit)
     {
         chargerEffect.SetActive(true);
@@ -124,7 +125,9 @@ public class MassExchangerTool : ATool
         laserEffect_IN.SetPosition(1, transform.InverseTransformPoint(hit.point));
         laserEffect_IN.SetPosition(0, transform.InverseTransformPoint(beamStart.transform.position));
 
-        updateAllColor(chargerEffect, _shader_Mass_For_Rings, _rbSource.mass);
+        Renderer[] children = chargerEffect.GetComponentsInChildren<Renderer>();
+        foreach (Renderer rend in children)
+            rend.material.SetFloat(_shader_Mass_For_Rings, _source.GetRB().mass);
     }
 
     private void fxActivate_shootRay(RaycastHit hit)
@@ -137,10 +140,10 @@ public class MassExchangerTool : ATool
         laserEffect_OUT.SetPosition(0, transform.InverseTransformPoint(beamStart.transform.position));
 
         //Shader FX
-        updateAllColor(_rbSource.gameObject, _shader_active, 1);
-        updateAllColor(_rbSource.gameObject, _shader_Mass, _rbTarget.mass);
-        updateAllColor(_rbTarget.gameObject, _shader_active, 1);
-        updateAllColor(_rbTarget.gameObject, _shader_Mass, _rbSource.mass);
+        Utils.SetMaterialPropertyFloat(_source.GetMainRenderer(), _shader_active, 1);
+        Utils.SetMaterialPropertyFloat(_source.GetMainRenderer(), _shader_Mass, _target.GetRB().mass);
+        Utils.SetMaterialPropertyFloat(_target.GetMainRenderer(), _shader_active, 1);
+        Utils.SetMaterialPropertyFloat(_target.GetMainRenderer(), _shader_Mass, _source.GetRB().mass);
     }
 
     public override float getFillPercentage()
