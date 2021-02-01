@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class dumpreset : MonoBehaviour
 {
-    [SerializeField] private LayerMask layerMask;
     [SerializeField] private GameObject resetPosition;
 
     private List<GameObject> savedObjects = new List<GameObject>();

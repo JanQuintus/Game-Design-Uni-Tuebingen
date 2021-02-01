@@ -10,4 +10,9 @@ public class Dumpreset_Button : AInteractive
     {
         resetTrigger.GetComponent<dumpreset>().Release();
     }
+
+    public override string GetText()
+    {
+        return "Release trash";
+    }
 }
