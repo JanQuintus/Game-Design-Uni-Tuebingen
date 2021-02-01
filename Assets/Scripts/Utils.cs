@@ -13,7 +13,6 @@ public static class Utils
 
     public static void SetMaterialPropertyFloat(Renderer input, int propertyID, float value)
     {
-
         Renderer[] children;
         children = input.GetComponentsInChildren<Renderer>();
         input.material.SetFloat(propertyID, value);
