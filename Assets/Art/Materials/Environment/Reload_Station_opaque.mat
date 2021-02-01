@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Reload_Station_opaque
-  m_Shader: {fileID: -6465566751694194690, guid: 5814a7c01f848b44c84ebeb68e2c325b, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 58911e9d8aed54841a448b4d4c669076, type: 3}
   m_ShaderKeywords: _EMISSION _METALLICSPECGLOSSMAP _NORMALMAP _OCCLUSIONMAP
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
@@ -121,9 +121,9 @@ Material:
     - Vector1_29536CEB: 1
     - Vector1_3477AD0B: 1
     - Vector1_61D36CC8: 1
-    - Vector1_8AB71B37: 0
-    - Vector1_8B349428: 1
-    - Vector1_C0877173: 0.2
+    - Vector1_8AB71B37: 0.409
+    - Vector1_8B349428: 0.954
+    - Vector1_C0877173: 1
     - Vector1_E81A4BB5: 1
     - _AlphaClip: 0
     - _Blend: 0
@@ -140,6 +140,7 @@ Material:
     - _OPACITY: 1
     - _OcclusionStrength: 1
     - _Opacity: 0
+    - _Outline: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _SPECULAR_IOR: 1.5
@@ -164,6 +165,7 @@ Material:
     - massExchangerActive: 0
     - massExchangerMass: 50
     m_Colors:
+    - Color_24454B92: {r: 2.828427, g: 2.462395, b: 0, a: 0}
     - Color_772E7EB5: {r: 0.1306411, g: 0.6226415, b: 0.03202597, a: 0}
     - Color_AF48E70C: {r: 1, g: 1, b: 1, a: 1}
     - Color_CDC2F5D9: {r: 1.380392, g: 0, b: 0.4156863, a: 0}

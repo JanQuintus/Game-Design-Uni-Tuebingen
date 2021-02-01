@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: livingRoom
+  m_Shader: {fileID: -6465566751694194690, guid: 58911e9d8aed54841a448b4d4c669076, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - Texture2D_17882470:
+        m_Texture: {fileID: 2800000, guid: b04538b9571028649906b263c84cb6b1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_338D783F:
+        m_Texture: {fileID: 2800000, guid: e04dde6c4e5f5fd45856748f2df72f1b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_79E4290A:
+        m_Texture: {fileID: 2800000, guid: df845e9f3f107b54482a8c4d67afbd1b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_C8E3B16B:
+        m_Texture: {fileID: 2800000, guid: 385a3febd296d024eb901aaa7cc35482, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_CC331312:
+        m_Texture: {fileID: 2800000, guid: af5f43769476ba8469173c0a00433639, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_EACB6B4:
+        m_Texture: {fileID: 2800000, guid: 6addfaffa6349cf4c901d0d748bd5914, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - Vector1_29536CEB: 3
+    - Vector1_3477AD0B: 1
+    - Vector1_61D36CC8: 1
+    - Vector1_8AB71B37: 0
+    - Vector1_8B349428: 1
+    - Vector1_C0877173: 1
+    - Vector1_E81A4BB5: 1
+    - _Outline: 0
+    m_Colors:
+    - Color_24454B92: {r: 1.4980392, g: 1.309804, b: 0, a: 0}
+    - Color_772E7EB5: {r: 0.1306411, g: 0.6226415, b: 0.03202597, a: 0}
+    - Color_AF48E70C: {r: 0.1306411, g: 0.6226415, b: 0.03202597, a: 0}
+    - Vector2_244D3294: {r: 1, g: 1, b: 0, a: 0}
+    - Vector2_A19262E8: {r: 0, g: 0, b: 0, a: 0}
+  m_BuildTextureStacks: []

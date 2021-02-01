@@ -51,14 +51,19 @@ Material:
     - Vector1_61D36CC8: 1
     - Vector1_8AB71B37: 0.318
     - Vector1_8B349428: 1
+    - Vector1_9E352A14: 10
     - Vector1_C0877173: 1
     - Vector1_C9735BD2: 0
     - Vector1_DF125E: 1
     - Vector1_E81A4BB5: 1
+    - beamActive: 0
     - gunActive: 0
+    - massExchangerActive: 0
+    - massExchangerMass: 50
     m_Colors:
     - Color_772E7EB5: {r: 0.6745098, g: 4, b: 0, a: 0}
     - Color_AF48E70C: {r: 0.1306411, g: 0.6226415, b: 0.03202597, a: 0}
+    - Color_CDC2F5D9: {r: 1.380392, g: 0, b: 0.4156863, a: 0}
     - Vector2_244D3294: {r: 1, g: 1, b: 0, a: 0}
     - Vector2_A19262E8: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

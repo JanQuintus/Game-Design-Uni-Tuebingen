@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef2e490ca9f9adc43911aab7da013b90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outlineMaterial: {fileID: 0}
+  outlineMaterial: {fileID: 6874168421141608013}
   GravityLauncher: {fileID: 6027111610862128437}
   GravityGun: {fileID: 6027111610950129387}
   MassExchanger: {fileID: 6027111610036277189}

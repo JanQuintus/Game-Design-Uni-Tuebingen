@@ -1,0 +1,68 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: wood_table
+  m_Shader: {fileID: -6465566751694194690, guid: 5814a7c01f848b44c84ebeb68e2c325b, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - Texture2D_17882470:
+        m_Texture: {fileID: 2800000, guid: 17cb8241f1feae54887ab8ff35e61618, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_338D783F:
+        m_Texture: {fileID: 2800000, guid: 0e8f9699543f94f43897cca7c70896c9, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_79E4290A:
+        m_Texture: {fileID: 2800000, guid: 94634d0988b149a498ac6eca347b18b1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_C8E3B16B:
+        m_Texture: {fileID: 2800000, guid: 03bb9a6a2addb934d9df5e9b813190a4, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_CC331312:
+        m_Texture: {fileID: 2800000, guid: d8950afb9ddf33a41bf0bb9d9aeca358, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_EACB6B4:
+        m_Texture: {fileID: 2800000, guid: b24a9cd5a59946746a991b90502560f8, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - BOOLEAN_C4B60371: 0
+    - Vector1_29536CEB: 2
+    - Vector1_3477AD0B: 1
+    - Vector1_5E17E60D: 1
+    - Vector1_61D36CC8: 1
+    - Vector1_8AB71B37: 0.35
+    - Vector1_8B349428: 1
+    - Vector1_C0877173: 1
+    - Vector1_C9735BD2: 0
+    - Vector1_DF125E: 1
+    - Vector1_E81A4BB5: 1
+    - beamActive: 0
+    - gunActive: 0
+    - massExchangerActive: 0
+    - massExchangerMass: 50
+    m_Colors:
+    - Color_772E7EB5: {r: 0.6745098, g: 4, b: 0, a: 0}
+    - Color_AF48E70C: {r: 0.1306411, g: 0.6226415, b: 0.03202597, a: 0}
+    - Color_CDC2F5D9: {r: 1.380392, g: 0, b: 0.4156863, a: 0}
+    - Vector2_244D3294: {r: 1, g: 1, b: 0, a: 0}
+    - Vector2_A19262E8: {r: 0, g: 0, b: 0, a: 0}
+  m_BuildTextureStacks: []
