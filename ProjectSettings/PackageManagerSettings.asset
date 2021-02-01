@@ -13,7 +13,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EnablePreviewPackages: 1
+<<<<<<< HEAD
   m_EnablePackageDependencies: 1
+=======
+  m_EnablePackageDependencies: 0
+>>>>>>> origin/feature/GrassAndWater
   m_AdvancedSettingsExpanded: 1
   m_ScopedRegistriesSettingsExpanded: 1
   oneTimeWarningShown: 1
