@@ -520,6 +520,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83802f79df48987479974f3c8dc995bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainCanera: {fileID: 435276534576922372}
   col: {fileID: 435276534685218393}
   height: 1.8
   toolBelt: {fileID: 435276535208244453}

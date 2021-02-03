@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
 {
     public static PlayerController Instance;
 
+    [SerializeField] private Camera mainCanera;
     [SerializeField] private CapsuleCollider col;
     [SerializeField] private float height = 1.8f;
     [SerializeField] private ToolBelt toolBelt;
@@ -347,6 +348,8 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
     public AITarget GetAITarget() => _target;
 
     public ToolBelt GetToolBelt() => toolBelt;
+
+    public Camera GetMainCamera() => mainCanera;
 
     public void BlockInput()
     {
