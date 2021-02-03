@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8176961622020886120}
   - component: {fileID: 6241584516886854306}
   - component: {fileID: 4710489978722439613}
+  - component: {fileID: 292211150972260908}
   m_Layer: 0
   m_Name: Hallway_Crossing
   m_TagString: Untagged
@@ -96,3 +97,16 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 5291542717928427026, guid: 526ce7a63442d0540908b4b41843f3aa, type: 3}
+--- !u!114 &292211150972260908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5593027068317260663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6f620a912aad4c46a3abcc4664f8269, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collisionClip: {fileID: 8300000, guid: e86d0053efbacd547803851dced448e4, type: 3}

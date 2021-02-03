@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2325651986365822253}
-  - component: {fileID: -5981957425435701149}
   m_Layer: 0
   m_Name: Hangar_pillar (9)
   m_TagString: Untagged
@@ -33,20 +32,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
---- !u!64 &-5981957425435701149
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3102329801394122647}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
 --- !u!1 &5980854631120212771
 GameObject:
   m_ObjectHideFlags: 0
@@ -140,6 +125,7 @@ GameObject:
   - component: {fileID: 760211375816763718}
   - component: {fileID: 5509238852704235735}
   - component: {fileID: 8868502890972025496}
+  - component: {fileID: 505513434043141847}
   m_Layer: 0
   m_Name: Cube.001
   m_TagString: Untagged
@@ -224,3 +210,16 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4493585093827132993, guid: 676a64576786fda4b9cb4e176cdaf06f, type: 3}
+--- !u!114 &505513434043141847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6852977608086131414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6f620a912aad4c46a3abcc4664f8269, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collisionClip: {fileID: 8300000, guid: 97db2f51957a5604abb2333c09d020bc, type: 3}

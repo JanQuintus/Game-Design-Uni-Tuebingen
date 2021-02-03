@@ -46,6 +46,7 @@ GameObject:
   - component: {fileID: 8613064576910296615}
   - component: {fileID: 5443685891740378596}
   - component: {fileID: 3521501665966319016}
+  - component: {fileID: 5270272211077939093}
   m_Layer: 0
   m_Name: Hallway_One_Door
   m_TagString: Untagged
@@ -130,6 +131,19 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 2534964839176971238, guid: 221bec54924f03b4291ee26af8f84dcc, type: 3}
+--- !u!114 &5270272211077939093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3521501665966319023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6f620a912aad4c46a3abcc4664f8269, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collisionClip: {fileID: 8300000, guid: e86d0053efbacd547803851dced448e4, type: 3}
 --- !u!1 &3521501666216078298
 GameObject:
   m_ObjectHideFlags: 0
@@ -234,6 +248,7 @@ GameObject:
   - component: {fileID: 70793102453713770}
   - component: {fileID: 2819102434979078048}
   - component: {fileID: 4332333967831367286}
+  - component: {fileID: 5262796220329355028}
   m_Layer: 0
   m_Name: Hallway_Pillars (1)
   m_TagString: Untagged
@@ -318,6 +333,19 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 2534964839176971238, guid: 8bd72d5e52e2f7a4c9275e5c19a7a93d, type: 3}
+--- !u!114 &5262796220329355028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4332333967831367285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6f620a912aad4c46a3abcc4664f8269, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collisionClip: {fileID: 8300000, guid: e86d0053efbacd547803851dced448e4, type: 3}
 --- !u!1001 &878301122018955798
 PrefabInstance:
   m_ObjectHideFlags: 0

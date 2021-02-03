@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2205300994829074662}
   - component: {fileID: 4142813423686300716}
   - component: {fileID: -9155859908212788070}
+  - component: {fileID: 21684721652346332}
   m_Layer: 0
   m_Name: Hangar_ConcreteWall_5x5 (48)
   m_TagString: Untagged
@@ -95,3 +96,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.049999997, y: 0.049999997, z: 0.000000002980232}
   m_Center: {x: 0.024999999, y: -7.6976435e-17, z: 0.0000000026325055}
+--- !u!114 &21684721652346332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2485642485572113913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6f620a912aad4c46a3abcc4664f8269, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collisionClip: {fileID: 8300000, guid: 97db2f51957a5604abb2333c09d020bc, type: 3}

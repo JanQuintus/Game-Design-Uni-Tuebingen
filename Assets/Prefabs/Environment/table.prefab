@@ -49,6 +49,7 @@ GameObject:
   - component: {fileID: 7829896133665639313}
   - component: {fileID: 555618592681340275}
   - component: {fileID: 5138115059437970770}
+  - component: {fileID: 421687310261660415}
   m_Layer: 0
   m_Name: default
   m_TagString: Untagged
@@ -148,6 +149,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   localGravity: {x: 0, y: -9.81, z: 0}
+  rb: {fileID: 0}
+  mainCollider: {fileID: 0}
+  mainRenderer: {fileID: 0}
+  goEnabled: 1
 --- !u!65 &7072257442926075178
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -213,3 +218,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.21025586, y: 1.0333749, z: 0.22496021}
   m_Center: {x: -0.48, y: 0, z: -0.91}
+--- !u!114 &421687310261660415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7549252497509661365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6f620a912aad4c46a3abcc4664f8269, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collisionClip: {fileID: 8300000, guid: b7e8b68794d263b4781aca9f0d92a73d, type: 3}

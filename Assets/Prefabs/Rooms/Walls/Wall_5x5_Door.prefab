@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7209149134743992196}
   - component: {fileID: 4893439965463708494}
   - component: {fileID: 6064492829907394500}
+  - component: {fileID: 1640232107482589241}
   m_Layer: 0
   m_Name: Wall_5x5_Door
   m_TagString: Untagged
@@ -97,6 +98,19 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -462981019419857548, guid: 68fb8027ace4e824abf28b18a7f8f653, type: 3}
+--- !u!114 &1640232107482589241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6406372432223249051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6f620a912aad4c46a3abcc4664f8269, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collisionClip: {fileID: 8300000, guid: e86d0053efbacd547803851dced448e4, type: 3}
 --- !u!1001 &2518166974983143524
 PrefabInstance:
   m_ObjectHideFlags: 0

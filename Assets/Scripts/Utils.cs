@@ -17,6 +17,9 @@ public static class Utils
         children = input.GetComponentsInChildren<Renderer>();
         input.material.SetFloat(propertyID, value);
         foreach (Renderer rend in children)
-            rend.material.SetFloat(propertyID, value);
+        {
+            foreach(Material material in rend.materials)
+                material.SetFloat(propertyID, value);
+        }
     }
 }

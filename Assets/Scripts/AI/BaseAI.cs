@@ -15,14 +15,16 @@ public class BaseAI : MonoBehaviour
     [SerializeField] private float gcDistance = .3f;
     [SerializeField] private float gcRadius = .3f;
     [SerializeField] private LayerMask gcLayerMask;
+    [Header("Jumping")]
+    [SerializeField] private float jumpForce = 3f;
+    [SerializeField] private float maxObstacleHeight = 2f;
     [Header("Target Follow")]
     [SerializeField] private LayerMask obstacleLayerMask;
     [SerializeField] private float maxSlope = .4f;
     [SerializeField] private float stoppingDistance = .4f;
     [Header("Audio")]
-    [SerializeField] private AudioSource audioSource;
+    [SerializeField] protected AudioSource audioSource;
     [SerializeField] private AudioClip footStepClip;
-    [SerializeField] private AudioClip jumpClip;
     [SerializeField] private AudioClip landClip;
     [SerializeField] private float footStepDistance = 0.5f;
 
@@ -102,25 +104,25 @@ public class BaseAI : MonoBehaviour
 
                 if (!Physics.Raycast(transform.position + transform.TransformDirection(gcOffset) + transform.forward, -transform.up, gcDistance, obstacleLayerMask))
                 {
-                    _rb.AddForce(transform.up * _rb.mass * 6f, ForceMode.Impulse);
+                    _rb.AddForce(jumpForce * transform.up, ForceMode.VelocityChange);
                     _isGrounded = false;
                     animator.SetTrigger("Jump");
                 }else if (Physics.CapsuleCast(
                     transform.position + (mainCollider.radius + maxSlope) * transform.up,
-                    transform.position + (mainCollider.height - mainCollider.radius - maxSlope) * transform.up,
+                    transform.position + ((mainCollider.height / 2f) - mainCollider.radius) * transform.up,
                     mainCollider.radius,
                     rayDir,
                     out RaycastHit obstacle,
                     2f,
                     obstacleLayerMask))
                 {
-                    if(obstacleLayerMask == (obstacleLayerMask | (1 << obstacle.transform.gameObject.layer)))
+                    if((obstacleLayerMask == (obstacleLayerMask | (1 << obstacle.transform.gameObject.layer))) &&
+                        !Physics.Raycast(transform.position + (transform.up * maxObstacleHeight), transform.forward, 2f, obstacleLayerMask))
                     {
-                        _rb.AddForce(transform.up * _rb.mass * 6f, ForceMode.Impulse);
+                        _rb.AddForce(jumpForce * transform.up, ForceMode.VelocityChange);
                         _isGrounded = false;
                         animator.SetTrigger("Jump");
                         audioSource.pitch = 1;
-                        audioSource.PlayOneShot(jumpClip);
                     }
                 }
             }
@@ -136,7 +138,9 @@ public class BaseAI : MonoBehaviour
             {
                 localVelocity = transform.InverseTransformDirection(_rb.velocity);
                 Vector3 upVelocity = transform.TransformDirection(new Vector3(0, localVelocity.y, 0));
-                Vector3 moveDir = transform.InverseTransformDirection((_nextPosition - transform.position).normalized);
+                Vector3 moveDir = transform.InverseTransformDirection((_nextPosition - transform.position));
+                moveDir.y = 0;
+                moveDir = moveDir.normalized;
                 _smoothMove = Vector3.Lerp(_smoothMove, moveDir, Time.fixedDeltaTime * moveDamping);
                 float speed = walkSpeed * 100f;
                 if (_gravityChangeMoveBlockCD > 0)
@@ -215,6 +219,8 @@ public class BaseAI : MonoBehaviour
         for (int i = waypoints.Length - 1; i > 0; i--)
         {
             Vector3 wp = waypoints[i];
+            if (transform.InverseTransformPoint(wp).y > maxObstacleHeight)
+                continue;
             if (!Physics.CapsuleCast(
                 transform.position + (mainCollider.radius + 0.01f) * transform.up,
                 transform.position + (mainCollider.height - mainCollider.radius - maxSlope) * transform.up,
@@ -236,8 +242,6 @@ public class BaseAI : MonoBehaviour
         if (!foundWP)
             _lookPosition = transform.position + transform.forward;
 
-        Debug.DrawRay(transform.position + new Vector3(0, 1, 0), _lookPosition - transform.position, Color.blue);
-
         _nextPosition = targetPoint;
     }
 
@@ -249,5 +253,11 @@ public class BaseAI : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position + transform.TransformDirection(gcOffset) + -transform.up * gcDistance, gcRadius);
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(_nextPosition, 1.2f);
+
+        Gizmos.color = Color.white;
+        Gizmos.DrawWireSphere(transform.position + (maxSlope) * transform.up + transform.forward, mainCollider.radius);
+        Gizmos.color = Color.gray;
+        Gizmos.DrawWireSphere(transform.position + ((mainCollider.height / 2f) - mainCollider.radius) * transform.up + transform.forward, mainCollider.radius);
+        
     }
 }

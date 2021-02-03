@@ -54,9 +54,13 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
     [SerializeField] private AudioClip footStepClip;
     [SerializeField] private AudioClip jumpClip;
     [SerializeField] private AudioClip landClip;
-    [SerializeField] private AudioClip damageClip;
+    [SerializeField] private AudioClipBundle damageClipBundle;
     [SerializeField] private AudioClip crouchClip;
     [SerializeField] private AudioClip standUpClip;
+    [SerializeField] private AudioSource heartBeatSource;
+    [SerializeField] private float heartBeatNormalSpeed = 2f;
+    [SerializeField] private AudioClip heartBeat1;
+    [SerializeField] private AudioClip heartBeat2;
     [SerializeField] private float footStepDistance = 0.5f;
 
     private PlayerInputActions _inputActions;
@@ -91,6 +95,9 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
     private float _tbDefaultPosZ = 0;
     private float _tbTimer = 0;
 
+    private bool _heartBeat1Played = false;
+    private float _heartBeatSpeed;
+    private float _heartBeatTimer;
     private float _nextFoodStep;
 
     #region Unity Functions
@@ -123,6 +130,8 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
         _tbDefaultPosZ = toolHolder.localPosition.z;
         _health = GetComponentInParent<Health>();
         _nextFoodStep = footStepDistance;
+        _heartBeatSpeed = heartBeatNormalSpeed;
+        _heartBeatTimer = heartBeatNormalSpeed;
 
         _health.OnDeath.AddListener(() =>
         {
@@ -136,9 +145,9 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
             toolHolder.DOShakePosition(0.2f, 0.1f);
             damageScreenOverlay?.material.SetFloat("_Strength", 1f - _health.getHealthPercentage());
             audioSource.pitch = Random.Range(0.9f, 1.1f);
-            audioSource.PlayOneShot(damageClip, Mathf.Clamp01(damage / 10f));
+            audioSource.PlayOneShot(damageClipBundle.GetRandomClip(), Mathf.Clamp01(damage / 10f));
         });
-        _health.OnHealed.AddListener((damage) =>
+        _health.OnHealed.AddListener((healed) =>
         {
             damageScreenOverlay?.material.SetFloat("_Strength", 1f - _health.getHealthPercentage());
         });
@@ -294,6 +303,24 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
             _tbTimer = 0;
             toolHolder.localPosition = new Vector3(Mathf.Lerp(toolHolder.localPosition.x, _tbDefaultPosX, Time.deltaTime * (toolBobbingSpeed / 2f)),
                 Mathf.Lerp(toolHolder.localPosition.y, _tbDefaultPosY, Time.deltaTime * toolBobbingSpeed), toolHolder.localPosition.z);
+        }
+    }
+
+    private void Update()
+    {
+        _heartBeatSpeed = heartBeatNormalSpeed * Mathf.Max(0.2f, _health.getHealthPercentage());
+        heartBeatSource.volume = (1f - _health.getHealthPercentage()) * 2f + 0.1f;
+        _heartBeatTimer -= Time.deltaTime;
+        if(_heartBeatTimer / _heartBeatSpeed <= 0.3f && !_heartBeat1Played)
+        {
+            _heartBeat1Played = true;
+            heartBeatSource.PlayOneShot(heartBeat1);
+        }
+        if (_heartBeatTimer / _heartBeatSpeed <= 0f)
+        {
+            _heartBeat1Played = false;
+            _heartBeatTimer = _heartBeatSpeed;
+            heartBeatSource.PlayOneShot(heartBeat2);
         }
     }
 

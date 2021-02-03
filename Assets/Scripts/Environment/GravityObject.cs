@@ -36,4 +36,8 @@ public class GravityObject : MonoBehaviour
     public Rigidbody GetRB() => rb;
     public Collider GetMainCollider() => mainCollider;
     public Renderer GetMainRenderer() => mainRenderer;
+
+    public Rigidbody SetRB(Rigidbody value) => rb = value;
+    public Collider SetMainCollider(Collider value) => mainCollider = value;
+    public Renderer SetMainRenderer(Renderer value) => mainRenderer = value;
 }

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4300064571956330562}
   - component: {fileID: 2037899429522175112}
   - component: {fileID: 1865126663817406481}
+  - component: {fileID: 8078264090678739072}
   m_Layer: 0
   m_Name: Sci_Fi_Tiles_2_Wall_5x5
   m_TagString: Untagged
@@ -95,3 +96,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.049999997, y: 0.049999997, z: 0.0000000029802112}
   m_Center: {x: 0.024999999, y: 7.4505807e-10, z: 0.0000000026324838}
+--- !u!114 &8078264090678739072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 524931915825567069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6f620a912aad4c46a3abcc4664f8269, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collisionClip: {fileID: 8300000, guid: e86d0053efbacd547803851dced448e4, type: 3}

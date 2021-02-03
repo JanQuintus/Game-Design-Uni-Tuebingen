@@ -86,6 +86,8 @@ MonoBehaviour:
   startPosLeft: {fileID: 1428303862343050986}
   startPosRight: {fileID: 338413213528317572}
   duration: 1
+  doorOpenClip: {fileID: 8300000, guid: 2698a0735cb0f754d94e7165b9d25a85, type: 3}
+  doorCloseClip: {fileID: 8300000, guid: 4172f2d239a4d30478114c52d6b66e9b, type: 3}
 --- !u!1 &1428303862343050986
 GameObject:
   m_ObjectHideFlags: 0
@@ -291,7 +293,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d18e07d3e245e4d48926391173453080, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outlineMaterial: {fileID: 0}
+  outlineMaterial: {fileID: 3069890081476137026}
+  hoverClip: {fileID: 8300000, guid: d6601e34edecb804fa7a533842756740, type: 3}
   door: {fileID: 5327832979857058465}
 --- !u!1 &1865248205069119848
 GameObject:
@@ -415,8 +418,8 @@ GameObject:
   - component: {fileID: 9034070089723322317}
   - component: {fileID: 8835528721005028814}
   - component: {fileID: 3110912081722710307}
-  - component: {fileID: 4120866547531590380}
   - component: {fileID: 4120866547531590383}
+  - component: {fileID: 8466087284589332858}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -487,20 +490,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &4120866547531590380
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2828498795343718019}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -462981019419857548, guid: 02951cf27a6fd754ca2cd331a093e52c, type: 3}
 --- !u!64 &4120866547531590383
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -515,6 +504,19 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -462981019419857548, guid: 02951cf27a6fd754ca2cd331a093e52c, type: 3}
+--- !u!114 &8466087284589332858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2828498795343718019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6f620a912aad4c46a3abcc4664f8269, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collisionClip: {fileID: 8300000, guid: 97db2f51957a5604abb2333c09d020bc, type: 3}
 --- !u!1 &2948025415287801090
 GameObject:
   m_ObjectHideFlags: 0
@@ -609,7 +611,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d18e07d3e245e4d48926391173453080, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outlineMaterial: {fileID: 0}
+  outlineMaterial: {fileID: 686457548481161926}
+  hoverClip: {fileID: 8300000, guid: d6601e34edecb804fa7a533842756740, type: 3}
   door: {fileID: 5327832979857058465}
 --- !u!1 &3886935898735068840
 GameObject:
@@ -758,6 +761,7 @@ GameObject:
   - component: {fileID: 4092526582024181375}
   - component: {fileID: 1111713867699878184}
   - component: {fileID: 4120866547746556837}
+  - component: {fileID: 2558901933701549119}
   m_Layer: 0
   m_Name: Door Left
   m_TagString: Untagged
@@ -842,6 +846,19 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -5533540269259392523, guid: 02951cf27a6fd754ca2cd331a093e52c, type: 3}
+--- !u!114 &2558901933701549119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5275394115717767108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6f620a912aad4c46a3abcc4664f8269, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collisionClip: {fileID: 8300000, guid: e86d0053efbacd547803851dced448e4, type: 3}
 --- !u!1 &5402470483078863853
 GameObject:
   m_ObjectHideFlags: 0
@@ -854,6 +871,7 @@ GameObject:
   - component: {fileID: 527434623513560214}
   - component: {fileID: 7383474239573615464}
   - component: {fileID: 4120866548336295665}
+  - component: {fileID: 6164658367639294194}
   m_Layer: 0
   m_Name: Room
   m_TagString: Untagged
@@ -938,6 +956,19 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 5551418225153903260, guid: 02951cf27a6fd754ca2cd331a093e52c, type: 3}
+--- !u!114 &6164658367639294194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5402470483078863853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6f620a912aad4c46a3abcc4664f8269, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collisionClip: {fileID: 8300000, guid: e86d0053efbacd547803851dced448e4, type: 3}
 --- !u!1 &5950340461708460937
 GameObject:
   m_ObjectHideFlags: 0
@@ -1032,7 +1063,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d18e07d3e245e4d48926391173453080, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outlineMaterial: {fileID: 0}
+  outlineMaterial: {fileID: 5979469851593065198}
+  hoverClip: {fileID: 8300000, guid: d6601e34edecb804fa7a533842756740, type: 3}
   door: {fileID: 5327832979857058465}
 --- !u!1 &6599759669131256364
 GameObject:
@@ -1127,6 +1159,7 @@ GameObject:
   - component: {fileID: 2844419150794254679}
   - component: {fileID: 2938059513775134518}
   - component: {fileID: 4120866547129012190}
+  - component: {fileID: 3608853599427053398}
   m_Layer: 0
   m_Name: Door Right
   m_TagString: Untagged
@@ -1211,6 +1244,19 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 2771863361725037606, guid: 02951cf27a6fd754ca2cd331a093e52c, type: 3}
+--- !u!114 &3608853599427053398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8802921099955346301}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6f620a912aad4c46a3abcc4664f8269, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collisionClip: {fileID: 8300000, guid: e86d0053efbacd547803851dced448e4, type: 3}
 --- !u!1 &8900991009857577236
 GameObject:
   m_ObjectHideFlags: 0

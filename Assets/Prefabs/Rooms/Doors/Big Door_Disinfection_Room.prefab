@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2439317398634896817}
   - component: {fileID: 7352612618901693673}
   - component: {fileID: 1071583819690663645}
+  - component: {fileID: 3603506579283622715}
   m_Layer: 0
   m_Name: Frame
   m_TagString: Untagged
@@ -96,6 +97,19 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -6360558719573625917, guid: a57b9813332610643978b7f0bbe08353, type: 3}
+--- !u!114 &3603506579283622715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1071583819690663646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6f620a912aad4c46a3abcc4664f8269, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collisionClip: {fileID: 8300000, guid: e86d0053efbacd547803851dced448e4, type: 3}
 --- !u!1 &1578612201108237264
 GameObject:
   m_ObjectHideFlags: 0
@@ -154,6 +168,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d18e07d3e245e4d48926391173453080, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 8110215556074041634}
+  hoverClip: {fileID: 8300000, guid: d6601e34edecb804fa7a533842756740, type: 3}
   door: {fileID: 1623405467695710475}
 --- !u!1 &2035647817758355686
 GameObject:
@@ -208,6 +224,8 @@ MonoBehaviour:
   startPosLeft: {fileID: 6459146772033231737}
   startPosRight: {fileID: 6459146772033231737}
   duration: 1
+  doorOpenClip: {fileID: 8300000, guid: 2698a0735cb0f754d94e7165b9d25a85, type: 3}
+  doorCloseClip: {fileID: 8300000, guid: 4172f2d239a4d30478114c52d6b66e9b, type: 3}
 --- !u!1 &2132496421007882365
 GameObject:
   m_ObjectHideFlags: 0
@@ -287,6 +305,7 @@ GameObject:
   - component: {fileID: 1842387830533178511}
   - component: {fileID: 6792861509125621724}
   - component: {fileID: 4651401794575522714}
+  - component: {fileID: 2266707438574145360}
   m_Layer: 0
   m_Name: Door_Left
   m_TagString: Untagged
@@ -370,6 +389,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.01721492, y: 0.0006013165, z: 0.025377356}
   m_Center: {x: 0.0034026993, y: 0.00012791893, z: -0.0014994715}
+--- !u!114 &2266707438574145360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4651401794575522715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6f620a912aad4c46a3abcc4664f8269, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collisionClip: {fileID: 8300000, guid: e86d0053efbacd547803851dced448e4, type: 3}
 --- !u!1 &4913326013998447847
 GameObject:
   m_ObjectHideFlags: 0
@@ -428,6 +460,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d18e07d3e245e4d48926391173453080, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  outlineMaterial: {fileID: 8052069633685108988}
+  hoverClip: {fileID: 8300000, guid: d6601e34edecb804fa7a533842756740, type: 3}
   door: {fileID: 1623405467695710475}
 --- !u!1 &5352443051942963086
 GameObject:
@@ -441,6 +475,7 @@ GameObject:
   - component: {fileID: 9197542228085959848}
   - component: {fileID: 7326180739250907582}
   - component: {fileID: 5352443051942963085}
+  - component: {fileID: 6954626472837198546}
   m_Layer: 0
   m_Name: Door_Right
   m_TagString: Untagged
@@ -524,6 +559,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.017013703, y: 0.000601316, z: 0.025377352}
   m_Center: {x: 0.013230306, y: 0.00010348457, z: -0.0014994682}
+--- !u!114 &6954626472837198546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5352443051942963086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6f620a912aad4c46a3abcc4664f8269, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collisionClip: {fileID: 8300000, guid: e86d0053efbacd547803851dced448e4, type: 3}
 --- !u!1 &6459146772033231737
 GameObject:
   m_ObjectHideFlags: 0

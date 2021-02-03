@@ -107,6 +107,7 @@ GameObject:
   - component: {fileID: 6874168421516381674}
   - component: {fileID: 6874168421516381653}
   - component: {fileID: 6874168421516381652}
+  - component: {fileID: 5841984626418678125}
   m_Layer: 10
   m_Name: ReloadStation_Trigger
   m_TagString: Untagged
@@ -149,6 +150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outlineMaterial: {fileID: 6874168421141608013}
+  hoverClip: {fileID: 8300000, guid: d6601e34edecb804fa7a533842756740, type: 3}
   GravityLauncher: {fileID: 6027111610862128437}
   GravityGun: {fileID: 6027111610950129387}
   MassExchanger: {fileID: 6027111610036277189}
@@ -158,7 +160,10 @@ MonoBehaviour:
   StartPos: {fileID: 6874168422233648351}
   "K\xFChlschranklicht": {fileID: 6874168422084180514}
   timeToLightTheCabin: 0.5
-  duration: 1
+  audioSource: {fileID: 5841984626418678125}
+  windowOpenClip: {fileID: 8300000, guid: 95428bfec14971a41b42ef3c968fe1f8, type: 3}
+  windowCloseClip: {fileID: 8300000, guid: 95428bfec14971a41b42ef3c968fe1f8, type: 3}
+  duration: 0.25
   lightintensity: 0.04
 --- !u!65 &6874168421516381652
 BoxCollider:
@@ -173,6 +178,102 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.03, y: 1.21, z: 0.55}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!82 &5841984626418678125
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6874168421516381654}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -3176308983841283307, guid: 901e713bed13f83469857c2e0c839b9f, type: 2}
+  m_audioClip: {fileID: 8300000, guid: a2d282598d3fdf44493ea9706c488ef0, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.5
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 0.36356354
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &6874168421563379476
 GameObject:
   m_ObjectHideFlags: 0
