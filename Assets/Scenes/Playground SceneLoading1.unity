@@ -4045,7 +4045,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outlineMaterial: {fileID: 0}
   hoverClip: {fileID: 8300000, guid: d6601e34edecb804fa7a533842756740, type: 3}
-  scene: Playground SceneLoading2
+  scene: Dump
 --- !u!65 &1248654826
 BoxCollider:
   m_ObjectHideFlags: 0

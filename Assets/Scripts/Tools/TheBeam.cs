@@ -43,6 +43,7 @@ public class TheBeam : MonoBehaviour
     private void Awake()
     {
         _inst_FX = Instantiate(sphereEffect, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
+        _inst_FX.transform.SetParent(transform);
         _inst_FX.SetActive(false);
         activeEffect.SetActive(false);
     }

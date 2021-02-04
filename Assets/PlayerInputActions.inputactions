@@ -23,7 +23,7 @@
                 },
                 {
                     "name": "Sprint",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "b8a3708f-664b-4a1b-9df4-47ff62c20262",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -47,7 +47,7 @@
                 },
                 {
                     "name": "Crouch",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "67a741af-5068-4b6f-8352-6a48fba5da0d",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -121,6 +121,14 @@
                     "name": "Interact",
                     "type": "Button",
                     "id": "4b2cd536-8c99-487d-ba1a-b8fa54a56643",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "ToggleUIAndWeapon",
+                    "type": "Button",
+                    "id": "991cb12e-af98-49fb-8b9a-90d6e1b5bc45",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -377,6 +385,17 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "133ee3f7-6178-4d2f-8600-8d99dbbe6b5e",
+                    "path": "<Keyboard>/f1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "ToggleUIAndWeapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

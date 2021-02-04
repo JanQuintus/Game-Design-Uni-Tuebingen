@@ -26,6 +26,7 @@ public class SceneLoader : MonoBehaviour
         if (GameManager.CurrentScene == name)
             return;
 
+        //PlayerController.Instance.BlockInput();
         GameManager.LastScene = GameManager.CurrentScene;
         GameManager.CurrentScene = name;
         SceneManager.LoadScene("LoadingScreen", LoadSceneMode.Additive);
