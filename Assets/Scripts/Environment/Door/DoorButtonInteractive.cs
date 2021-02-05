@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DoorButtonInteractive : AInteractive
 {
-    [SerializeField] private DoorAnimated door;
+    [SerializeField] private Door door;
     [SerializeField] private static float openDuration = 5.0f;
 
     private float _currentTime = 0.0f;
