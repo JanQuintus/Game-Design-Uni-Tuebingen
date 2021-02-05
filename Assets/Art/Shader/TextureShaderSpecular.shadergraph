@@ -94,7 +94,7 @@
             "typeInfo": {
                 "fullName": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty"
             },
-            "JSONnodeData": "{\n    \"m_Guid\": {\n        \"m_GuidSerialized\": \"588712a5-041a-466c-bdb6-aaa95fd0f74c\"\n    },\n    \"m_Name\": \"EmissionMultiplier_Texture\",\n    \"m_DefaultReferenceName\": \"Vector1_9E352A14\",\n    \"m_OverrideReferenceName\": \"\",\n    \"m_GeneratePropertyBlock\": true,\n    \"m_Precision\": 0,\n    \"m_GPUInstanced\": false,\n    \"m_Hidden\": false,\n    \"m_Value\": 10.0,\n    \"m_FloatType\": 1,\n    \"m_RangeValues\": {\n        \"x\": 0.0,\n        \"y\": 50.0\n    }\n}"
+            "JSONnodeData": "{\n    \"m_Guid\": {\n        \"m_GuidSerialized\": \"588712a5-041a-466c-bdb6-aaa95fd0f74c\"\n    },\n    \"m_Name\": \"EmissionMultiplier_Texture\",\n    \"m_DefaultReferenceName\": \"Vector1_9E352A14\",\n    \"m_OverrideReferenceName\": \"\",\n    \"m_GeneratePropertyBlock\": true,\n    \"m_Precision\": 0,\n    \"m_GPUInstanced\": false,\n    \"m_Hidden\": false,\n    \"m_Value\": 10.0,\n    \"m_FloatType\": 1,\n    \"m_RangeValues\": {\n        \"x\": 0.0,\n        \"y\": 5000.0\n    }\n}"
         },
         {
             "typeInfo": {
