@@ -7,6 +7,9 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
 {
     public static PlayerController Instance;
 
+    [SerializeField] private Camera mainCanera;
+    [SerializeField] private Camera toolCamera;
+    [SerializeField] private Camera uiCamera;
     [SerializeField] private CapsuleCollider col;
     [SerializeField] private float height = 1.8f;
     [SerializeField] private ToolBelt toolBelt;
@@ -375,6 +378,8 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
 
     public ToolBelt GetToolBelt() => toolBelt;
 
+    public Camera GetMainCamera() => mainCanera;
+
     public void BlockInput()
     {
         _inputEnabled = false;
@@ -411,12 +416,12 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
         _rotate = context.ReadValue<Vector2>();
     }
 
-    public void OnSprint(InputAction.CallbackContext context) => _sprint = !_sprint;
-
+    public void OnSprint(InputAction.CallbackContext context) { if (context.performed || context.canceled) _sprint = context.performed; }
+    
     public void OnJumpStart(InputAction.CallbackContext context) { if (context.performed) _jumpRequest = true; }
     public void OnJumpHold(InputAction.CallbackContext context) => _jump = !_jump;
 
-    public void OnCrouch(InputAction.CallbackContext context) => _crouch = !_crouch;
+    public void OnCrouch(InputAction.CallbackContext context) { if (context.performed || context.canceled) _crouch = context.performed; }
 
     public void OnShoot(InputAction.CallbackContext context) {
         if (toolBelt.GetCurrentSlot() == null || toolBelt.GetCurrentSlot().Tool == null)
@@ -450,6 +455,15 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
     public void OnInteract(InputAction.CallbackContext context) { 
         if (context.performed || context.canceled)
             _interactor.PerformInteract(context.canceled);
+    }
+
+    public void OnToggleUIAndWeapon(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            toolCamera.enabled = !toolCamera.enabled;
+            uiCamera.enabled = !uiCamera.enabled;
+        }
     }
 
     #endregion
