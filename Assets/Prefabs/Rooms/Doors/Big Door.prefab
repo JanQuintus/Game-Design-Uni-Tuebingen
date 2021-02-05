@@ -265,7 +265,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d18e07d3e245e4d48926391173453080, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  door: {fileID: 8624266974796609285}
+  outlineMaterial: {fileID: 0}
+  hoverClip: {fileID: 0}
+  door: {fileID: 8793323038089176541}
 --- !u!1 &2765721867353553746
 GameObject:
   m_ObjectHideFlags: 0
@@ -694,7 +696,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d18e07d3e245e4d48926391173453080, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  door: {fileID: 8624266974796609285}
+  outlineMaterial: {fileID: 0}
+  hoverClip: {fileID: 0}
+  door: {fileID: 8793323038089176541}
 --- !u!1 &8984916034389216883
 GameObject:
   m_ObjectHideFlags: 0
@@ -734,7 +738,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7238577149269477267}
-  - component: {fileID: 8624266974796609285}
+  - component: {fileID: 8793323038089176541}
   m_Layer: 0
   m_Name: Sci-Fi Door
   m_TagString: Untagged
@@ -759,7 +763,7 @@ Transform:
   m_Father: {fileID: 7348435090871904849}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8624266974796609285
+--- !u!114 &8793323038089176541
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
