@@ -43,7 +43,7 @@ public class MutantBaseAI : BaseAI
         {
             _isAlive = false;
             if (_target != null)
-                _target.Untrack();
+                _target.Untrack(this);
             mainCollider.material.staticFriction = 1f;
             mainCollider.material.dynamicFriction = 1f;
             mainCollider.material.frictionCombine = PhysicMaterialCombine.Average;

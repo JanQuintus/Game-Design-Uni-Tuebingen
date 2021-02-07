@@ -467,8 +467,8 @@ GameObject:
   - component: {fileID: 435276534333218894}
   - component: {fileID: 435276534333218881}
   - component: {fileID: 435276534333218880}
-  - component: {fileID: 435276534333218895}
   - component: {fileID: 435276534333218892}
+  - component: {fileID: 7781016003907346302}
   m_Layer: 13
   m_Name: PlayerController
   m_TagString: Untagged
@@ -587,20 +587,6 @@ MonoBehaviour:
   mainCollider: {fileID: 435276534685218393}
   mainRenderer: {fileID: 0}
   goEnabled: 1
---- !u!114 &435276534333218895
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 435276534333218882}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68c02572a88a12d43931edc767d46409, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  waypointDistance: 1
-  maxWayPoints: 50
 --- !u!114 &435276534333218892
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -619,6 +605,20 @@ MonoBehaviour:
   interactLayerMask:
     serializedVersion: 2
     m_Bits: 1025
+--- !u!114 &7781016003907346302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 435276534333218882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 407620fc1bd3c0940b72b52917c7caa4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waypointDistance: 2
+  maxWayPoints: 50
 --- !u!1 &435276534370438874
 GameObject:
   m_ObjectHideFlags: 0
