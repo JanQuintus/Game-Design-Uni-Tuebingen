@@ -144,7 +144,7 @@ public class GravityLauncherProjectile : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.isStatic)
+        if (collision.gameObject.isStatic && collision.gameObject.tag != "NonSticky")
         {
             _rb.isKinematic = true;
             gameObject.isStatic = true;
