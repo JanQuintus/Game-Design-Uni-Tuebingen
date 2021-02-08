@@ -21,11 +21,11 @@ public class Interactor : MonoBehaviour
         {
             if(hit.transform.GetComponent<AInteractive>() != null)
             {
+                interactText.SetText(hit.transform.GetComponent<AInteractive>().GetText());
                 if (hit.transform.GetComponent<AInteractive>() == _current)
                     return;
                 _current = hit.transform.GetComponent<AInteractive>();
                 interactText.gameObject.SetActive(true);
-                interactText.SetText(_current.GetText());
                 _current.Hover();
             }
             else

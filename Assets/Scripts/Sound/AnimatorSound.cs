@@ -6,8 +6,7 @@ public class AnimatorSound : MonoBehaviour
 {
     [SerializeField] private AudioSource audioSource;
 
-    public void PlayAudioClip(AudioClip clip)
-    {
-        audioSource.PlayOneShot(clip);
-    }
+
+    public void PlayPlayer(AudioClip clip) => SoundController.Instance.PlaySFXPlayer(clip);
+    public void PlayAudioSource(AudioClip clip) => audioSource.PlayOneShot(clip);
 }

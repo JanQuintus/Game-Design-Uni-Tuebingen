@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8405520804001356452}
   - component: {fileID: 1922593142488568446}
   - component: {fileID: 2199615451358682839}
+  - component: {fileID: 1830738785543085019}
   m_Layer: 0
   m_Name: Door Left
   m_TagString: Untagged
@@ -96,6 +97,19 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: eca90685bd7c0e14c985891ef5c0a3f3, type: 3}
+--- !u!114 &1830738785543085019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 642521191060399119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6f620a912aad4c46a3abcc4664f8269, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collisionClip: {fileID: 8300000, guid: e86d0053efbacd547803851dced448e4, type: 3}
 --- !u!1 &653239164370562410
 GameObject:
   m_ObjectHideFlags: 0
@@ -265,7 +279,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d18e07d3e245e4d48926391173453080, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  door: {fileID: 8624266974796609285}
+  outlineMaterial: {fileID: 0}
+  hoverClip: {fileID: 0}
+  door: {fileID: 8793323038089176541}
 --- !u!1 &2765721867353553746
 GameObject:
   m_ObjectHideFlags: 0
@@ -278,6 +294,7 @@ GameObject:
   - component: {fileID: 860572339033099836}
   - component: {fileID: 7473919380047437400}
   - component: {fileID: 6790617700563243655}
+  - component: {fileID: 7264226345940898410}
   m_Layer: 0
   m_Name: Frame
   m_TagString: Untagged
@@ -362,6 +379,19 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300004, guid: eca90685bd7c0e14c985891ef5c0a3f3, type: 3}
+--- !u!114 &7264226345940898410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2765721867353553746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6f620a912aad4c46a3abcc4664f8269, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collisionClip: {fileID: 8300000, guid: e86d0053efbacd547803851dced448e4, type: 3}
 --- !u!1 &4074504706450959735
 GameObject:
   m_ObjectHideFlags: 0
@@ -485,6 +515,7 @@ GameObject:
   - component: {fileID: 1954736057943575087}
   - component: {fileID: 8196736459477264829}
   - component: {fileID: 2877026729859676401}
+  - component: {fileID: 2973752961402792695}
   m_Layer: 0
   m_Name: Door Right
   m_TagString: Untagged
@@ -569,6 +600,19 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300002, guid: eca90685bd7c0e14c985891ef5c0a3f3, type: 3}
+--- !u!114 &2973752961402792695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4437246692452761717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6f620a912aad4c46a3abcc4664f8269, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collisionClip: {fileID: 8300000, guid: e86d0053efbacd547803851dced448e4, type: 3}
 --- !u!1 &4572856572317828568
 GameObject:
   m_ObjectHideFlags: 0
@@ -694,7 +738,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d18e07d3e245e4d48926391173453080, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  door: {fileID: 8624266974796609285}
+  outlineMaterial: {fileID: 0}
+  hoverClip: {fileID: 0}
+  door: {fileID: 8793323038089176541}
 --- !u!1 &8984916034389216883
 GameObject:
   m_ObjectHideFlags: 0
@@ -734,7 +780,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7238577149269477267}
-  - component: {fileID: 8624266974796609285}
+  - component: {fileID: 8793323038089176541}
   m_Layer: 0
   m_Name: Sci-Fi Door
   m_TagString: Untagged
@@ -759,7 +805,7 @@ Transform:
   m_Father: {fileID: 7348435090871904849}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8624266974796609285
+--- !u!114 &8793323038089176541
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -778,3 +824,5 @@ MonoBehaviour:
   startPosLeft: {fileID: 4074504706450959735}
   startPosRight: {fileID: 8984916034389216883}
   duration: 1
+  doorOpenClip: {fileID: 8300000, guid: 2698a0735cb0f754d94e7165b9d25a85, type: 3}
+  doorCloseClip: {fileID: 8300000, guid: 4172f2d239a4d30478114c52d6b66e9b, type: 3}

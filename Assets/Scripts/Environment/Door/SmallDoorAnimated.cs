@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class SmallDoorAnimated : MonoBehaviour
+public class SmallDoorAnimated : Door
 {
     [SerializeField] private GameObject door;
     [SerializeField] private GameObject startPos;
@@ -12,12 +12,12 @@ public class SmallDoorAnimated : MonoBehaviour
     [SerializeField] private int duration = 1;
 
 
-    public void OpenDoor()
+    public override void OpenDoor()
     {
         door.transform.DOMove(endPos.transform.position, duration);
     }
 
-    public void CloseDoor()
+    public override void CloseDoor()
     {
         door.transform.DOMove(startPos.transform.position, duration);
     }

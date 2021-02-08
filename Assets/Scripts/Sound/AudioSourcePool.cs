@@ -10,6 +10,8 @@ public class AudioSourcePool : MonoBehaviour
     private Stack<AudioSource> _audioSources = new Stack<AudioSource>();
     private AudioSource _fallback;
 
+    private bool _locked = false;
+
     private void Awake()
     {
         for (int i = 0; i < poolSize; i++)
@@ -24,17 +26,22 @@ public class AudioSourcePool : MonoBehaviour
 
     public AudioSource GetAudioSource(Vector3 position, float volume = 1f, float range = 50f, float pitch = 1f)
     {
+        if (_locked)
+            return _fallback;
         if(_audioSources.Count == 0)
             return _fallback;
 
+        _locked = true;
+
         AudioSource audioSource = _audioSources.Pop();
 
-        audioSource.enabled = true;
+       // audioSource.enabled = true;
         audioSource.volume = volume;
         audioSource.transform.position = position;
         audioSource.maxDistance = range;
         audioSource.pitch = pitch;
 
+        _locked = false;
         return audioSource;
     }
 
@@ -43,7 +50,7 @@ public class AudioSourcePool : MonoBehaviour
         if (audioSource == _fallback)
             return;
 
-        audioSource.enabled = false;
+        //audioSource.enabled = false;
         audioSource.transform.position = Vector3.zero;
 
         _audioSources.Push(audioSource);
@@ -52,7 +59,7 @@ public class AudioSourcePool : MonoBehaviour
     private AudioSource SpawnAudioSource(int index)
     {
         AudioSource audioSource = Instantiate(reference, transform);
-        audioSource.enabled = false;
+        //audioSource.enabled = false;
         audioSource.transform.position = Vector3.zero;
         audioSource.name = "3DAudioSource_" + index;
         return audioSource;

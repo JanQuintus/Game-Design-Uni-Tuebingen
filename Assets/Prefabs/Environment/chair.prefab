@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 2437500546366313964}
   - component: {fileID: 2437500546366313971}
   - component: {fileID: 2437500546366313970}
+  - component: {fileID: 4045935091119148182}
   m_Layer: 0
   m_Name: default
   m_TagString: Untagged
@@ -158,3 +159,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   localGravity: {x: 0, y: -9.81, z: 0}
+  rb: {fileID: 0}
+  mainCollider: {fileID: 0}
+  mainRenderer: {fileID: 0}
+  goEnabled: 1
+--- !u!114 &4045935091119148182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5809397111845722642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6f620a912aad4c46a3abcc4664f8269, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collisionClip: {fileID: 8300000, guid: b7e8b68794d263b4781aca9f0d92a73d, type: 3}

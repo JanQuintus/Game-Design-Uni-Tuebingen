@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1799984878852759873}
   - component: {fileID: 4548112238980306315}
   - component: {fileID: 9075690468865050898}
+  - component: {fileID: 3011415206728610413}
   m_Layer: 0
   m_Name: Hangar_Ceiling_Corner (20)
   m_TagString: Untagged
@@ -95,3 +96,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.05000001, y: 0.049999997, z: 0.017155183}
   m_Center: {x: -0.025, y: 9.313224e-10, z: 0.008577556}
+--- !u!114 &3011415206728610413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2602763427955389534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6f620a912aad4c46a3abcc4664f8269, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collisionClip: {fileID: 8300000, guid: 97db2f51957a5604abb2333c09d020bc, type: 3}

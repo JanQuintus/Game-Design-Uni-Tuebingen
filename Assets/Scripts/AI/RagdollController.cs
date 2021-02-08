@@ -4,25 +4,24 @@ using UnityEngine;
 
 public class RagdollController : MonoBehaviour
 {
-    [SerializeField] private Transform hips; 
+    [SerializeField] private Transform hips;
+    [SerializeField] private Rigidbody hipsRB;
 
     private GravityObject _parentGravity;
-    private Rigidbody _parentRB;
 
     private bool _enabled = false;
     private List<Rigidbody> _childrenRBs = new List<Rigidbody>();
-    private float _baseMass = 70f;
     private Transform _mainCollider;
+    private float _baseMass = 70f;
 
     private void Awake()
     {
         _parentGravity = GetComponentInParent<GravityObject>();
-        _parentRB = GetComponentInParent<Rigidbody>();
 
         foreach (Rigidbody rb in GetComponentsInChildren<Rigidbody>())
         {
             rb.isKinematic = true;
-            _childrenRBs.Add(rb);
+            if(rb != hipsRB) _childrenRBs.Add(rb);
         }
         foreach (Collider col in GetComponentsInChildren<Collider>())
             col.enabled = false;
@@ -38,26 +37,37 @@ public class RagdollController : MonoBehaviour
 
         foreach (Rigidbody rb in _childrenRBs)
         {
-            rb.useGravity = _parentRB.useGravity;
-            rb.mass = (rb.mass / _baseMass) * _parentRB.mass;
-            _baseMass = _parentRB.mass;
-            if(_parentRB.useGravity)
+            rb.useGravity = hipsRB.useGravity;
+            rb.mass = (rb.mass / _baseMass) * hipsRB.mass;
+
+            if (hipsRB.useGravity)
                 rb.AddForce(_parentGravity.GetLocalGravity(), ForceMode.Acceleration);
         }
+        _baseMass = hipsRB.mass;
+
     }
 
-    public void EnableRagdoll(Transform mainCollider)
+    public void EnableRagdoll(Transform mainCollider, Rigidbody copyRB)
     {
         _mainCollider = mainCollider;
+        hipsRB.mass = copyRB.mass;
+        hipsRB.useGravity = copyRB.useGravity;
+        hipsRB.isKinematic = false;
+
         foreach (Rigidbody rb in _childrenRBs)
         {
             rb.isKinematic = false;
-            rb.useGravity = _parentRB.useGravity;
-            rb.mass = (rb.mass / 70f) * _parentRB.mass;
+            rb.useGravity = copyRB.useGravity;
+            rb.mass = (rb.mass / _baseMass) * hipsRB.mass;
         }
         foreach (Collider col in GetComponentsInChildren<Collider>())
             col.enabled = true;
 
+        _baseMass = copyRB.mass;
+
+
         _enabled = true;
     }
+
+    public Rigidbody GetHipsRB() => hipsRB;
 }

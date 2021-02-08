@@ -9,6 +9,10 @@ public class MutantBaseAI : BaseAI
     [SerializeField] protected int attacks = 3;
     [SerializeField] protected RagdollController ragdollController;
 
+    [Header("Mutant Audio")]
+    [SerializeField] private AudioClipBundle damageClipBundle;
+    [SerializeField] private AudioClipBundle deathClipBundle;
+    [SerializeField] private AudioClipBundle growlClipBundle;
 
     private float maxPlayerDistance = 30f;
     private Health _health;
@@ -16,6 +20,7 @@ public class MutantBaseAI : BaseAI
 
     private float _mpd2;
     private int _aiLayer;
+    private float _nextGrowl;
 
 
     protected override void Awake()
@@ -23,12 +28,15 @@ public class MutantBaseAI : BaseAI
         base.Awake();
         _aiLayer = LayerMask.NameToLayer("AI");
         _mpd2 = maxPlayerDistance * maxPlayerDistance;
+        _nextGrowl = Random.Range(3f, 10f);
         _health = GetComponent<Health>();
-        _health.OnDamaged.AddListener((dmg) =>
+        _health.OnDamaged.AddListener((damage) =>
         {
             if (_isAlive)
             {
                 animator.SetTrigger("Hit");
+                audioSource.pitch = Random.Range(0.9f, 1.1f);
+                audioSource.PlayOneShot(damageClipBundle.GetRandomClip(), Mathf.Clamp01(damage / 10f));
             }
         });
         _health.OnDeath.AddListener(() =>
@@ -41,7 +49,10 @@ public class MutantBaseAI : BaseAI
             mainCollider.material.frictionCombine = PhysicMaterialCombine.Average;
             animator.enabled = false;
             _rb.isKinematic = true;
-            ragdollController.EnableRagdoll(mainCollider.transform);
+            _gravity.SetRB(ragdollController.GetHipsRB());
+            ragdollController.EnableRagdoll(mainCollider.transform, _rb);
+            audioSource.pitch = Random.Range(0.9f, 1.1f);
+            audioSource.PlayOneShot(damageClipBundle.GetRandomClip());
         });
     }
 
@@ -55,6 +66,8 @@ public class MutantBaseAI : BaseAI
         else if (_target != null && Vector3.SqrMagnitude(transform.position - PlayerController.Instance.transform.position) > _mpd2)
             SetTarget(null);
 
+
+
         if (_atTarget)
         {
             _attackTimeCD -= Time.deltaTime;
@@ -64,10 +77,17 @@ public class MutantBaseAI : BaseAI
                 _canMove = false;
                 animator.SetInteger("AttackIndex", Random.Range(0, attacks));
                 animator.SetTrigger("Attack");
+                audioSource.PlayOneShot(growlClipBundle.GetRandomClip(), 2f);
             }
         }
         else
-        {
+        {        
+            _nextGrowl -= Time.deltaTime;
+            if(_nextGrowl <= 0f)
+            {
+                audioSource.PlayOneShot(growlClipBundle.GetRandomClip());
+                _nextGrowl = Random.Range(3f, 10f);
+            }
             if(!_canMove && _attackTimeCD > 0)
             {
                 _attackTimeCD -= Time.deltaTime;

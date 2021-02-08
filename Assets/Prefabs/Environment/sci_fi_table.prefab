@@ -334,6 +334,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1712833622435494613}
   - component: {fileID: 1175312404047099979}
+  - component: {fileID: 1747513439383149037}
   m_Layer: 0
   m_Name: sci_fi_table
   m_TagString: Untagged
@@ -382,6 +383,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 6, y: 5, z: 12}
   m_Center: {x: 0, y: -2, z: 0}
+--- !u!114 &1747513439383149037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2057834650980360303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6f620a912aad4c46a3abcc4664f8269, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collisionClip: {fileID: 8300000, guid: e86d0053efbacd547803851dced448e4, type: 3}
 --- !u!1 &2519385754215027518
 GameObject:
   m_ObjectHideFlags: 0

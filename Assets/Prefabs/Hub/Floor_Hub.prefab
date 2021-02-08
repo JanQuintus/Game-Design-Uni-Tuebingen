@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8353399555977257397}
   - component: {fileID: 7796457197504229609}
   - component: {fileID: 1861336943960700176}
+  - component: {fileID: 2540033482257155934}
   m_Layer: 0
   m_Name: Floor_Hub
   m_TagString: Untagged
@@ -313,3 +314,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 5, y: 0.1, z: 5.000002}
   m_Center: {x: 2.5, y: 0.05, z: -2.499999}
+--- !u!114 &2540033482257155934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2690439116474574220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6f620a912aad4c46a3abcc4664f8269, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collisionClip: {fileID: 8300000, guid: 97db2f51957a5604abb2333c09d020bc, type: 3}

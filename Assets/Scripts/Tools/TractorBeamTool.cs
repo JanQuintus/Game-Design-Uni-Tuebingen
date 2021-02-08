@@ -74,7 +74,7 @@ public class TractorBeamTool : ATool
             Vector3 shootDirection = ray.direction;
             TheBeam.shoot(_shootForce, shootDirection);
             TurnOffBeam();
-            audioSource.PlayOneShot(shootObjectClip);
+            audioSource.PlayOneShot(shootObjectClip, 0.25f);
 
             // reset windup
             _windUp = false;
@@ -95,7 +95,7 @@ public class TractorBeamTool : ATool
     {
         audioSource.pitch = 1;
         TheBeam.turnOnBeam(range);
-        audioSource.PlayOneShot(beamOnClip);
+        audioSource.PlayOneShot(beamOnClip, 0.25f);
         audioSource.clip = beamLoop;
         audioSource.loop = true;
         audioSource.Play();
@@ -108,7 +108,7 @@ public class TractorBeamTool : ATool
         audioSource.Stop();
         audioSource.clip = null;
         audioSource.loop = false;
-        audioSource.PlayOneShot(beamOffClip);
+        audioSource.PlayOneShot(beamOffClip, 0.25f);
     }
 
     public override void Scroll(float delta)

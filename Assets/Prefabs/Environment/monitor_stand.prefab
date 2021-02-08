@@ -253,6 +253,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3605991033155905239}
   - component: {fileID: 3855561494485212589}
+  - component: {fileID: 4443607737396194135}
   m_Layer: 0
   m_Name: monitor_stand
   m_TagString: Untagged
@@ -293,6 +294,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.54, y: 2.58, z: 1.57}
   m_Center: {x: 0, y: 1.29, z: 0.06}
+--- !u!114 &4443607737396194135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4125540327382596717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6f620a912aad4c46a3abcc4664f8269, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collisionClip: {fileID: 8300000, guid: e86d0053efbacd547803851dced448e4, type: 3}
 --- !u!1 &4471466727435088728
 GameObject:
   m_ObjectHideFlags: 0

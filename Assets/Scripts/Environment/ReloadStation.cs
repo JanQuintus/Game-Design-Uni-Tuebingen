@@ -16,9 +16,14 @@ public class ReloadStation : AInteractive
     [SerializeField] Light Kühlschranklicht;
     [SerializeField] float timeToLightTheCabin = 0.1f;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip windowOpenClip;
+    [SerializeField] private AudioClip windowCloseClip;
+
     private float _currentTime = 0.0f;
     [SerializeField] private static float reloadDuration = 5.0f;
-    [SerializeField] private int duration = 1;
+    [SerializeField] private float duration = 1;
     [SerializeField] private float lightintensity = 0.04f;
 
     private bool _isReloading = false;
@@ -42,6 +47,8 @@ public class ReloadStation : AInteractive
                 Kühlschranklicht.DOIntensity(0.04f, timeToLightTheCabin);
 
                 CloseWindow();
+                audioSource.PlayOneShot(windowCloseClip);
+                audioSource.Play();
             }
         }
         if(!_isReloading && _currentTool != null)
@@ -63,6 +70,9 @@ public class ReloadStation : AInteractive
                _currentTool.Reload();
                 _isReloading = false;
                 Kühlschranklicht.DOIntensity(0f, timeToLightTheCabin);
+                audioSource.Stop();
+                audioSource.PlayOneShot(windowOpenClip);
+
             }
         }
 
