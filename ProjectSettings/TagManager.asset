@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - GravityBomb
+  - NonSticky
   layers:
   - Default
   - TransparentFX
