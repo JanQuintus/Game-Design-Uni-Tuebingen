@@ -8,7 +8,9 @@ public class Dumpreset_Button : AInteractive
 
     public override void Interact(bool isRelease)
     {
+        base.Interact(isRelease);
         resetTrigger.GetComponent<dumpreset>().Release();
+        OnInteractionEnd.Invoke();
     }
 
     public override string GetText()

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
 public abstract class AInteractive : MonoBehaviour
 {
@@ -6,7 +7,13 @@ public abstract class AInteractive : MonoBehaviour
     private int _shader_active = Shader.PropertyToID("_Outline");
     [SerializeField] protected AudioClip hoverClip;
 
-    public abstract void Interact(bool isRelease);
+    public UnityEvent OnInteractionStart;
+    public UnityEvent OnInteractionEnd;
+
+    public virtual void Interact(bool isRelease)
+    {
+        OnInteractionStart.Invoke();
+    }
 
     public virtual void Hover()
     {

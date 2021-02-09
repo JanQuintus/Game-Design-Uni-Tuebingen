@@ -19,12 +19,15 @@ public class Interactor : MonoBehaviour
     {
         if (Physics.Raycast(source.position, source.forward, out RaycastHit hit, interactDistance, interactLayerMask))
         {
-            if(hit.transform.GetComponent<AInteractive>() != null)
+            AInteractive aInteractive = hit.transform.GetComponent<AInteractive>();
+            if (aInteractive == null) aInteractive = hit.transform.GetComponentInChildren<AInteractive>();
+
+            if(aInteractive != null)
             {
-                interactText.SetText(hit.transform.GetComponent<AInteractive>().GetText());
-                if (hit.transform.GetComponent<AInteractive>() == _current)
+                interactText.SetText(aInteractive.GetText());
+                if (aInteractive == _current)
                     return;
-                _current = hit.transform.GetComponent<AInteractive>();
+                _current = aInteractive;
                 interactText.gameObject.SetActive(true);
                 _current.Hover();
             }

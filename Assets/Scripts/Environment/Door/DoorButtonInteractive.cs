@@ -20,11 +20,13 @@ public class DoorButtonInteractive : AInteractive
 
     public override void Interact(bool isRelease)
     {
+        base.Interact(isRelease);
         if (!isRelease && _currentTime == 0)
         {
             _currentTime = Time.fixedTime;
             door.OpenDoor();
         }
+        OnInteractionEnd.Invoke();
     }
 
     public override string GetText()

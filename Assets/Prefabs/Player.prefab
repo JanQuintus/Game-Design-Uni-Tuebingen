@@ -604,7 +604,7 @@ MonoBehaviour:
   source: {fileID: 435276535253156492}
   interactLayerMask:
     serializedVersion: 2
-    m_Bits: 1025
+    m_Bits: 3073
 --- !u!114 &7781016003907346302
 MonoBehaviour:
   m_ObjectHideFlags: 0
