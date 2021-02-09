@@ -9,7 +9,7 @@ public class GravityLauncherProjectile : MonoBehaviour
     [SerializeField] private float radius = 20f;
     [SerializeField] private LayerMask layerMask;
     [SerializeField] private float activeLifeTime = 30f;
-
+    [SerializeField] private bool deactivateLifeTime = false;
     [Header("Audio")]
     [SerializeField] private AudioSource audioSource;
 
@@ -24,7 +24,7 @@ public class GravityLauncherProjectile : MonoBehaviour
     private Light _light;
     private Vector3 _defaultGravity = new Vector3(0, -9.81f, 0);
     private float _leaveRadius2;
-
+    
     private MeshRenderer _meshRenderer;
     private Rigidbody _rb;
     private List<GravityObject> _objectsInArea = new List<GravityObject>();
@@ -48,7 +48,10 @@ public class GravityLauncherProjectile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _lifeTime += Time.deltaTime;
+        if (!deactivateLifeTime)
+        {
+            _lifeTime += Time.deltaTime;
+        }
 
         if (!_active)
         {
