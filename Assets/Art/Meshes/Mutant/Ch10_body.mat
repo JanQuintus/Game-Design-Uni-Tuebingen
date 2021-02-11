@@ -33,7 +33,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - Texture2D_17882470:
-        m_Texture: {fileID: 2800000, guid: 8368bd12d64612f4b823b78e3926947e, type: 3}
+        m_Texture: {fileID: 2800000, guid: c429986e8e404264c9cac281f4993fe0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Texture2D_338D783F:
@@ -45,15 +45,15 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Texture2D_C8E3B16B:
-        m_Texture: {fileID: 2800000, guid: ce14ddad64807a84f87aaf141d0b6728, type: 3}
+        m_Texture: {fileID: 2800000, guid: 4829bc5ec34d3744f8f3d2ed17701cec, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Texture2D_CC331312:
-        m_Texture: {fileID: 2800000, guid: 933a8b988a12afd45bb6691ca043f665, type: 3}
+        m_Texture: {fileID: 2800000, guid: 022fc9b771f30e147b49d747f01eff3a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Texture2D_EACB6B4:
-        m_Texture: {fileID: 2800000, guid: ab6ccc546b3518345ba461471734b05c, type: 3}
+        m_Texture: {fileID: 2800000, guid: dc387e6c6760bf14db5179bf8fcbd591, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
@@ -87,9 +87,9 @@ Material:
     m_Floats:
     - Vector1_29536CEB: 10
     - Vector1_3477AD0B: 1
-    - Vector1_61D36CC8: 0
-    - Vector1_8AB71B37: 0.5
-    - Vector1_8B349428: 1
+    - Vector1_61D36CC8: 0.73
+    - Vector1_8AB71B37: 1
+    - Vector1_8B349428: 0
     - Vector1_9E352A14: 50
     - Vector1_C0877173: 0.8
     - Vector1_E81A4BB5: 1
@@ -119,8 +119,8 @@ Material:
     - massExchangerActive: 0
     - massExchangerMass: 50
     m_Colors:
-    - Color_772E7EB5: {r: 0.1306411, g: 0.6226415, b: 0.03202597, a: 0}
-    - Color_AF48E70C: {r: 0.06628585, g: 1, b: 0, a: 0}
+    - Color_772E7EB5: {r: 0.12941177, g: 0.62352943, b: 0.03137255, a: 0}
+    - Color_AF48E70C: {r: 1, g: 1, b: 1, a: 0}
     - Color_CDC2F5D9: {r: 1.380392, g: 0, b: 0.4156863, a: 0}
     - Vector2_244D3294: {r: 1, g: 1, b: 0, a: 0}
     - Vector2_A19262E8: {r: 0, g: 0, b: 0, a: 0}

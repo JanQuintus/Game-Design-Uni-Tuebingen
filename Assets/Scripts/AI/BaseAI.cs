@@ -33,6 +33,7 @@ public class BaseAI : MonoBehaviour
 
     protected AITarget _target;
     protected bool _canMove = true;
+    protected Vector3 _lastPosition;
     protected Vector3 _nextPosition;
     protected Vector3 _lookPosition;
     protected Vector3 _smoothMove;
@@ -142,7 +143,9 @@ public class BaseAI : MonoBehaviour
                 moveDir.y = 0;
                 moveDir = moveDir.normalized;
                 _smoothMove = Vector3.Lerp(_smoothMove, moveDir, Time.fixedDeltaTime * moveDamping);
-                float speed = walkSpeed * 100f;
+                float distance = Vector3.Distance(transform.position, _nextPosition);
+                distance = Mathf.Clamp01(distance);
+                float speed = walkSpeed * 100f * distance;
                 if (_gravityChangeMoveBlockCD > 0)
                 {
                     _gravityChangeMoveBlockCD -= Time.deltaTime;
@@ -203,46 +206,28 @@ public class BaseAI : MonoBehaviour
         if(target == null)
         {
             if (_target != null)
-                _target.Untrack();
+                _target.Untrack(this);
             _target = null;
             return;
         }
         _target = target;
-        target.Track();
+        target.Track(this);
     }
+
+    public Vector3 GetLastPosition() => _nextPosition;
+    public Vector3 GetLastLookPosition() => _lookPosition;
+    public float GetMaxObstacleHeight() => maxObstacleHeight;
+    public CapsuleCollider GetMainCollider() => mainCollider;
+    public float GetMaxSlope() => maxSlope;
+    public LayerMask GetObstacleLayerMask() => obstacleLayerMask;
 
     protected void FindNextPosition()
     {
-        Vector3 targetPoint = _nextPosition;
-        Vector3[] waypoints = _target.GetWayPoints();
-        bool foundWP = false;
-        for (int i = waypoints.Length - 1; i > 0; i--)
-        {
-            Vector3 wp = waypoints[i];
-            if (transform.InverseTransformPoint(wp).y > maxObstacleHeight)
-                continue;
-            if (!Physics.CapsuleCast(
-                transform.position + (mainCollider.radius + 0.01f) * transform.up,
-                transform.position + (mainCollider.height - mainCollider.radius - maxSlope) * transform.up,
-                mainCollider.radius,
-                wp - transform.position,
-                Vector3.Distance(transform.position, wp) - 1f,
-                obstacleLayerMask))
-            {
-                if (i < waypoints.Length - 1)
-                    _lookPosition = waypoints[i + 1];
-                else
-                    _lookPosition = _target.transform.position;
-                targetPoint = wp;
-                foundWP = true;
-                break;
-            }
-        }
+        (Vector3 targetPosition, Vector3 lookPosition) = _target.GetNextWaypoint(this);
 
-        if (!foundWP)
-            _lookPosition = transform.position + transform.forward;
-
-        _nextPosition = targetPoint;
+        _lookPosition = lookPosition;
+        _lastPosition = _nextPosition;
+        _nextPosition = targetPosition;
     }
 
     private void OnDrawGizmosSelected()

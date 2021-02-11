@@ -54,6 +54,7 @@ public class NPCDialogue : AInteractive
 
     public override void Interact(bool isRelease) // on Interact
     {
+        base.Interact(isRelease);
         if (!isRelease)
         {
             if (_choosingDialogue)
@@ -247,6 +248,7 @@ public class NPCDialogue : AInteractive
         _npcText = ScriptObjText.npcText;
         PlayerController.Instance.UnblockInput();
         _inputActions.Disable();
+        OnInteractionEnd.Invoke();
     }
 
     private void hideChoices() // self-xpl
@@ -258,6 +260,11 @@ public class NPCDialogue : AInteractive
             ChoicePanel3.gameObject.SetActive(false);
             ChoicePanel4.gameObject.SetActive(false);
         }
+    }
+
+    public override string GetText()
+    {
+        return "Talk";
     }
 }
 
