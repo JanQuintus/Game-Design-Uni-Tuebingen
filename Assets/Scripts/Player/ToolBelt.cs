@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ToolBelt : MonoBehaviour
+public class ToolBelt : MonoBehaviour, ISaveable
 {
     public System.Action OnToolBlocked;
     public System.Action OnToolUnblocked;
@@ -40,7 +40,8 @@ public class ToolBelt : MonoBehaviour
 
     private void Start()
     {
-        SetTool(startTool);
+        if(_currentSlot == null)
+            SetTool(startTool);
     }
 
     public void SetEmptySlot()
@@ -72,7 +73,6 @@ public class ToolBelt : MonoBehaviour
         slot.IsBlocked = true;
         OnToolBlocked?.Invoke();
     }
-
     public void UnblockTool(ATool tool)
     {
         ToolSlot slot = GetToolSlot(tool);
@@ -84,6 +84,16 @@ public class ToolBelt : MonoBehaviour
 
     public ToolSlot GetCurrentSlot() => _currentSlot;
     public ToolSlot[] GetToolSlots() => slots;
+
+    public ATool GetToolByClassName(string className)
+    {
+        foreach (ToolSlot slot in slots)
+        {
+            if (slot.Tool.GetType().ToString().Equals(className))
+                return slot.Tool;
+        }
+        return null;
+    }
 
     private ToolSlot GetToolSlot(int index)
     {
@@ -102,5 +112,57 @@ public class ToolBelt : MonoBehaviour
                 return slot;
         }
         return _emptySlot;
+    }
+
+    public object CaptureState()
+    {
+        Dictionary<string, float> toolFills = new Dictionary<string, float>();
+        List<string> availableTools = new List<string>();
+        List<string> blockedTools = new List<string>();
+        foreach (ToolSlot toolSlot in slots)
+        {
+            toolFills.Add(toolSlot.Tool.GetType().ToString(), toolSlot.Tool.GetFill());
+            if (toolSlot.IsAvailable)
+                availableTools.Add(toolSlot.Tool.GetType().ToString());
+            if (toolSlot.IsBlocked)
+                blockedTools.Add(toolSlot.Tool.GetType().ToString());
+        }
+        return new SaveState
+        {
+            CurrentSlot = _currentSlot != null ? _currentSlot.Slot : -1,
+            LastSlot = _lastSlot != null ? _lastSlot.Slot : -1,
+            ToolFills = toolFills,
+            AvailableTools = availableTools,
+            BlockedTools = blockedTools
+        };
+    }
+
+    public void RestoreState(object state)
+    {
+        SaveState saveState = (SaveState)state;
+
+        SetTool(saveState.CurrentSlot);
+        _lastSlot = GetToolSlot(saveState.LastSlot);
+        foreach (ToolSlot toolSlot in slots)
+        {
+            if (saveState.ToolFills.TryGetValue(toolSlot.Tool.GetType().ToString(), out float fill))
+                toolSlot.Tool.SetFill(fill);
+            toolSlot.IsAvailable = saveState.AvailableTools.Contains(toolSlot.Tool.GetType().ToString());
+            toolSlot.IsBlocked = saveState.BlockedTools.Contains(toolSlot.Tool.GetType().ToString());
+        }
+
+        OnToolBlocked?.Invoke();
+        OnToolUnblocked?.Invoke();
+        OnToolSwitched?.Invoke();
+    }
+
+    [System.Serializable]
+    private struct SaveState
+    {
+        public int CurrentSlot;
+        public int LastSlot;
+        public Dictionary<string, float> ToolFills;
+        public List<string> AvailableTools;
+        public List<string> BlockedTools;
     }
 }

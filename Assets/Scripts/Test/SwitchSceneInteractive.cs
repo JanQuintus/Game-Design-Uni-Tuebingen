@@ -9,7 +9,7 @@ public class SwitchSceneInteractive : AInteractive
         base.Interact(isRelease);
         if (isRelease)
         {
-            SceneLoader.Instance.LoadScene(scene);
+            SceneLoader.Instance.LoadScene(scene, true);
             OnInteractionEnd.Invoke();
         }
     }

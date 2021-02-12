@@ -11,7 +11,9 @@ public abstract class ATool : MonoBehaviour
 
     public abstract void Scroll(float delta);
 
-    public abstract float getFillPercentage();
+    public abstract float GetFill();
+    public abstract void SetFill(float fill);
+    public abstract float GetFillPercentage();
 
     public abstract void OnEquip();
     public abstract void OnUnequip();

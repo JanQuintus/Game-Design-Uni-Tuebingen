@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class GravityGunTool : ATool
@@ -116,7 +117,7 @@ public class GravityGunTool : ATool
     public override void OnUnequip()
     {}
 
-    public override float getFillPercentage()
+    public override float GetFillPercentage()
     {
         return _energy / maxEnergy;
     }
@@ -127,5 +128,16 @@ public class GravityGunTool : ATool
         gravityGunRay.SetActive(true);
         gravityGunRay_Laser.SetPosition(1, transform.InverseTransformPoint(hit.point));
         gravityGunRay_Laser.SetPosition(0, transform.InverseTransformPoint(beamStart.transform.position));
+    }
+
+    public override float GetFill()
+    {
+        return _energy;
+    }
+
+    public override void SetFill(float fill)
+    {
+        _energy = fill;
+        OnFillChanged?.Invoke();
     }
 }

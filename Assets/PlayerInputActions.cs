@@ -145,6 +145,14 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""18fd4c72-dd4a-4203-b03e-6fb96df81b26"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -409,6 +417,17 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""ToggleUIAndWeapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""557eedb3-7518-4276-9172-6fca86581289"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1032,6 +1051,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         m_Player_Num4 = m_Player.FindAction("Num4", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_ToggleUIAndWeapon = m_Player.FindAction("ToggleUIAndWeapon", throwIfNotFound: true);
+        m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1110,6 +1130,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Num4;
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_ToggleUIAndWeapon;
+    private readonly InputAction m_Player_Pause;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -1130,6 +1151,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         public InputAction @Num4 => m_Wrapper.m_Player_Num4;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputAction @ToggleUIAndWeapon => m_Wrapper.m_Player_ToggleUIAndWeapon;
+        public InputAction @Pause => m_Wrapper.m_Player_Pause;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1187,6 +1209,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @ToggleUIAndWeapon.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleUIAndWeapon;
                 @ToggleUIAndWeapon.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleUIAndWeapon;
                 @ToggleUIAndWeapon.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleUIAndWeapon;
+                @Pause.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1239,6 +1264,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @ToggleUIAndWeapon.started += instance.OnToggleUIAndWeapon;
                 @ToggleUIAndWeapon.performed += instance.OnToggleUIAndWeapon;
                 @ToggleUIAndWeapon.canceled += instance.OnToggleUIAndWeapon;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
             }
         }
     }
@@ -1419,6 +1447,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         void OnNum4(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnToggleUIAndWeapon(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

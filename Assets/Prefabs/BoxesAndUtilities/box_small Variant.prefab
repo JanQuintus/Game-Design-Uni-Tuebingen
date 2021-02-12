@@ -46,6 +46,20 @@ MonoBehaviour:
   mainCollider: {fileID: 0}
   mainRenderer: {fileID: 0}
   goEnabled: 1
+--- !u!114 &4874288960108188629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4175904629256468006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9de8cb4aeb735ea45b4a4240b41c8dc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uid: 
+  staticUID: 0
 --- !u!114 &6598321502354966675
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59,6 +73,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collisionClip: {fileID: 8300000, guid: e86d0053efbacd547803851dced448e4, type: 3}
+--- !u!114 &5988629455294276059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4175904629256468006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bc2b738810cf6149ae97115a0a40c8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5242024021730784174
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -72,15 +98,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5f3123b660d23c74bbd62fcb1c666ed3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 20.334745
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5f3123b660d23c74bbd62fcb1c666ed3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 2.907
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5f3123b660d23c74bbd62fcb1c666ed3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 3.6100001
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5f3123b660d23c74bbd62fcb1c666ed3, type: 3}
       propertyPath: m_LocalRotation.w

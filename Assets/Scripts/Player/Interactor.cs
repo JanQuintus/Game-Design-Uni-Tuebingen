@@ -56,6 +56,9 @@ public class Interactor : MonoBehaviour
 
     public void PerformInteract(bool isRelease)
     {
-        _current?.GetComponent<AInteractive>()?.Interact(isRelease);
+        if (_current != null)
+        {
+            _current.Interact(isRelease);
+        }
     }
 }

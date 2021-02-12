@@ -124,8 +124,19 @@ public class TractorBeamTool : ATool
 
     public override void OnUnequip() => TurnOffBeam();
 
-    public override float getFillPercentage()
+    public override float GetFillPercentage()
     {
         return 1f - (_heat / maximalHeat);
+    }
+
+    public override float GetFill()
+    {
+        return _heat;
+    }
+
+    public override void SetFill(float fill)
+    {
+        _heat = fill;
+        OnFillChanged?.Invoke();
     }
 }

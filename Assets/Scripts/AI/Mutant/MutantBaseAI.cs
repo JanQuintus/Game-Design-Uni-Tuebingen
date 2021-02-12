@@ -32,16 +32,20 @@ public class MutantBaseAI : BaseAI
         _health = GetComponent<Health>();
         _health.OnDamaged.AddListener((damage) =>
         {
-            if (_isAlive)
+            animator.SetTrigger("Hit");
+            if(_health.GetHealth() <= 0)
             {
-                animator.SetTrigger("Hit");
+                audioSource.pitch = Random.Range(0.9f, 1.1f);
+                audioSource.PlayOneShot(deathClipBundle.GetRandomClip());
+            }
+            else
+            {
                 audioSource.pitch = Random.Range(0.9f, 1.1f);
                 audioSource.PlayOneShot(damageClipBundle.GetRandomClip(), Mathf.Clamp01(damage / 10f));
             }
         });
         _health.OnDeath.AddListener(() =>
         {
-            _isAlive = false;
             if (_target != null)
                 _target.Untrack(this);
             mainCollider.material.staticFriction = 1f;
@@ -51,22 +55,16 @@ public class MutantBaseAI : BaseAI
             _rb.isKinematic = true;
             _gravity.SetRB(ragdollController.GetHipsRB());
             ragdollController.EnableRagdoll(mainCollider.transform, _rb);
-            audioSource.pitch = Random.Range(0.9f, 1.1f);
-            audioSource.PlayOneShot(damageClipBundle.GetRandomClip());
+            enabled = false;
         });
     }
 
     protected void Update()
     {
-        if (!_isAlive)
-            return;
-
         if (_target == null && Vector3.SqrMagnitude(transform.position - PlayerController.Instance.transform.position) <= _mpd2)
             SetTarget(PlayerController.Instance.GetAITarget());
         else if (_target != null && Vector3.SqrMagnitude(transform.position - PlayerController.Instance.transform.position) > _mpd2)
             SetTarget(null);
-
-
 
         if (_atTarget)
         {
@@ -105,9 +103,6 @@ public class MutantBaseAI : BaseAI
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!_isAlive)
-            return;
-
         if (collision.collider.gameObject.layer == _aiLayer)
             return;
 

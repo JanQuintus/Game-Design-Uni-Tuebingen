@@ -28,6 +28,7 @@ public class FollowAITarget : AITarget
     private void Awake()
     {
         _lastPosition = transform.position;
+        _waypoints.Enqueue(transform.position);
     }
 
     private void Update()
@@ -62,7 +63,7 @@ public class FollowAITarget : AITarget
         Vector3[] waypoints = _waypoints.ToArray();
 
         bool foundWP = false;
-        for (int i = waypoints.Length - 1; i > 0; i--)
+        for (int i = waypoints.Length - 1; i >= 0; i--)
         {
             Vector3 wp = waypoints[i];
             if (ai.transform.InverseTransformPoint(wp).y > ai.GetMaxObstacleHeight())

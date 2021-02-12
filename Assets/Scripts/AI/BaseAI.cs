@@ -2,7 +2,7 @@
 
 [RequireComponent(typeof(Rigidbody), typeof(GravityObject))]
 
-public class BaseAI : MonoBehaviour
+public class BaseAI : MonoBehaviour, ISaveable
 {
     [SerializeField] protected Animator animator;
     [SerializeField] protected CapsuleCollider mainCollider;
@@ -29,8 +29,6 @@ public class BaseAI : MonoBehaviour
     [SerializeField] private float footStepDistance = 0.5f;
 
 
-    protected bool _isAlive = true;
-
     protected AITarget _target;
     protected bool _canMove = true;
     protected Vector3 _lastPosition;
@@ -56,9 +54,6 @@ public class BaseAI : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!_isAlive)
-            return;
-
         animator.SetFloat("Speed", _rb.velocity.magnitude);
         animator.SetBool("isGrounded", _isGrounded);
 
@@ -100,8 +95,8 @@ public class BaseAI : MonoBehaviour
         {
             if(Physics.Raycast(transform.position + transform.TransformDirection(gcOffset), -transform.up, out RaycastHit hit, gcDistance, obstacleLayerMask))
             {
-                Vector3 lookPosOnSurface = Vector3.ProjectOnPlane(_nextPosition, hit.normal) + (hit.distance + 0.01f - transform.TransformDirection(gcOffset).y) * hit.normal;
-                Vector3 rayDir = lookPosOnSurface - transform.position;
+                //Vector3 lookPosOnSurface = Vector3.ProjectOnPlane(_nextPosition, hit.normal);
+                Vector3 rayDir = transform.forward;
 
                 if (!Physics.Raycast(transform.position + transform.TransformDirection(gcOffset) + transform.forward, -transform.up, gcDistance, obstacleLayerMask))
                 {
@@ -120,6 +115,8 @@ public class BaseAI : MonoBehaviour
                     if((obstacleLayerMask == (obstacleLayerMask | (1 << obstacle.transform.gameObject.layer))) &&
                         !Physics.Raycast(transform.position + (transform.up * maxObstacleHeight), transform.forward, 2f, obstacleLayerMask))
                     {
+                        Debug.DrawRay(transform.position, rayDir, Color.red, 1000);
+
                         _rb.AddForce(jumpForce * transform.up, ForceMode.VelocityChange);
                         _isGrounded = false;
                         animator.SetTrigger("Jump");
@@ -135,6 +132,8 @@ public class BaseAI : MonoBehaviour
             if (!_canMove)
                 return;
             FindNextPosition();
+            if (_nextPosition == _lastPosition && Vector3.Distance(transform.position, _nextPosition) < .5f)
+                return;
             if (_isGrounded)
             {
                 localVelocity = transform.InverseTransformDirection(_rb.velocity);
@@ -175,8 +174,6 @@ public class BaseAI : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (!_isAlive)
-            return;
         transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.FromToRotation(transform.up, -_gravity.GetLocalGravity().normalized) * transform.rotation, 4f * Time.deltaTime);
 
         if (!_isGrounded)
@@ -245,4 +242,36 @@ public class BaseAI : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position + ((mainCollider.height / 2f) - mainCollider.radius) * transform.up + transform.forward, mainCollider.radius);
         
     }
+
+    public virtual object CaptureState()
+    {
+        return new SaveState
+        {
+            NPX = _nextPosition.x,
+            NPY = _nextPosition.y,
+            NPZ = _nextPosition.z,
+            LPX = _lastPosition.x,
+            LPY = _lastPosition.y,
+            LPZ = _lastPosition.z
+        };
+    }
+
+    public virtual void RestoreState(object state)
+    {
+        SaveState saveState = (SaveState)state;
+        _nextPosition = new Vector3(saveState.NPX, saveState.NPY, saveState.NPZ);
+        _lastPosition = new Vector3(saveState.LPX, saveState.LPY, saveState.LPZ);
+    }
+
+    [System.Serializable]
+    private struct SaveState
+    {
+        public float NPX;
+        public float NPY;
+        public float NPZ;
+        public float LPX;
+        public float LPY;
+        public float LPZ;
+    }
+
 }
