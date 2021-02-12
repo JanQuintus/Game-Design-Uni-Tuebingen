@@ -63,8 +63,19 @@ public class GravityLauncherTool : ATool
     public override void OnUnequip()
     { }
 
-    public override float getFillPercentage()
+    public override float GetFillPercentage()
     {
         return (float)_ammo / (float)maxAmmo;
+    }
+
+    public override float GetFill()
+    {
+        return _ammo;
+    }
+
+    public override void SetFill(float fill)
+    {
+        _ammo = (int)fill;
+        OnFillChanged?.Invoke();
     }
 }

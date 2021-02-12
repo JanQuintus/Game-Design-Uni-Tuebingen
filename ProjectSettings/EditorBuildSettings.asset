@@ -6,15 +6,21 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Playground SceneLoading2.unity
-    guid: fad9def7a5a4af64c93bc55b6370c513
+    path: Assets/Scenes/_Menus/MainMenu.unity
+    guid: 22c4d725e721b7142b49b0238f1aef25
   - enabled: 1
-    path: Assets/Scenes/Playground SceneLoading1.unity
-    guid: e3bbc0b15902a6044a5020a966ae967f
+    path: Assets/Scenes/_Menus/SettingsMenu.unity
+    guid: 9e4039d9f61945840b9431af870d1377
   - enabled: 1
-    path: Assets/Scenes/LoadingScreen.unity
+    path: Assets/Scenes/_Menus/LoadingScreen.unity
     guid: c68f366e63c28d9458fc36db928ae19d
   - enabled: 1
-    path: Assets/Scenes/Dump.unity
-    guid: e60a74170ff9d3c4bbab4e955da21262
+    path: Assets/Scenes/_Development/SaveLoadSystem Test/SLS_Test1.unity
+    guid: c15db68505985064d829a04bd53a50d2
+  - enabled: 1
+    path: Assets/Scenes/_Development/SaveLoadSystem Test/SLS_Test2.unity
+    guid: c34c9152c9bc93843948abbeecb58841
+  - enabled: 1
+    path: Assets/Scenes/_Development/SaveLoadSystem Test/SLS_Test3.unity
+    guid: 109dd04620071a547b5a5d176deba86a
   m_configObjects: {}

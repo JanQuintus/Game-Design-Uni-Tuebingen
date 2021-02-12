@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Health : MonoBehaviour
+public class Health : MonoBehaviour, ISaveable
 {
     [SerializeField] private float initialHealth = 100;
 
@@ -79,7 +79,22 @@ public class Health : MonoBehaviour
         OnHealed.Invoke(initialHealth);
     }
 
-    public float getHealth() => _health;
-    public float getInitialHealth() => initialHealth;
-    public float getHealthPercentage() => _health / initialHealth;
+    public float GetHealth() => _health;
+    public float GetInitialHealth() => initialHealth;
+    public float GetHealthPercentage() => _health / initialHealth;
+
+    public object CaptureState()
+    {
+        return _health;
+    }
+
+    public void RestoreState(object state)
+    {
+        _health = (float)state;
+        if(_health <= 0)
+        {
+            _health = 0;
+            OnDeath.Invoke();
+        }
+    }
 }

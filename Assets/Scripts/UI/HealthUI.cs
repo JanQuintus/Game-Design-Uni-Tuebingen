@@ -16,6 +16,6 @@ public class HealthUI : MonoBehaviour
 
     private void UpdateUI()
     {
-        fill.fillAmount = health.getHealthPercentage();
+        fill.fillAmount = health.GetHealthPercentage();
     }
 }

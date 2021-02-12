@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class ReloadStation : AInteractive
+public class ReloadStation : AInteractive, ISaveable
 {
 
     [SerializeField] GameObject GravityLauncher;
@@ -42,9 +42,9 @@ public class ReloadStation : AInteractive
                 _isReloading = true;
                 _currentTime = Time.fixedTime;
                 _currentTool = PlayerController.Instance.GetCurrentTool();
+                showAndDisableTool(true);
                 PlayerController.Instance.GetToolBelt().BlockTool(PlayerController.Instance.GetCurrentTool());
 
-                showAndDisableTool(_currentTool.name, true);
                 Kühlschranklicht.DOIntensity(0.04f, timeToLightTheCabin);
 
                 CloseWindow();
@@ -54,7 +54,7 @@ public class ReloadStation : AInteractive
         }
         if(!_isReloading && _currentTool != null)
         {
-            showAndDisableTool(_currentTool.name, false);
+            showAndDisableTool(false);
             PlayerController.Instance.GetToolBelt().UnblockTool(_currentTool);
             _currentTool = null;
         }
@@ -90,21 +90,21 @@ public class ReloadStation : AInteractive
         Window.transform.DOMove(StartPos.transform.position, duration);
     }
 
-    private void showAndDisableTool(string currentTool, bool isActive)
+    private void showAndDisableTool(bool isActive)
     {
-        if (currentTool == "GravityGun")
+        if (_currentTool is GravityGunTool)
         {
             GravityGun.SetActive(isActive);
         }
-        else if (currentTool == "TractorBeam")
+        else if (_currentTool is TractorBeamTool)
         {
             TractorBeam.SetActive(isActive);
         }
-        else if (currentTool == "MassExchanger")
+        else if (_currentTool is MassExchangerTool)
         {
             MassExchanger.SetActive(isActive);
         }
-        else if (currentTool == "GravityLauncher")
+        else if(_currentTool is GravityLauncherTool)
         {
             GravityLauncher.SetActive(isActive);
         }
@@ -122,5 +122,38 @@ public class ReloadStation : AInteractive
             return "Take <b>" + _currentTool.ToolName + "</b>";
 
         return "";
+    }
+
+    public object CaptureState()
+    {
+        return new SaveState
+        {
+            IsReloading = _isReloading,
+            CurrentTool = _currentTool != null ? _currentTool.GetType().ToString() : "null"
+        };
+    }
+
+    public void RestoreState(object state)
+    {
+        SaveState saveState = (SaveState)state;
+
+        _isReloading = saveState.IsReloading;
+        if (_isReloading)
+        {
+            CloseWindow();
+            _currentTime = Time.fixedTime;
+            audioSource.Play();
+            Kühlschranklicht.DOIntensity(0.04f, timeToLightTheCabin);
+
+            _currentTool = PlayerController.Instance.GetToolBelt().GetToolByClassName(saveState.CurrentTool);
+            showAndDisableTool(true);
+        }
+    }
+
+    [System.Serializable]
+    private struct SaveState
+    {
+        public bool IsReloading;
+        public string CurrentTool;
     }
 }

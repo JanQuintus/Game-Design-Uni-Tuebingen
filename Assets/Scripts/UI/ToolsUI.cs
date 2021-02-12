@@ -38,7 +38,7 @@ public class ToolsUI : MonoBehaviour
                     ToolSlotUI slotUI = new ToolSlotUI(transform.GetChild(i), slot, transform.GetChild(i).Find("Image").GetComponent<Image>());
                     _uiSlots.Add(slotUI);
                     slotUI.Slot.Tool.OnFillChanged += () =>
-                        slotUI.Fill.fillAmount = slotUI.Slot.IsBlocked ? 1f : slotUI.Slot.Tool.getFillPercentage();
+                        slotUI.Fill.fillAmount = slotUI.Slot.IsBlocked ? 1f : slotUI.Slot.Tool.GetFillPercentage();
                 }
             }
         }
@@ -69,7 +69,7 @@ public class ToolsUI : MonoBehaviour
             slot.Parent.localScale = Vector3.one;
             Color color = slot.Slot.IsBlocked ? blockedColor : (slot.Slot == PlayerController.Instance.GetToolBelt().GetCurrentSlot() ? equippedColor : availableColor);
             slot.Fill.DOColor(color, .2f);
-            slot.Fill.fillAmount = slot.Slot.IsBlocked ? 1f : slot.Slot.Tool.getFillPercentage();
+            slot.Fill.fillAmount = slot.Slot.IsBlocked ? 1f : slot.Slot.Tool.GetFillPercentage();
         }
 
     }

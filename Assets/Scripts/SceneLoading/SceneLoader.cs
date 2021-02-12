@@ -16,20 +16,24 @@ public class SceneLoader : MonoBehaviour
         }
         DontDestroyOnLoad(this);
         Instance = this;
-
-        GameManager.CurrentScene = SceneManager.GetActiveScene().name;
-        GameManager.LastScene = SceneManager.GetActiveScene().name;
     }
 
-    public void LoadScene(string name)
+    private void Start()
+    {
+        GameManager.CurrentScene = SceneManager.GetActiveScene().name;
+    }
+
+    public void LoadScene(string name, bool save = false)
     {
         if (GameManager.CurrentScene == name)
             return;
 
-        //PlayerController.Instance.BlockInput();
         GameManager.LastScene = GameManager.CurrentScene;
         GameManager.CurrentScene = name;
         SceneManager.LoadScene("LoadingScreen", LoadSceneMode.Additive);
+
+        if (save && SaveLoadSystem.Instance != null)
+            SaveLoadSystem.Instance.Save();
     }
 
 }
