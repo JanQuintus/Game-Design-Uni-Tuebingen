@@ -22,7 +22,6 @@ public class GravityLauncherProjectile : MonoBehaviour
     private Transform _projectileParticles;
     private Transform _twirlSystem;
     private Light _light;
-    private Vector3 _defaultGravity = new Vector3(0, -9.81f, 0);
     private float _leaveRadius2;
     
     private MeshRenderer _meshRenderer;
@@ -103,7 +102,7 @@ public class GravityLauncherProjectile : MonoBehaviour
                 else
                 {
                     if(resetGravity)
-                        go.SetLocalGravity(_defaultGravity);
+                        go.ResetGravity();
                     toRemove.Add(go);
                 }
             }
@@ -174,7 +173,7 @@ public class GravityLauncherProjectile : MonoBehaviour
     {
         Destroy(_sphere);
         foreach (GravityObject go in _objectsInArea)
-            go.SetLocalGravity(_defaultGravity);
+            go.ResetGravity();
         _objectsInArea.Clear();
     }
 }

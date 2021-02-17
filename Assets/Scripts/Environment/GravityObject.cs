@@ -6,6 +6,7 @@ public class GravityObject : MonoBehaviour
     public System.Action OnGravityChanged;
 
     [SerializeField] private Vector3 localGravity = new Vector3(0, -9.81f, 0); //initialization with standard gravity
+    [SerializeField] private Vector3 defaultGravity = new Vector3(0, -9.81f, 0); 
 
     [Header("Assign if not on same object")]
     [SerializeField] private Rigidbody rb;
@@ -37,7 +38,11 @@ public class GravityObject : MonoBehaviour
     public Collider GetMainCollider() => mainCollider;
     public Renderer GetMainRenderer() => mainRenderer;
 
-    public Rigidbody SetRB(Rigidbody value) => rb = value;
-    public Collider SetMainCollider(Collider value) => mainCollider = value;
-    public Renderer SetMainRenderer(Renderer value) => mainRenderer = value;
+    public void SetRB(Rigidbody value) => rb = value;
+    public void SetMainCollider(Collider value) => mainCollider = value;
+    public void SetMainRenderer(Renderer value) => mainRenderer = value;
+
+    public void ResetGravity() => SetLocalGravity(defaultGravity);
+    public void SetDefaultGravity(Vector3 value) => defaultGravity = value;
+    public bool IsGravityChanged() => localGravity != defaultGravity;
 }
