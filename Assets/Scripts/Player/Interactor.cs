@@ -11,8 +11,7 @@ public class Interactor : MonoBehaviour
 
     private void Awake()
     {
-        interactText.SetText("");
-        interactText.gameObject.SetActive(false);
+        SetText("");
     }
 
     private void Update()
@@ -24,19 +23,17 @@ public class Interactor : MonoBehaviour
 
             if(aInteractive != null)
             {
-                interactText.SetText(aInteractive.GetText());
+                SetText(aInteractive.GetText());
                 if (aInteractive == _current)
                     return;
                 _current = aInteractive;
-                interactText.gameObject.SetActive(true);
                 _current.Hover();
             }
             else
             {
                 if (_current)
                 {
-                    interactText.SetText("");
-                    interactText.gameObject.SetActive(false);
+                    SetText("");
                     _current.Unhover(); 
                     _current = null;
                 }
@@ -46,12 +43,17 @@ public class Interactor : MonoBehaviour
         {
             if (_current)
             {
-                interactText.SetText("");
-                interactText.gameObject.SetActive(false);
+                SetText("");
                 _current.Unhover();
                 _current = null;
             }
         }
+    }
+
+    private void SetText(string text)
+    {
+        interactText.gameObject.SetActive(text != "");
+        interactText.SetText(text);
     }
 
     public void PerformInteract(bool isRelease)

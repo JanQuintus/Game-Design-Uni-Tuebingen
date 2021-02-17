@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
     [SerializeField] private float height = 1.8f;
     [SerializeField] private ToolBelt toolBelt;
     [SerializeField] private SpriteRenderer damageScreenOverlay;
+    [SerializeField] private float maxPickupMass = 15;
 
     [Header("Movement")]
     [SerializeField] private float moveDamping = 5f;
@@ -105,6 +106,10 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
     private float _heartBeatTimer;
     private float _nextFoodStep;
 
+    // PickUp
+    private Transform _pickUpParent = null;
+    private PickupInteractive _pickUpObject = null;
+
     #region Unity Functions
 
     private void Awake()
@@ -137,6 +142,7 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
         _nextFoodStep = footStepDistance;
         _heartBeatSpeed = heartBeatNormalSpeed;
         _heartBeatTimer = heartBeatNormalSpeed;
+        _pickUpParent = Instantiate(new GameObject("PickUpParent"), head).transform;
 
         _health.OnDeath.AddListener(() =>
         {
@@ -323,6 +329,11 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
 
     private void Update()
     {
+        if (_pickUpParent)
+        {
+            _pickUpParent.transform.forward = transform.forward;
+        }
+
         _heartBeatSpeed = heartBeatNormalSpeed * Mathf.Max(0.2f, _health.GetHealthPercentage());
         heartBeatSource.volume = (1f - _health.GetHealthPercentage()) * 2f + 0.1f;
         _heartBeatTimer -= Time.deltaTime;
@@ -411,6 +422,28 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
             _inputActions.Enable();
         }
     }
+
+    public float GetMaxPickupMass() => maxPickupMass;
+
+    public void PickUp(PickupInteractive pickup)
+    {
+        if (_pickUpObject != null)
+            return;
+        _pickUpObject = pickup;
+        float pickUpDistance = pickup.GetGravity().GetMainCollider().bounds.size.z + 1f;
+        _pickUpParent.transform.position = head.position + head.forward * pickUpDistance;
+        StartCoroutine(pickup.PickUp(_pickUpParent));
+        toolBelt.SetEmptySlot();
+    }
+
+    public void ReleasePickUp()
+    {
+        if (_pickUpObject == null)
+            return;
+        _pickUpObject.Release(_rb.velocity);
+        _pickUpObject = null;
+        toolBelt.SetPreviousSlot();
+    }
     #endregion
 
     private void CheckIsGrounded()
@@ -492,7 +525,12 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
 
     public void OnInteract(InputAction.CallbackContext context) { 
         if (context.performed || context.canceled)
-            _interactor.PerformInteract(context.canceled);
+        {
+            if (_pickUpObject != null && !context.canceled)
+                ReleasePickUp();
+            else
+                _interactor.PerformInteract(context.canceled);
+        }
     }
 
     public void OnToggleUIAndWeapon(InputAction.CallbackContext context)

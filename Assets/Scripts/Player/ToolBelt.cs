@@ -51,6 +51,12 @@ public class ToolBelt : MonoBehaviour, ISaveable
         _currentSlot = _emptySlot;
     }
 
+    public void SetPreviousSlot()
+    {
+        if (_lastSlot != null)
+            SetTool(_lastSlot.Slot);
+    }
+
     public void SetTool(int index)
     {
         ToolSlot slot = GetToolSlot(index);

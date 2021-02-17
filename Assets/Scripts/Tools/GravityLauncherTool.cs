@@ -4,6 +4,7 @@ using UnityEngine;
 public class GravityLauncherTool : ATool
 {
     [SerializeField] private int maxAmmo = 25;
+    [SerializeField] private float shootDelay = 0.25f;
 
     [Header("Audio")]
     [SerializeField] private AudioSource audioSource;
@@ -12,31 +13,40 @@ public class GravityLauncherTool : ATool
     GameObject _projectilePrefab;
     List<GameObject> _shotProjectiles = new List<GameObject>();
     private int _ammo = 25;
+    private float _t = 0;
 
     private void Awake()
     {
         _projectilePrefab = Resources.Load("Projectile") as GameObject;
     }
 
+    private void Update()
+    {
+        if(_t > 0)
+        {
+            _t -= Time.deltaTime;
+            if (_t <= 0f)
+                _t = 0f;
+        }
+    }
+
     public override void Shoot(Ray ray, bool isRelease = false, bool isRightClick = false)
     {
-        if (isRelease || isRightClick) return;
-        // Check if a projectile is already active, if so destroy it. (Can be done on right and left click)
+        if (isRelease || isRightClick || _ammo <= 0 || _t > 0f) return;
 
-        if (!isRightClick && _ammo > 0)
-        {
-            _ammo--;
-            OnFillChanged?.Invoke();
-            GameObject projectile = Instantiate(_projectilePrefab);
-            projectile.transform.right = ray.direction;
-            projectile.name = "GravityBomb";
-            projectile.transform.position = transform.position + Camera.main.transform.forward * 2;
-            Rigidbody rb = projectile.GetComponent<Rigidbody>();
-            _shotProjectiles.Add(projectile);
-            rb.velocity = ray.direction * 20;
-            audioSource.pitch = Random.Range(0.9f, 1.1f);
-            audioSource.PlayOneShot(shootClip, Random.Range(0.5f, 1f));
-        }
+        _ammo--;
+        OnFillChanged?.Invoke();
+        GameObject projectile = Instantiate(_projectilePrefab);
+        projectile.transform.right = ray.direction;
+        projectile.name = "GravityBomb";
+        projectile.transform.position = transform.position + Camera.main.transform.forward * 2;
+        Rigidbody rb = projectile.GetComponent<Rigidbody>();
+        _shotProjectiles.Add(projectile);
+        rb.velocity = ray.direction * 20;
+        audioSource.pitch = Random.Range(0.9f, 1.1f);
+        audioSource.PlayOneShot(shootClip, Random.Range(0.5f, 1f));
+        _t = shootDelay;
+        
     }
     
     public override void Reset(bool isRelease) {

@@ -84,8 +84,10 @@ public class GravityLauncherProjectile : MonoBehaviour
                 GravityObject gravityObject = Utils.FindGravityObject(collider);
                 if (!gravityObject)
                     continue;
-                (bool affected, _) = IsAffactingObject(gravityObject.GetMainCollider().transform);
-                if (affected && !_objectsInArea.Contains(gravityObject))
+                if (_objectsInArea.Contains(gravityObject))
+                    continue;
+                (bool affected, _) = IsAffactingObject(gravityObject.GetMainCollider().transform, false);
+                if (affected)
                     _objectsInArea.Add(gravityObject);
             }
 
@@ -97,7 +99,7 @@ public class GravityLauncherProjectile : MonoBehaviour
                     toRemove.Add(go);
                     continue;
                 }
-                (bool affected, bool resetGravity) = IsAffactingObject(go.GetMainCollider().transform);
+                (bool affected, bool resetGravity) = IsAffactingObject(go.GetMainCollider().transform, true);
                 if (affected)
                     go.SetLocalGravity(transform.up * -9.81f);
                 else
@@ -126,13 +128,15 @@ public class GravityLauncherProjectile : MonoBehaviour
 
     }
 
-    private (bool, bool) IsAffactingObject(Transform trans)
+    private (bool, bool) IsAffactingObject(Transform trans, bool wasAffected)
     {
         double direction = Vector3.Dot(transform.up, (trans.position - transform.position));
-        if (direction <= -2 || Vector3.SqrMagnitude(trans.position - transform.position) > _leaveRadius2)
+        if (direction <= -2f || Vector3.SqrMagnitude(trans.position - transform.position) > _leaveRadius2)
             return (false, true);
 
         float distSelf = Vector3.SqrMagnitude(trans.position - transform.position);
+        if (direction < 0f && !wasAffected)
+            return (false, false);
 
         foreach (GravityLauncherProjectile glp in FindObjectsOfType<GravityLauncherProjectile>())
         {

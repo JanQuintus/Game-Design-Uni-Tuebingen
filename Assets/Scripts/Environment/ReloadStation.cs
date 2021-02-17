@@ -116,7 +116,7 @@ public class ReloadStation : AInteractive, ISaveable
             return "Reload <b>" + PlayerController.Instance.GetCurrentTool().ToolName + "</b>";
 
         if (_isReloading)
-            return "Please wait...";
+            return "";
 
         if (!_isReloading && _currentTool != null)
             return "Take <b>" + _currentTool.ToolName + "</b>";

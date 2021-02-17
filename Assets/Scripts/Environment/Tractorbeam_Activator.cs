@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class Tractorbeam_Activator : MonoBehaviour
 {
-    [SerializeField] private TractorBeamTool Tractorbeam;
+    [SerializeField] private TractorBeamTool tractorbeam;
     [SerializeField] private int onTime = 0;
     [SerializeField] private int offTime = 50;
     [SerializeField] private int resetTime = 100;
 
     [SerializeField] private int _currentTime = 0;
-
 
     void FixedUpdate()
     {
@@ -27,15 +26,17 @@ public class Tractorbeam_Activator : MonoBehaviour
 
         _currentTime++;
 
+        if (tractorbeam.IsActive() && tractorbeam.IsOccupied())
+            tractorbeam.Scroll(-1f);
     }
 
     private void turnOnBeam()
     {
-        Tractorbeam.Shoot(new Ray(Tractorbeam.transform.position, new Vector3(0, 0, 0)), false, true);
+        tractorbeam.Shoot(new Ray(tractorbeam.transform.position, new Vector3(0, 0, 0)), false, true);
     }
 
     private void turnOffBeam()
     {
-        Tractorbeam.Shoot(new Ray(Tractorbeam.transform.position, new Vector3(0, 0, 0)), true, true);
+        tractorbeam.Shoot(new Ray(tractorbeam.transform.position, new Vector3(0, 0, 0)), true, true);
     }
 }

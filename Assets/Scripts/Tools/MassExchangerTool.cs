@@ -91,8 +91,8 @@ public class MassExchangerTool : ATool
             _changedObjects.Add(_source, _source.GetRB().mass);
         if (!_changedObjects.ContainsKey(_target))
             _changedObjects.Add(_target, _target.GetRB().mass);
-        float sourceMass = _source.GetRB().mass;
-        _source.GetRB().mass = _target.GetRB().mass;
+        float sourceMass = Mathf.Round(_source.GetRB().mass);
+        _source.GetRB().mass = Mathf.Round(_target.GetRB().mass);
         _target.GetRB().mass = sourceMass;
     }
 
@@ -100,7 +100,7 @@ public class MassExchangerTool : ATool
     {
         foreach(KeyValuePair<GravityObject, float> changedObject in _changedObjects)
         {
-            changedObject.Key.GetRB().mass = changedObject.Value;
+            changedObject.Key.GetRB().mass = Mathf.Round(changedObject.Value);
             Utils.SetMaterialPropertyFloat(changedObject.Key.GetMainRenderer(), _shader_active, 0);
             Utils.SetMaterialPropertyFloat(changedObject.Key.GetMainRenderer(), _shader_Mass, _target.GetRB().mass);
         }

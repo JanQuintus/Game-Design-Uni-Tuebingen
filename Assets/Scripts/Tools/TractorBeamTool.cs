@@ -36,7 +36,7 @@ public class TractorBeamTool : ATool
         if (_windUp && (_shootForce <= maximalShootForce))
         {
             _shootForce = _shootForce + 0.5f;
-            TheBeam.setWindup(_shootForce / 10); // needed for pulling of object towards player if winded up
+            TheBeam.setWindup(_shootForce / maximalShootForce); // needed for pulling of object towards player if winded up
         }
 
         // overheating mechanics
@@ -109,6 +109,16 @@ public class TractorBeamTool : ATool
         audioSource.clip = null;
         audioSource.loop = false;
         audioSource.PlayOneShot(beamOffClip, 0.25f);
+    }
+
+    public bool IsActive()
+    {
+        return TheBeam.IsActive();
+    }
+
+    public bool IsOccupied()
+    {
+        return TheBeam.IsOccupied();
     }
 
     public override void Scroll(float delta)

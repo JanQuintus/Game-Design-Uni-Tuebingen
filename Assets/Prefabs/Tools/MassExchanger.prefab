@@ -352,7 +352,7 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 2049
-  maxEnergy: 20
+  maxEnergy: 100
   beamHit: {fileID: 3607008034010819598, guid: 6ddb79b345fd9d94db1524150e2916f1, type: 3}
   beamStart: {fileID: 4311836051325552167}
   laserEffect_IN: {fileID: 7020955315830883596}

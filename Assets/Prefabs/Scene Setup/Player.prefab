@@ -672,12 +672,13 @@ MonoBehaviour:
   height: 1.8
   toolBelt: {fileID: 435276535208244453}
   damageScreenOverlay: {fileID: 435276534742987786}
+  maxPickupMass: 15
   moveDamping: 5
   walkSpeed: 200
   sprintSpeedMult: 1.75
   crouchSpeedMult: 0.5
   head: {fileID: 435276535253156492}
-  mouseSensitivity: 0.6
+  mouseSensitivity: 0.4
   maxPitch: 90
   minPitch: -70
   walkBobbingSpeed: 4
@@ -689,8 +690,8 @@ MonoBehaviour:
   toolBobbingSpeed: 4
   toolBobbingAmount: {x: -0.025, y: -0.05}
   gcOffset: {x: 0, y: 0.4, z: 0}
-  gcDistance: 0.2
-  gcRadius: 0.35
+  gcDistance: 0.25
+  gcRadius: 0.38
   gcLayerMask:
     serializedVersion: 2
     m_Bits: 23
