@@ -4,11 +4,9 @@ using UnityEngine;
 public class GravityLauncherTool : ATool
 {
     [SerializeField] private int maxAmmo = 25;
-
     [Header("Audio")]
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip shootClip;
-
     GameObject _projectilePrefab;
     List<GameObject> _shotProjectiles = new List<GameObject>();
     private int _ammo = 25;
