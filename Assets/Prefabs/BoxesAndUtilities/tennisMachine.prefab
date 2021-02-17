@@ -186,13 +186,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3466777067308141612}
-  m_LocalRotation: {x: -0.047532093, y: -0.70550746, z: -0.047532085, w: 0.70550734}
-  m_LocalPosition: {x: -0.56900024, y: 0.47299993, z: 0.19299984}
+  m_LocalRotation: {x: -0.12598896, y: -0.69579226, z: -0.12598898, w: 0.69579226}
+  m_LocalPosition: {x: -0.608, y: 0.492, z: 0.19299984}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 538231115507320732}
   m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: -7.709, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: -20.527, y: -90, z: 0}
 --- !u!1 &8063719193618222311
 GameObject:
   m_ObjectHideFlags: 0
@@ -251,8 +251,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shootPoint: {fileID: 8852025282941492329}
-  shootForce: 20
-  shootInterval: 1
+  shootForce: 50
+  shootInterval: 2
 --- !u!1 &8776953992606274727
 GameObject:
   m_ObjectHideFlags: 0
