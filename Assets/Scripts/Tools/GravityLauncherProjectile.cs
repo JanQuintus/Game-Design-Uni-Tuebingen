@@ -181,4 +181,9 @@ public class GravityLauncherProjectile : MonoBehaviour
             go.SetLocalGravity(_defaultGravity);
         _objectsInArea.Clear();
     }
+
+    public void SetDeactivateLifeTime(bool active)
+    {
+        deactivateLifeTime = active;
+    }
 }

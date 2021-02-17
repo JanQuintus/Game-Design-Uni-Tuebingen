@@ -9,7 +9,6 @@ public class GravityLauncherTool : ATool
     [Header("Audio")]
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip shootClip;
-
     GameObject _projectilePrefab;
     List<GameObject> _shotProjectiles = new List<GameObject>();
     private int _ammo = 25;
