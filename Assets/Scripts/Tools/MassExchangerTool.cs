@@ -146,8 +146,19 @@ public class MassExchangerTool : ATool
         Utils.SetMaterialPropertyFloat(_target.GetMainRenderer(), _shader_Mass, _source.GetRB().mass);
     }
 
-    public override float getFillPercentage()
+    public override float GetFillPercentage()
     {
         return _energy / maxEnergy;
+    }
+
+    public override float GetFill()
+    {
+        return _energy;
+    }
+
+    public override void SetFill(float fill)
+    {
+        _energy = fill;
+        OnFillChanged?.Invoke();
     }
 }

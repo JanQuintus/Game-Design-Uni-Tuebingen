@@ -60,6 +60,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collisionClip: {fileID: 8300000, guid: e86d0053efbacd547803851dced448e4, type: 3}
+--- !u!114 &6933615231995976892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3113331218868814171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9de8cb4aeb735ea45b4a4240b41c8dc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uid: 
+  staticUID: 0
+--- !u!114 &8945396020554696653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3113331218868814171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bc2b738810cf6149ae97115a0a40c8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6519070472802469075
 PrefabInstance:
   m_ObjectHideFlags: 0

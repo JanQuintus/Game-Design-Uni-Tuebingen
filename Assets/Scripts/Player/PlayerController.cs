@@ -78,6 +78,8 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
     private float _gravityChangeMoveBlockCD = 0;
     private Vector2 _smoothMove = Vector2.zero;
     private Health _health;
+    private float _slopeSpeedMult = 1f;
+    private int _inputBlocks = 0;
 
     // From Input
     private Vector2 _move = Vector2.zero;
@@ -146,16 +148,25 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
         {
             head.DOShakePosition(0.4f, 0.25f);
             toolHolder.DOShakePosition(0.2f, 0.1f);
-            damageScreenOverlay?.material.SetFloat("_Strength", 1f - _health.getHealthPercentage());
+            damageScreenOverlay?.material.SetFloat("_Strength", 1f - _health.GetHealthPercentage());
             audioSource.pitch = Random.Range(0.9f, 1.1f);
             audioSource.PlayOneShot(damageClipBundle.GetRandomClip(), Mathf.Clamp01(damage / 10f));
         });
         _health.OnHealed.AddListener((healed) =>
         {
-            damageScreenOverlay?.material.SetFloat("_Strength", 1f - _health.getHealthPercentage());
+            damageScreenOverlay?.material.SetFloat("_Strength", 1f - _health.GetHealthPercentage());
         });
 
         _gravity.OnGravityChanged += () => _gravityChangeMoveBlockCD = 0.4f;
+
+        GameManager.OnPauseGame += () =>
+        {
+            BlockInput();
+        };
+        GameManager.OnUnpauseGame += () =>
+        {
+            UnblockInput();
+        };
     }
 
     private void FixedUpdate()
@@ -198,7 +209,7 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
         Vector3 localVelocity = transform.InverseTransformDirection(_rb.velocity);
         Vector3 upVelocity = transform.TransformDirection(new Vector3(0, localVelocity.y, 0));
         _smoothMove = Vector2.Lerp(_smoothMove, _move, Time.fixedDeltaTime * moveDamping);
-        float speed = walkSpeed * (_isCrouching ? crouchSpeedMult : (_sprint ? sprintSpeedMult : 1));
+        float speed = walkSpeed * (_isCrouching ? crouchSpeedMult : (_sprint ? sprintSpeedMult : 1)) * (_isGrounded ? _slopeSpeedMult : 1f);
         if (_gravityChangeMoveBlockCD > 0)
         {
             _gravityChangeMoveBlockCD -= Time.deltaTime;
@@ -206,7 +217,8 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
         }
         Vector3 move = transform.TransformDirection(new Vector3(_smoothMove.x, 0, _smoothMove.y) * Time.fixedDeltaTime * speed) + upVelocity;
         _rb.velocity = move;
-        _nextFoodStep -= _smoothMove.magnitude * speed;
+        if(_isGrounded) 
+            _nextFoodStep -= _smoothMove.magnitude * speed;
         if(_nextFoodStep <= 0)
         {
             _nextFoodStep = footStepDistance;
@@ -226,7 +238,7 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
         if (_jumpRequest)
         {
             _jumpRequest = false;
-            if (_isGrounded && !KeepCrouching())
+            if (_isGrounded && !KeepCrouching() && _slopeSpeedMult > 0)
             {
                 Vector3 jumpVel = transform.TransformDirection(jumpVelocity);
                 _rb.AddForce(jumpVel, ForceMode.Impulse);
@@ -261,7 +273,7 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
             _tbDefaultPosY = _tbInitialDefaultPosY;
             head.DOLocalMoveY(head.localPosition.y - 0.25f, 0.1f);
             audioSource.pitch = Random.Range(0.9f, 1.1f);
-            audioSource.PlayOneShot(landClip);
+            audioSource.PlayOneShot(landClip, Mathf.Clamp01(_rb.velocity.magnitude - 5f));
         }
         else if(!_isGrounded && wasGrounded)
         {
@@ -311,8 +323,8 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
 
     private void Update()
     {
-        _heartBeatSpeed = heartBeatNormalSpeed * Mathf.Max(0.2f, _health.getHealthPercentage());
-        heartBeatSource.volume = (1f - _health.getHealthPercentage()) * 2f + 0.1f;
+        _heartBeatSpeed = heartBeatNormalSpeed * Mathf.Max(0.2f, _health.GetHealthPercentage());
+        heartBeatSource.volume = (1f - _health.GetHealthPercentage()) * 2f + 0.1f;
         _heartBeatTimer -= Time.deltaTime;
         if(_heartBeatTimer / _heartBeatSpeed <= 0.3f && !_heartBeat1Played)
         {
@@ -385,18 +397,39 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
         _inputEnabled = false;
         _inputActions.Disable();
         _move = Vector2.zero;
+        _inputBlocks++;
     }
 
     public void UnblockInput()
     {
-        _inputEnabled = true;
-        _inputActions.Enable();
+        _inputBlocks--;
+        if (_inputBlocks < 0)
+            _inputBlocks = 0;
+        if (_inputBlocks == 0)
+        {
+            _inputEnabled = true;
+            _inputActions.Enable();
+        }
     }
     #endregion
 
     private void CheckIsGrounded()
     {
-        _isGrounded = Physics.SphereCast(new Ray(transform.position + transform.TransformDirection(gcOffset), -transform.up), gcRadius, gcDistance, gcLayerMask);
+        if (Physics.SphereCast(new Ray(transform.position + transform.TransformDirection(gcOffset), -transform.up), gcRadius, out RaycastHit hit, gcDistance, gcLayerMask))
+        {
+            if (transform.InverseTransformDirection(_rb.velocity).y > -.5f)
+            {
+                _slopeSpeedMult = Vector3.Dot(hit.normal, transform.up) * Vector3.Dot(hit.normal, transform.up);
+                if (_slopeSpeedMult <= 0.35)
+                    _slopeSpeedMult = 0;
+            }
+            else
+                _slopeSpeedMult = 1f;
+                
+            _isGrounded = true;
+            return;
+        }
+        _isGrounded = false;
     }
 
     private bool KeepCrouching()
@@ -451,6 +484,11 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
     public void OnNum2(InputAction.CallbackContext context) { if (context.performed) toolBelt?.SetTool(2); }
     public void OnNum3(InputAction.CallbackContext context) { if (context.performed) toolBelt?.SetTool(3); }
     public void OnNum4(InputAction.CallbackContext context) { if (context.performed) toolBelt?.SetTool(4); }
+
+    public void OnPause(InputAction.CallbackContext context)
+    {
+        if (context.performed) GameManager.PauseGame();
+    }
 
     public void OnInteract(InputAction.CallbackContext context) { 
         if (context.performed || context.canceled)

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - GravityBomb
   - NonSticky
+  - TennisBall
   layers:
   - Default
   - TransparentFX

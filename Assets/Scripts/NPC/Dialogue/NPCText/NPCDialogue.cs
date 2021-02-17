@@ -3,15 +3,17 @@ using DG.Tweening;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using TMPro;
+using UnityEngine.UI;
 
 public class NPCDialogue : AInteractive
 {
     // Panel for active dialogue box initialize
-    public RectTransform DialoguePanel;
-    public RectTransform ChoicePanel1;
-    public RectTransform ChoicePanel2;
-    public RectTransform ChoicePanel3;
-    public RectTransform ChoicePanel4;
+    private MaskableGraphic _dialoguePanel;
+    private TMP_Text _choicePanel1;
+    private TMP_Text _choicePanel2;
+    private TMP_Text _choicePanel3;
+    private TMP_Text _choicePanel4;
+    private TMP_Text _uiText;
     public DialogueScriptableObject ScriptObjText;
 
     // how many choices to display
@@ -24,13 +26,26 @@ public class NPCDialogue : AInteractive
     private string _playerText4;
     private string _npcText;
     private string _textToReturn;
-    private int _globalProgress = GameManager.globalProgress;
+    private int _globalProgress = GameManager.GlobalProgress;
     private bool _hasGlobalTrimmed = false; // set to true once global culling has set place
     private bool _choosingDialogue = false; // set to true once we have text choices
     private PlayerInputActions _inputActions;
 
     private void Awake() // lock movement, call stuff from second interaction onward
     {
+        _dialoguePanel = GameObject.Find("DialoguePanel").GetComponent<MaskableGraphic>();
+        _choicePanel1 = GameObject.Find("Choice1").GetComponent<TMP_Text>();
+        _choicePanel2 = GameObject.Find("Choice2").GetComponent<TMP_Text>();
+        _choicePanel3 = GameObject.Find("Choice3").GetComponent<TMP_Text>();
+        _choicePanel4 = GameObject.Find("Choice4").GetComponent<TMP_Text>();
+        _uiText = _dialoguePanel.transform.GetComponentInChildren<TextMeshProUGUI>();
+
+        _dialoguePanel.gameObject.SetActive(false);
+        _choicePanel1.gameObject.SetActive(false);
+        _choicePanel2.gameObject.SetActive(false);
+        _choicePanel3.gameObject.SetActive(false);
+        _choicePanel4.gameObject.SetActive(false);
+
         _npcText = ScriptObjText.npcText; // load text
 
         _inputActions = new PlayerInputActions(); // interaction decl
@@ -142,8 +157,12 @@ public class NPCDialogue : AInteractive
 
         if (_npcText[0] == '<') // the time that only < is left ( end dialogue case )
         { // scale down and hide panel, reset stuff ( see below )
-            DialoguePanel.DOScaleX(0.1f, 0.2f);
-            DialoguePanel.DOScaleY(0.1f, 0.2f);
+            _dialoguePanel.DOFade(0f, 0.2f);
+            _uiText.DOFade(0f, 0.2f);
+            _choicePanel1.DOFade(0f, 0.2f);
+            _choicePanel2.DOFade(0f, 0.2f);
+            _choicePanel3.DOFade(0f, 0.2f);
+            _choicePanel4.DOFade(0f, 0.2f);
             Invoke("hidePanel", 0.2f);
         }
 
@@ -177,9 +196,9 @@ public class NPCDialogue : AInteractive
     // sets text according to _textToReturn, opens answer panels, autoselects choice1, enables dialogue flag
     private void editPanelChoice()
     {
-       
+
         // set npc text
-        DialoguePanel.gameObject.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = _textToReturn;
+        _uiText.text = _textToReturn;
 
         // set ptexts
         _playerText1 = ScriptObjText.playerText.Remove(ScriptObjText.playerText.IndexOf("|")); // everything up to first delim NEW
@@ -196,20 +215,24 @@ public class NPCDialogue : AInteractive
             _playerText2 = _playerText2.Remove(_playerText2.IndexOf("|")); // only contain up to next delim
 
             // enable panels
-            ChoicePanel3.gameObject.SetActive(true);
-            ChoicePanel3.gameObject.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = _playerText3;
-            ChoicePanel4.gameObject.SetActive(true);
-            ChoicePanel4.gameObject.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = _playerText4;
+            _choicePanel3.gameObject.SetActive(true);
+            _choicePanel3.DOFade(1f, 0.2f);
+            _choicePanel3.text = _playerText3;
+            _choicePanel4.gameObject.SetActive(true);
+            _choicePanel4.DOFade(1f, 0.2f);
+            _choicePanel4.text = _playerText4;
         }
 
         // enable panels
-        ChoicePanel1.gameObject.SetActive(true);
-        ChoicePanel1.gameObject.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = _playerText1;
-        ChoicePanel2.gameObject.SetActive(true);
-        ChoicePanel2.gameObject.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = _playerText2;
+        _choicePanel1.gameObject.SetActive(true);
+        _choicePanel1.DOFade(1f, 0.2f);
+        _choicePanel1.text = _playerText1;
+        _choicePanel2.gameObject.SetActive(true);
+        _choicePanel2.DOFade(1f, 0.2f);
+        _choicePanel2.text = _playerText2;
 
         // select choice 1
-        EventSystem.current.SetSelectedGameObject(ChoicePanel1.gameObject);
+        EventSystem.current.SetSelectedGameObject(_choicePanel1.gameObject);
 
         // set dialogue flag
         _choosingDialogue = true;
@@ -218,27 +241,31 @@ public class NPCDialogue : AInteractive
     // opens panel and sets text according to _textToReturn
     private void editPanel()
     {
-        if (!DialoguePanel.gameObject.activeSelf) // if panel is off
+        if (!_dialoguePanel.gameObject.activeSelf) // if panel is off
         {
             // scale down beforehand so it can get scaled up once visible
-            DialoguePanel.DOScaleX(0.1f, 0f);
-            DialoguePanel.DOScaleY(0.1f, 0f);
+            _dialoguePanel.DOFade(0f, 0f);
+            _choicePanel1.DOFade(0f, 0f);
+            _choicePanel2.DOFade(0f, 0f);
+            _choicePanel3.DOFade(0f, 0f);
+            _choicePanel4.DOFade(0f, 0f);
+            _uiText.DOFade(0f, 0f);
 
             // show panel
-            DialoguePanel.gameObject.SetActive(true);
+            _dialoguePanel.gameObject.SetActive(true);
 
             // scale up
-            DialoguePanel.DOScaleX(1f, 0.2f);
-            DialoguePanel.DOScaleY(1f, 0.2f);
+            _dialoguePanel.DOFade(1f, 0.2f);
+            _uiText.DOFade(1f, 0.2f);
         }
-        
+
         // set text
-        DialoguePanel.gameObject.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = _textToReturn;
+        _uiText.text = _textToReturn;
     }
 
     private void hidePanel() // hidePanel, what does it do? :flushed: CHANGE GLOBAL PROGRESS HERE IF WANTED ( remove feature? )
     {
-        DialoguePanel.gameObject.SetActive(false);
+        _dialoguePanel.gameObject.SetActive(false);
 
         // progress ( we can change this individually without affecting global p so we can have people say multiple dialogue lines on same progress without effects on global progress
         // _globalProgress = 1;
@@ -253,12 +280,12 @@ public class NPCDialogue : AInteractive
 
     private void hideChoices() // self-xpl
     {
-        ChoicePanel1.gameObject.SetActive(false);
-        ChoicePanel2.gameObject.SetActive(false);
+        _choicePanel1.gameObject.SetActive(false);
+        _choicePanel2.gameObject.SetActive(false);
         if (_displayChoiceAmt == 4)
         {
-            ChoicePanel3.gameObject.SetActive(false);
-            ChoicePanel4.gameObject.SetActive(false);
+            _choicePanel3.gameObject.SetActive(false);
+            _choicePanel4.gameObject.SetActive(false);
         }
     }
 

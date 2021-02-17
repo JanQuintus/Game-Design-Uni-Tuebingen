@@ -46,5 +46,11 @@ public abstract class AInteractive : MonoBehaviour
 
     }
 
+    private void OnDestroy()
+    {
+        OnInteractionStart.RemoveAllListeners();
+        OnInteractionEnd.RemoveAllListeners();
+    }
+
     public virtual string GetText() => "";
 }
