@@ -24,7 +24,6 @@ public class resetbutton : AInteractive
 
     public override void Interact(bool isRelease)
     {
-        base.Interact(isRelease);
         if (!isRelease)
         {
             foreach (Seal seal in seals)
@@ -38,7 +37,6 @@ public class resetbutton : AInteractive
             _currentTime = Time.fixedTime;
 
         }
-        OnInteractionEnd.Invoke();
     }
 
     public override string GetText()
