@@ -18,7 +18,6 @@ public class GravityLauncherFloor : AInteractive
         {
             proj.SetDeactivateLifeTime(false);
         }
-        OnInteractionEnd.Invoke();
     }
 
     public override string GetText()

@@ -10,8 +10,6 @@ public class ReverseGravityInteractive : AInteractive
 
     public override void Interact(bool isRelease)
     {
-        base.Interact(isRelease);
-
         Collider[] colliders = Physics.OverlapBox(centerPos.position, extend/2f);
         foreach (Collider col in colliders) {
             GravityObject go = Utils.FindGravityObject(col);
@@ -23,9 +21,6 @@ public class ReverseGravityInteractive : AInteractive
 
             go.SetDefaultGravity(gravity);
         }
-
-        OnInteractionEnd?.Invoke();
-
     }
 
     public override string GetText()

@@ -18,10 +18,8 @@ public class PickupInteractive : AInteractive
 
     public override void Interact(bool isRelease)
     {
-        base.Interact(isRelease);
         if (isRelease)
             return;
-        OnInteractionEnd?.Invoke();
         if (canLift())
             PlayerController.Instance.PickUp(this);
     }

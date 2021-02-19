@@ -31,7 +31,6 @@ public class ReloadStation : AInteractive, ISaveable
 
     public override void Interact(bool isRelease)
     {
-        base.Interact(isRelease);
         if (isRelease)
             return;
 
@@ -58,7 +57,6 @@ public class ReloadStation : AInteractive, ISaveable
             PlayerController.Instance.GetToolBelt().UnblockTool(_currentTool);
             _currentTool = null;
         }
-        OnInteractionEnd.Invoke();
     }
 
     private void Update()
