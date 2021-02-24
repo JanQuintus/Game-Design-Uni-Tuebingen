@@ -44,7 +44,7 @@ public class MainMenu : MonoBehaviour
 
     public void Settings()
     {
-        SceneManager.LoadSceneAsync("SettingsMenu");
+        SceneManager.LoadSceneAsync("SettingsMenu", LoadSceneMode.Additive);
     }
 
     public void Quit()
