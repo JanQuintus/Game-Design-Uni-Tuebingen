@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1583702273687887823}
   - component: {fileID: 1583702273687887820}
-  m_Layer: 11
+  m_Layer: 15
   m_Name: SlopeCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -57,13 +57,13 @@ GameObject:
   - component: {fileID: 5557786077734061488}
   - component: {fileID: 3690405472740297456}
   - component: {fileID: 5557786077734061490}
-  m_Layer: 11
+  m_Layer: 15
   m_Name: QuestNBCBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5557786077734061501
 Transform:
   m_ObjectHideFlags: 0
@@ -110,6 +110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   localGravity: {x: 0, y: -9.81, z: 0}
+  defaultGravity: {x: 0, y: -9.81, z: 0}
   rb: {fileID: 0}
   mainCollider: {fileID: 5557786078307075552}
   mainRenderer: {fileID: 0}
@@ -244,7 +245,6 @@ MonoBehaviour:
   landClip: {fileID: 8300000, guid: b9e6ac0066607d740bfc64f860500a89, type: 3}
   footStepDistance: 4000
   aITarget: {fileID: 0}
-  interactive: {fileID: 466855040311974850}
 --- !u!1 &5557786077850063415
 GameObject:
   m_ObjectHideFlags: 0
@@ -254,7 +254,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5557786077850063408}
-  m_Layer: 11
+  m_Layer: 15
   m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -286,7 +286,7 @@ GameObject:
   - component: {fileID: 5557786078307075559}
   - component: {fileID: 5557786078307075552}
   - component: {fileID: 466855040311974850}
-  m_Layer: 11
+  m_Layer: 10
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -333,17 +333,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26a245035b888f14eb63e4785bc4a658, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outlineMaterial: {fileID: 0}
+  outline: {fileID: 0}
+  outlineWidth: 0
   hoverClip: {fileID: 8300000, guid: d6601e34edecb804fa7a533842756740, type: 3}
-  OnInteractionStart:
-    m_PersistentCalls:
-      m_Calls: []
-  OnInteractionEnd:
-    m_PersistentCalls:
-      m_Calls: []
-  DialoguePanel: {fileID: 0}
-  ChoicePanel1: {fileID: 0}
-  ChoicePanel2: {fileID: 0}
-  ChoicePanel3: {fileID: 0}
-  ChoicePanel4: {fileID: 0}
-  ScriptObjText: {fileID: 0}
+  ai: {fileID: 0}
+  scriptObjText: {fileID: 0}

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Dumpreset_Button : AInteractive
 {
@@ -8,9 +6,7 @@ public class Dumpreset_Button : AInteractive
 
     public override void Interact(bool isRelease)
     {
-        base.Interact(isRelease);
         resetTrigger.GetComponent<dumpreset>().Release();
-        OnInteractionEnd.Invoke();
     }
 
     public override string GetText()
