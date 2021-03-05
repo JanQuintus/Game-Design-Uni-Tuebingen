@@ -7,6 +7,13 @@ public class DoorPressurePlate : MonoBehaviour
     [SerializeField] private Door door;
     [SerializeField] private int minWeightToPress = 50;
 
+    private int _shader_Mass = Shader.PropertyToID("objmass");
+
+    private void Awake()
+    {
+        gameObject.GetComponent<Renderer>().material.SetFloat(_shader_Mass, minWeightToPress);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         Rigidbody rb = other.GetComponent<Rigidbody>();
