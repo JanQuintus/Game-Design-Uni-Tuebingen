@@ -46,6 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ToolName: Gravity Launcher
   maxAmmo: 25
+  shootDelay: 0.25
   audioSource: {fileID: 0}
   shootClip: {fileID: 8300000, guid: c1cbe1a5e9152ac499d1d0a24e13b8f1, type: 3}
 --- !u!1 &8528071282228482708
@@ -75,8 +76,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8528071282228482708}
   m_LocalRotation: {x: -0.004696361, y: 0.7070912, z: -0.7070912, w: -0.004696361}
-  m_LocalPosition: {x: 0.014, y: 0.023017578, z: -0.016}
-  m_LocalScale: {x: 0.5789966, y: 0.923288, z: 0.5681958}
+  m_LocalPosition: {x: 0.0139999855, y: 0.05681139, z: -0.016000083}
+  m_LocalScale: {x: 0.5789966, y: 0.923288, z: 0.4974895}
   m_Children: []
   m_Father: {fileID: 6325119143631363041}
   m_RootOrder: 7
