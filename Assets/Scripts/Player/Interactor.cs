@@ -41,9 +41,10 @@ public class Interactor : MonoBehaviour
         }
         else
         {
+            SetText("");
+
             if (_current)
             {
-                SetText("");
                 _current.Unhover();
                 _current = null;
             }

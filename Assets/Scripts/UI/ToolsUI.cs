@@ -46,6 +46,7 @@ public class ToolsUI : MonoBehaviour
         PlayerController.Instance.GetToolBelt().OnToolBlocked += UpdateUI;
         PlayerController.Instance.GetToolBelt().OnToolUnblocked += UpdateUI;
         PlayerController.Instance.GetToolBelt().OnToolSwitched += UpdateUI;
+        PlayerController.Instance.GetToolBelt().OnToolUnlocked += UpdateUI;
 
         UpdateUI();
     }
@@ -55,6 +56,7 @@ public class ToolsUI : MonoBehaviour
         PlayerController.Instance.GetToolBelt().OnToolBlocked -= UpdateUI;
         PlayerController.Instance.GetToolBelt().OnToolUnblocked -= UpdateUI;
         PlayerController.Instance.GetToolBelt().OnToolSwitched -= UpdateUI;
+        PlayerController.Instance.GetToolBelt().OnToolUnlocked -= UpdateUI;
     }
 
     private void UpdateUI() { 
@@ -70,6 +72,7 @@ public class ToolsUI : MonoBehaviour
             Color color = slot.Slot.IsBlocked ? blockedColor : (slot.Slot == PlayerController.Instance.GetToolBelt().GetCurrentSlot() ? equippedColor : availableColor);
             slot.Fill.DOColor(color, .2f);
             slot.Fill.fillAmount = slot.Slot.IsBlocked ? 1f : slot.Slot.Tool.GetFillPercentage();
+            Canvas.ForceUpdateCanvases();
         }
 
     }
