@@ -10,12 +10,11 @@ public class TheBeam : MonoBehaviour
     [SerializeField] private Transform beamSource;
     [SerializeField] private float pullForce = 4;
     [SerializeField] private float minDist = 3f; // value which tells the distance to the gravitation point to start slowing down the object
-    [SerializeField] private float maxDisplacementTo = 3; // maximal displacement due to scroll
-    [SerializeField] private float maxDisplacementAway =10; // maximal displacement due to scroll
-    [SerializeField] private float displacementCorrection = 9; // number which adjusts the position of the gravitation point. Needed to allow larger ranged beam
     [SerializeField] private float slowdown = 7; // this value determins the amount of slowdown if the object inside the beam is close to the gravitation point
     [SerializeField] private float pullForceInProximity = 2; // this value determines the pullforce when the object is close to the gravitation point
+    [SerializeField] private float shootForceMult = .03f; // this value determines the pullforce when the object is close to the gravitation point
     [SerializeField] private float maxWeightLiftable = 10;
+    [SerializeField] private float objMinDistOffset = 1f;
     [SerializeField] private Transform beamStart;
     [SerializeField] private BezierCurve laserEffect;
     [SerializeField] private GameObject sphereEffect;
@@ -24,12 +23,13 @@ public class TheBeam : MonoBehaviour
 
     private GravityObject objectInBeam;
     private float dist; // distance of objectinbeam to center ie. gravitation point of beam
-    private bool isOccupied = false;
-    private int scrollDisplacement = 0; // current displacement due to scroll
+    private bool _isOccupied = false;
+    private float scrollDisplacement = 0; // current displacement due to scroll
     private float windUpStrength = 0; // this is the number which is decreased to visualize windup (stronger windup = object is closer to player)
     private int iter = 0;
     private bool _isActive = false;
     private float _distance = 100f;
+    private float _objMinDist = 0f;
 
 
     // Shaderchange VFX
@@ -37,7 +37,6 @@ public class TheBeam : MonoBehaviour
 
     // Gravity Paticle VFX
     private GameObject _inst_FX = null;
-    private Material material;
     //////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private void Awake()
@@ -53,7 +52,7 @@ public class TheBeam : MonoBehaviour
         if (!_isActive)
             return;
 
-        if (!isOccupied)
+        if (!_isOccupied)
         {
             _inst_FX.SetActive(false);
             if (Physics.Raycast(beamSource.position, beamSource.forward, out RaycastHit hit, _distance, layerMask))
@@ -64,55 +63,48 @@ public class TheBeam : MonoBehaviour
 
                 objectInBeam = go;
                 go.goEnabled = false;
-                isOccupied = true;
+                _isOccupied = true;
+                scrollDisplacement = hit.distance / _distance;
+                _objMinDist = Mathf.Max(Mathf.Max(hit.collider.bounds.size.x, hit.collider.bounds.size.y), hit.collider.bounds.size.z) + objMinDistOffset;
                 OnCatchObject?.Invoke();
             }
         }
         
 
-        if (isOccupied)
+        if (_isOccupied)
         {
             // displace center of gravitation according to scroll and windup and correct for the length of the beam
-            Vector3 localPos = transform.InverseTransformDirection(transform.forward) * scrollDisplacement;
-            Vector3 lPos = transform.InverseTransformDirection(transform.forward * -1) * windUpStrength;
-            Vector3 displace = transform.InverseTransformDirection(transform.forward * -1) * displacementCorrection; // adjust floating to be closer to the player to allow the beam to have more range
-            Vector3 targetPos = transform.position + transform.TransformDirection(localPos) + transform.TransformDirection(lPos) + transform.TransformDirection(displace);
-
+            Vector3 localPos = Vector3.Lerp(transform.forward * (_objMinDist - (2f*windUpStrength)), transform.forward * _distance, scrollDisplacement);
+            Vector3 targetPos = beamStart.position + localPos;
             Vector3 objectPos = objectInBeam.GetMainCollider().transform.position;
-            Quaternion objectRot = objectInBeam.GetMainCollider().transform.rotation;
 
+            Quaternion objectRot = objectInBeam.GetMainCollider().transform.rotation;
+            Vector3 forceDirection = targetPos - objectPos;
             laserEffect.point3 = objectInBeam.GetMainCollider().transform; //laser position
-            
+
             // Sphere VFX And Shader FX
             _inst_FX.transform.SetPositionAndRotation(objectPos, objectRot);
             Vector3 rb_size = objectInBeam.GetMainCollider().bounds.size;
             _inst_FX.transform.localScale = new Vector3(rb_size.magnitude, rb_size.magnitude, rb_size.magnitude);
             _inst_FX.SetActive(true);
-            
+
             Utils.SetMaterialPropertyFloat(objectInBeam.GetMainRenderer(), _activateEmssionID, 1);
 
-
-            float dx = objectPos.x - targetPos.x;
-            float dy = objectPos.y - targetPos.y;
-            float dz = objectPos.z - targetPos.z;
-
-            dist = Mathf.Sqrt(dx * dx + dz * dz + dy * dy);
-
-            Vector3 forceDirection = targetPos - objectPos;
+            dist = Vector3.Distance(objectPos, targetPos);
             Rigidbody rb = objectInBeam.GetRB();
 
-            if ((rb.mass <= maxWeightLiftable) || !(rb.useGravity))
+            if (rb.mass <= maxWeightLiftable || !rb.useGravity)
             {
                 if (dist > minDist)
                 {
                     iter = iter + 1;
                     if (iter >= 20)
                     {
-                        rb.velocity = rb.velocity / 2;
+                        rb.velocity = rb.velocity / 2f;
                         iter = 0;
                     }
 
-                    float factor = rb.mass / 5;
+                    float factor = rb.mass / 5f;
                     if (!rb.useGravity)
                     {
                         factor = rb.mass;
@@ -121,16 +113,33 @@ public class TheBeam : MonoBehaviour
                 }
                 else
                 {
-                    rb.velocity = rb.velocity * (1 - (slowdown * Time.deltaTime)); // slowdown when closer to the gravitation point
-                    rb.AddForce(forceDirection.normalized * pullForceInProximity * rb.mass, ForceMode.Impulse);
+                    rb.velocity = rb.velocity * (1f - (slowdown * Time.deltaTime)); // slowdown when closer to the gravitation point
+                    rb.AddForce(forceDirection.normalized * pullForceInProximity * rb.mass * Mathf.Clamp01(dist), ForceMode.Impulse);
                 }
+            }
+
+            if(dist > _distance + 2f)
+            {
+                _isOccupied = false;
+                if (objectInBeam != null)
+                {
+                    objectInBeam.goEnabled = true;
+                    Utils.SetMaterialPropertyFloat(objectInBeam.GetMainRenderer(), _activateEmssionID, 0);
+                }
+
+                objectInBeam = null;
+                scrollDisplacement = 0;
+                windUpStrength = 0;
+                laserEffect.point3 = beamStart;
+                // Shader
+                _inst_FX?.SetActive(false);
             }
         } 
     }
 
     public void turnOffBeam()
     {
-        isOccupied = false;
+        _isOccupied = false;
         if (objectInBeam != null)
         {
             objectInBeam.goEnabled = true;
@@ -160,8 +169,8 @@ public class TheBeam : MonoBehaviour
         if (objectInBeam != null)
         {
             Rigidbody rb = objectInBeam.GetRB();
-            rb.velocity = Vector3.zero;
-            rb.AddForce(forceDirection.normalized * Mathf.Max(1, rb.mass/2) * Mathf.Max(0, shootForce - (scrollDisplacement*2)), ForceMode.Impulse);
+            if(rb.mass <= maxWeightLiftable || !rb.useGravity)
+                rb.velocity = forceDirection.normalized * Mathf.Max(0, shootForce - (scrollDisplacement * 2f)) * shootForceMult / rb.mass;
         }
     }
 
@@ -169,21 +178,11 @@ public class TheBeam : MonoBehaviour
     public void changeDisplacementIntensity(float delta)
     {
         //move object in the distance
-        if (scrollDisplacement <= maxDisplacementAway)
-        {
-            if (delta > 0)
-                scrollDisplacement = scrollDisplacement + 1;
-        }
-
-        //move object closer to the player
-        if (scrollDisplacement >= -1 * maxDisplacementTo)
-        {
-            if (delta < 0)
-                scrollDisplacement = scrollDisplacement - 1;
-        }
+        scrollDisplacement = Mathf.Clamp01(scrollDisplacement + 0.025f * Mathf.Sign(delta));
     }
 
     public bool IsActive() => _isActive;
+    public bool IsOccupied() => _isOccupied;
 
     public void setWindup(float value) =>  windUpStrength = value;
 }

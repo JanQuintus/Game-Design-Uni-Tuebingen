@@ -211,6 +211,8 @@ public class BaseAI : MonoBehaviour, ISaveable
         target.Track(this);
     }
 
+    public void SetCanMove(bool value) => _canMove = value;
+    public void SetLookAtTarget(Vector3 lookat) => _lookPosition = lookat;
     public Vector3 GetLastPosition() => _nextPosition;
     public Vector3 GetLastLookPosition() => _lookPosition;
     public float GetMaxObstacleHeight() => maxObstacleHeight;

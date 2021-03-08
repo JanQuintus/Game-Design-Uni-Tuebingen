@@ -22,7 +22,6 @@ public class GravityLauncherProjectile : MonoBehaviour
     private Transform _projectileParticles;
     private Transform _twirlSystem;
     private Light _light;
-    private Vector3 _defaultGravity = new Vector3(0, -9.81f, 0);
     private float _leaveRadius2;
     
     private MeshRenderer _meshRenderer;
@@ -84,8 +83,10 @@ public class GravityLauncherProjectile : MonoBehaviour
                 GravityObject gravityObject = Utils.FindGravityObject(collider);
                 if (!gravityObject)
                     continue;
-                (bool affected, _) = IsAffactingObject(gravityObject.GetMainCollider().transform);
-                if (affected && !_objectsInArea.Contains(gravityObject))
+                if (_objectsInArea.Contains(gravityObject))
+                    continue;
+                (bool affected, _) = IsAffactingObject(gravityObject.GetMainCollider().transform, false);
+                if (affected)
                     _objectsInArea.Add(gravityObject);
             }
 
@@ -97,13 +98,13 @@ public class GravityLauncherProjectile : MonoBehaviour
                     toRemove.Add(go);
                     continue;
                 }
-                (bool affected, bool resetGravity) = IsAffactingObject(go.GetMainCollider().transform);
+                (bool affected, bool resetGravity) = IsAffactingObject(go.GetMainCollider().transform, true);
                 if (affected)
                     go.SetLocalGravity(transform.up * -9.81f);
                 else
                 {
                     if(resetGravity)
-                        go.SetLocalGravity(_defaultGravity);
+                        go.ResetGravity();
                     toRemove.Add(go);
                 }
             }
@@ -126,13 +127,15 @@ public class GravityLauncherProjectile : MonoBehaviour
 
     }
 
-    private (bool, bool) IsAffactingObject(Transform trans)
+    private (bool, bool) IsAffactingObject(Transform trans, bool wasAffected)
     {
         double direction = Vector3.Dot(transform.up, (trans.position - transform.position));
-        if (direction <= -2 || Vector3.SqrMagnitude(trans.position - transform.position) > _leaveRadius2)
+        if (direction <= -2f || Vector3.SqrMagnitude(trans.position - transform.position) > _leaveRadius2)
             return (false, true);
 
         float distSelf = Vector3.SqrMagnitude(trans.position - transform.position);
+        if (direction < 0f && !wasAffected)
+            return (false, false);
 
         foreach (GravityLauncherProjectile glp in FindObjectsOfType<GravityLauncherProjectile>())
         {
@@ -174,7 +177,12 @@ public class GravityLauncherProjectile : MonoBehaviour
     {
         Destroy(_sphere);
         foreach (GravityObject go in _objectsInArea)
-            go.SetLocalGravity(_defaultGravity);
+            go.ResetGravity();
         _objectsInArea.Clear();
+    }
+
+    public void SetDeactivateLifeTime(bool active)
+    {
+        deactivateLifeTime = active;
     }
 }

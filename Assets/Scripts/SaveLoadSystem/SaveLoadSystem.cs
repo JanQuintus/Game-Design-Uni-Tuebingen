@@ -80,8 +80,29 @@ public class SaveLoadSystem : MonoBehaviour
         }
     }
 
-    [MenuItem("SaveLoadSystem/Generate missing UIDs")]
     private static void GenerateMissingUIDs()
+    {
+        foreach (var saveable in FindObjectsOfType<UniqueObjectId>())
+            saveable.GenerateUID();
+    }
+
+    private static void ClearNonStaticUIDs()
+    {
+        foreach (var saveable in FindObjectsOfType<UniqueObjectId>())
+            saveable.ClearUID();
+    }
+
+    public static void DeleteSaveFile()
+    {
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.Save();
+        if (File.Exists(SavePath))
+            File.Delete(SavePath);
+    }
+
+#if UNITY_EDITOR
+    [MenuItem("SaveLoadSystem/Generate missing UIDs")]
+    private static void GenerateMissingUIDsMenuItem()
     {
         foreach (var saveable in FindObjectsOfType<UniqueObjectId>())
         {
@@ -93,7 +114,7 @@ public class SaveLoadSystem : MonoBehaviour
     }
 
     [MenuItem("SaveLoadSystem/Clear Non-Static UIDs")]
-    private static void ClearNonStaticUIDs()
+    private static void ClearNonStaticUIDsMenuItem()
     {
         foreach (var saveable in FindObjectsOfType<UniqueObjectId>())
         {
@@ -104,7 +125,7 @@ public class SaveLoadSystem : MonoBehaviour
     }
 
     [MenuItem("SaveLoadSystem/Delete SaveFile")]
-    public static void DeleteSaveFile()
+    public static void DeleteSaveFileMenuItem()
     {
         PlayerPrefs.DeleteAll();
         PlayerPrefs.Save();
@@ -114,4 +135,5 @@ public class SaveLoadSystem : MonoBehaviour
             print("SaveFile deleted.");
         }
     }
+#endif
 }

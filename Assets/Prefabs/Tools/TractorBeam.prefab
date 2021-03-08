@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ToolName: Tractor Beam
   TheBeam: {fileID: 9095880646146021206}
-  range: 100
+  range: 15
   maximalShootForce: 30
   maximalHeat: 500
   heatUpPerTick: 1
@@ -134,15 +134,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9207fe356dcfea14f9633f298d7f12a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  beamSource: {fileID: 0}
+  beamSource: {fileID: 9095880645518384651}
   pullForce: 4
   minDist: 3
-  maxDisplacementTo: 3
-  maxDisplacementAway: 10
-  displacementCorrection: 9
   slowdown: 7
   pullForceInProximity: 3
-  maxWeightLiftable: 500
+  shootForceMult: 20
+  maxWeightLiftable: 40
+  objMinDistOffset: 1
   beamStart: {fileID: 9095880645518384651}
   laserEffect: {fileID: 1964125812626589836}
   sphereEffect: {fileID: 5135803245366816802, guid: 5cd77dbc4b6534b40ab215ad5e326038, type: 3}

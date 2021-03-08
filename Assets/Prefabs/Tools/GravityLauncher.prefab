@@ -46,8 +46,107 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ToolName: Gravity Launcher
   maxAmmo: 25
+  shootDelay: 0.25
   audioSource: {fileID: 0}
   shootClip: {fileID: 8300000, guid: c1cbe1a5e9152ac499d1d0a24e13b8f1, type: 3}
+--- !u!1 &8528071282228482708
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9025646169337672273}
+  - component: {fileID: 5116171502653428838}
+  - component: {fileID: 8131291412964326405}
+  - component: {fileID: 6404534263253291499}
+  m_Layer: 8
+  m_Name: Capsule
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9025646169337672273
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8528071282228482708}
+  m_LocalRotation: {x: -0.004696361, y: 0.7070912, z: -0.7070912, w: -0.004696361}
+  m_LocalPosition: {x: 0.0139999855, y: 0.05681139, z: -0.016000083}
+  m_LocalScale: {x: 0.5789966, y: 0.923288, z: 0.4974895}
+  m_Children: []
+  m_Father: {fileID: 6325119143631363041}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!33 &5116171502653428838
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8528071282228482708}
+  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &8131291412964326405
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8528071282228482708}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 73de7bfc15a5c8f4e91f8fe3ddf15629, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &6404534263253291499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8528071282228482708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d91b5f2357a7c64d997d8fb9cbac2ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gravityLauncher: {fileID: 5786544036138770091}
+  MaxWiggle: 0.02
+  WiggleSpeed: 0.5
+  Recovery: 0.5
 --- !u!1001 &5786544034551364618
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -174,6 +273,10 @@ PrefabInstance:
     - target: {fileID: 7598419493678936200, guid: 72bc2f86eff5272488c1e79c39e6c2cf, type: 3}
       propertyPath: m_Layer
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7598419493678936200, guid: 72bc2f86eff5272488c1e79c39e6c2cf, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 72bc2f86eff5272488c1e79c39e6c2cf, type: 3}

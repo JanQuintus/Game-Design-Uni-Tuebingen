@@ -9,13 +9,7 @@ public abstract class AInteractive : MonoBehaviour
 
     [SerializeField] protected AudioClip hoverClip;
 
-    public UnityEvent OnInteractionStart;
-    public UnityEvent OnInteractionEnd;
-
-    public virtual void Interact(bool isRelease)
-    {
-        OnInteractionStart.Invoke();
-    }
+    public abstract void Interact(bool isRelease);
 
     public virtual void Hover()
     {
@@ -24,9 +18,7 @@ public abstract class AInteractive : MonoBehaviour
             //var outline = gameObject.GetComponent<Outline>();
             outline.OutlineMode = Outline.Mode.OutlineAll;
             outline.OutlineWidth = outlineWidth;
-            
         }
-        
 
         if (hoverClip != null)
             SoundController.Instance.PlaySoundAtLocation(hoverClip, transform.position);
@@ -44,12 +36,6 @@ public abstract class AInteractive : MonoBehaviour
 
         }
 
-    }
-
-    private void OnDestroy()
-    {
-        OnInteractionStart.RemoveAllListeners();
-        OnInteractionEnd.RemoveAllListeners();
     }
 
     public virtual string GetText() => "";
