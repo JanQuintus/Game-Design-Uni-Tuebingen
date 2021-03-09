@@ -1,6 +1,5 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
 public class GravityObject : MonoBehaviour
 {
     public System.Action OnGravityChanged;

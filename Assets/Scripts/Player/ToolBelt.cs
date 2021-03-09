@@ -41,8 +41,14 @@ public class ToolBelt : MonoBehaviour, ISaveable
 
     private void Start()
     {
-        if(_currentSlot == null)
-            SetTool(startTool);
+        if (_currentSlot == null)
+        {
+            ToolSlot startSlot = GetToolSlot(startTool);
+            if (startSlot.IsAvailable && !startSlot.IsBlocked)
+                SetTool(startTool);
+            else
+                SetEmptySlot();
+        }
     }
 
     public void SetEmptySlot()
@@ -94,6 +100,8 @@ public class ToolBelt : MonoBehaviour, ISaveable
         ToolSlot slot = GetToolSlot(tool);
         slot.IsAvailable = true;
         OnToolUnlocked?.Invoke();
+        if (_currentSlot == null || _currentSlot == _emptySlot)
+            SetTool(slot.Slot);
     }
 
     public ToolSlot GetCurrentSlot() => _currentSlot;

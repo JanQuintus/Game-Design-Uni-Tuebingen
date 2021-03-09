@@ -65,10 +65,10 @@ public class ToolsUI : MonoBehaviour
         {
             if (!slot.Slot.IsAvailable)
             {
-                slot.Parent.localScale = Vector3.zero;
+                slot.Parent.gameObject.SetActive(false);
                 continue;
             }
-            slot.Parent.localScale = Vector3.one;
+            slot.Parent.gameObject.SetActive(true);
             Color color = slot.Slot.IsBlocked ? blockedColor : (slot.Slot == PlayerController.Instance.GetToolBelt().GetCurrentSlot() ? equippedColor : availableColor);
             slot.Fill.DOColor(color, .2f);
             slot.Fill.fillAmount = slot.Slot.IsBlocked ? 1f : slot.Slot.Tool.GetFillPercentage();

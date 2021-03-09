@@ -39,7 +39,7 @@ public class MainMenu : MonoBehaviour
     public void Play()
     {
         SaveLoadSystem.DeleteSaveFile();
-        SceneLoader.Instance.LoadScene("SLS_Test1");
+        SceneLoader.Instance.LoadScene("IntroCinematic");
     }
 
     public void Settings()

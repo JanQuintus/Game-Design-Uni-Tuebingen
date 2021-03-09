@@ -2,6 +2,7 @@
 
 public class ToolCollectable : AInteractive, ISaveable
 {
+    [SerializeField] private AudioClipBundle innerDialogBundle;
     [SerializeField] private AudioClip pickUpClip;
     [SerializeField] private ATool tool;
 
@@ -12,6 +13,7 @@ public class ToolCollectable : AInteractive, ISaveable
         _pickedUp = true;
         PlayerController.Instance.GetToolBelt().UnlockTool(tool);
         SoundController.Instance.PlaySoundAtLocation(pickUpClip, transform.position);
+        InnerDialog.Instance.PlayDialog(innerDialogBundle.GetRandomClip());
         Destroy(GetComponent<Collider>());
         for(int i = 0; i < transform.childCount; i++)
             Destroy(transform.GetChild(i).gameObject);
