@@ -26,6 +26,8 @@ public class Interactor : MonoBehaviour
                 SetText(aInteractive.GetText());
                 if (aInteractive == _current)
                     return;
+                if(_current) 
+                    _current.Unhover();
                 _current = aInteractive;
                 _current.Hover();
             }
