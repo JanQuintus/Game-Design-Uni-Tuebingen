@@ -6,6 +6,7 @@ public class ToolBelt : MonoBehaviour, ISaveable
 {
     public System.Action OnToolBlocked;
     public System.Action OnToolUnblocked;
+    public System.Action OnToolUnlocked;
     public System.Action OnToolSwitched;
 
     [System.Serializable]
@@ -88,6 +89,13 @@ public class ToolBelt : MonoBehaviour, ISaveable
         OnToolUnblocked?.Invoke();
     }
 
+    public void UnlockTool(ATool tool)
+    {
+        ToolSlot slot = GetToolSlot(tool);
+        slot.IsAvailable = true;
+        OnToolUnlocked?.Invoke();
+    }
+
     public ToolSlot GetCurrentSlot() => _currentSlot;
     public ToolSlot[] GetToolSlots() => slots;
 
@@ -160,6 +168,7 @@ public class ToolBelt : MonoBehaviour, ISaveable
         OnToolBlocked?.Invoke();
         OnToolUnblocked?.Invoke();
         OnToolSwitched?.Invoke();
+        OnToolUnlocked?.Invoke();
     }
 
     [System.Serializable]
