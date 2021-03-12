@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 587656321422521973}
   - component: {fileID: 587656321422521975}
   - component: {fileID: 587656321422521972}
+  - component: {fileID: 5605297502633040004}
   m_Layer: 0
   m_Name: default
   m_TagString: TennisBall
@@ -157,7 +158,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   localGravity: {x: 0, y: -9.81, z: 0}
+  defaultGravity: {x: 0, y: -9.81, z: 0}
   rb: {fileID: 0}
   mainCollider: {fileID: 0}
   mainRenderer: {fileID: 0}
   goEnabled: 1
+--- !u!114 &5605297502633040004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8749197194715172101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40952ce5ce5f1374880518382b02e7c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outline: {fileID: 0}
+  outlineWidth: 0
+  hoverClip: {fileID: 0}
+  waitOnPickup: 0.2
+  breakForce: 20
+  breakDistance: 1
