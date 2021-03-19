@@ -1,18 +1,17 @@
 ﻿using UnityEngine;
 
-public class ToolCollectable : AInteractive, ISaveable
+public class PartCollectable : AInteractive, ISaveable
 {
     [SerializeField] private AudioClipBundle innerDialogBundle;
     [SerializeField] private AudioClip pickUpClip;
-    [SerializeField] private ATool tool;
     [SerializeField] private int globalProgress = 0;
+    [SerializeField] private string pickUpText = "PartName";
 
     private bool _pickedUp = false;
 
     public override void Interact(bool isRelease)
     {
         _pickedUp = true;
-        PlayerController.Instance.GetToolBelt().UnlockTool(tool);
         SoundController.Instance.PlaySoundAtLocation(pickUpClip, transform.position);
         InnerDialog.Instance.PlayDialog(innerDialogBundle.GetRandomClip());
         GameManager.GlobalProgress = globalProgress;
@@ -23,7 +22,7 @@ public class ToolCollectable : AInteractive, ISaveable
 
     public override string GetText()
     {
-        return "Take " + tool.ToolName;
+        return "Take " + pickUpText;
     }
 
     public object CaptureState()
