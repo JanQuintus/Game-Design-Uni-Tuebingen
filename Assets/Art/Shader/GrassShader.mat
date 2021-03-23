@@ -27,5 +27,5 @@ Material:
     - Vector1_6E067ACA: 1.5
     m_Colors:
     - Vector3_81AFD843: {r: 0.08, g: -0.05, b: 0, a: 0}
-    - playerPosition: {r: -16.584515, g: 1.0553346, b: -2.278092, a: 0}
+    - playerPosition: {r: -0.7014408, g: 1.1399994, b: 1.7624421, a: 0}
   m_BuildTextureStacks: []
