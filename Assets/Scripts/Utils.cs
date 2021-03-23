@@ -22,4 +22,11 @@ public static class Utils
                 material.SetFloat(propertyID, value);
         }
     }
+
+    public static Health FindHealth(Collider collider)
+    {
+        Health go = collider.GetComponent<Health>();
+        if (!go) go = collider.GetComponentInParent<Health>();
+        return go;
+    }
 }
