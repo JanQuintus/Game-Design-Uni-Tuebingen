@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GravityLauncherFloor : AInteractive
+public class GravityLauncherFloor : ToolCollectable
 {
     // Start is called before the first frame update
     [SerializeField] private List<GravityLauncherProjectile> _activeProjectiles;
@@ -10,6 +10,7 @@ public class GravityLauncherFloor : AInteractive
     public override void Interact(bool isRelease)
     {
         if (isRelease) return;
+        base.Interact(isRelease);
 
         foreach( GravityLauncherProjectile proj in _activeProjectiles)
         {
