@@ -14,6 +14,8 @@ public class multi_pressure_plate_small_door : Door
 
     [SerializeField] private int duration = 1;
 
+    [SerializeField] private bool staysOpen = false;
+
     private int numCorrectPressurePlates = 0;
 
     // Start is called before the first frame update
@@ -34,8 +36,12 @@ public class multi_pressure_plate_small_door : Door
 
     public override void CloseDoor()
     {
-        numCorrectPressurePlates--;
-        door.transform.DOMove(startPos.transform.position, duration);
+        if (! staysOpen)
+        {
+            numCorrectPressurePlates--;
+            door.transform.DOMove(startPos.transform.position, duration);
+        }
+
 
     }
 }
