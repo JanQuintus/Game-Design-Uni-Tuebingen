@@ -11,9 +11,6 @@ public class GravityLauncherFloor : AInteractive
     {
         if (isRelease) return;
 
-        gameObject.SetActive(false);
-
-
         foreach( GravityLauncherProjectile proj in _activeProjectiles)
         {
             proj.SetDeactivateLifeTime(false);
