@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InnerDialogTrigger : MonoBehaviour
+public class InnerDialogTrigger : MonoBehaviour, ISaveable
 {
     private enum TriggerType
     {
@@ -29,7 +29,7 @@ public class InnerDialogTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (triggerType == TriggerType.ENTER && delay <= 0 && other.gameObject.tag.Equals("Player"))
+        if (triggerType == TriggerType.ENTER && delay == 0 && other.gameObject.tag.Equals("Player"))
         {
             InnerDialog.Instance.PlayDialog(clipBundle.GetRandomClip());
             delay = canPlayAgainDelay;
@@ -38,7 +38,7 @@ public class InnerDialogTrigger : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (triggerType == TriggerType.STAY && delay <= 0 && other.gameObject.tag.Equals("Player"))
+        if (triggerType == TriggerType.STAY && delay == 0 && other.gameObject.tag.Equals("Player"))
         {
             InnerDialog.Instance.PlayDialog(clipBundle.GetRandomClip());
             delay = canPlayAgainDelay;
@@ -47,11 +47,20 @@ public class InnerDialogTrigger : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (triggerType == TriggerType.EXIT && delay <= 0 && other.gameObject.tag.Equals("Player"))
+        if (triggerType == TriggerType.EXIT && delay == 0 && other.gameObject.tag.Equals("Player"))
         {
             InnerDialog.Instance.PlayDialog(clipBundle.GetRandomClip());
             delay = canPlayAgainDelay;
         }
     }
 
+    public object CaptureState()
+    {
+        return delay;
+    }
+
+    public void RestoreState(object state)
+    {
+        delay = (float)state;
+    }
 }

@@ -146,8 +146,7 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
 
         _health.OnDeath.AddListener(() =>
         {
-            Debug.Log("You died!");
-            _health.Revive();
+            SceneLoader.Instance.LoadScene(GameManager.CurrentScene, false);
         });
 
         _health.OnDamaged.AddListener((damage) =>
@@ -234,7 +233,7 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
                 if (Physics.Raycast(transform.position + transform.up, -transform.up, out RaycastHit hit, 2f))
                 {
                     if (hit.collider.GetComponent<CollisionSound>() != null)
-                        audioSource.PlayOneShot(hit.collider.GetComponent<CollisionSound>().GetCollisionClip(), Random.Range(0.04f, 0.05f));
+                        audioSource.PlayOneShot(hit.collider.GetComponent<CollisionSound>().GetCollisionClip(), Random.Range(0.01f, 0.03f));
                 }
                 
                 audioSource.PlayOneShot(footStepClip, Random.Range(0.5f, 1f));

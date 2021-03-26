@@ -293,7 +293,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d18e07d3e245e4d48926391173453080, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outlineMaterial: {fileID: 3069890081476137026}
+  outline: {fileID: 0}
+  outlineWidth: 0
   hoverClip: {fileID: 8300000, guid: d6601e34edecb804fa7a533842756740, type: 3}
   door: {fileID: 5327832979857058465}
 --- !u!1 &1865248205069119848
@@ -425,7 +426,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &9034070089723322317
 Transform:
@@ -611,7 +612,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d18e07d3e245e4d48926391173453080, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outlineMaterial: {fileID: 686457548481161926}
+  outline: {fileID: 0}
+  outlineWidth: 0
   hoverClip: {fileID: 8300000, guid: d6601e34edecb804fa7a533842756740, type: 3}
   door: {fileID: 5327832979857058465}
 --- !u!1 &3886935898735068840
@@ -1063,7 +1065,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d18e07d3e245e4d48926391173453080, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outlineMaterial: {fileID: 5979469851593065198}
+  outline: {fileID: 0}
+  outlineWidth: 0
   hoverClip: {fileID: 8300000, guid: d6601e34edecb804fa7a533842756740, type: 3}
   door: {fileID: 5327832979857058465}
 --- !u!1 &6599759669131256364

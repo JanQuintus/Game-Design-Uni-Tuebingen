@@ -14,6 +14,9 @@ public class MutantBaseAI : BaseAI
     [SerializeField] private AudioClipBundle deathClipBundle;
     [SerializeField] private AudioClipBundle growlClipBundle;
 
+    [Header("Other")]
+    [SerializeField] private float minVelocityToDamage = 14f;
+
     private float maxPlayerDistance = 30f;
     private Health _health;
     private float _attackTimeCD;
@@ -106,7 +109,7 @@ public class MutantBaseAI : BaseAI
         if (collision.collider.gameObject.layer == _aiLayer)
             return;
 
-        if (collision.relativeVelocity.magnitude < 14f)
+        if (collision.relativeVelocity.magnitude < minVelocityToDamage)
             return;
         float mass = collision.rigidbody ? collision.rigidbody.mass : 1f;
         if (collision.gameObject.isStatic)

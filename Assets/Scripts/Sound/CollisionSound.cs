@@ -22,6 +22,7 @@ public class CollisionSound : MonoBehaviour
     {
         if (_tNextSound > 0f)
             return;
+        if (collision.relativeVelocity.magnitude <= 10) return;
         _tNextSound = 0.5f;
         float volume = Mathf.Clamp01(collision.relativeVelocity.magnitude / 100f);
         float pitch = Mathf.Clamp(collision.relativeVelocity.magnitude / 50f, 0, 3f);

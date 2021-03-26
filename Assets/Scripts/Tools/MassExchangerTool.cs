@@ -58,7 +58,7 @@ public class MassExchangerTool : ATool
         if (isRelease) return;
         if (_energy <= 0) return;
 
-        if (Physics.Raycast(ray, out RaycastHit hit, 100f, layerMask))
+        if (Physics.Raycast(ray, out RaycastHit hit, 1500f, layerMask))
         {
             GravityObject go = Utils.FindGravityObject(hit.collider);
             if (go == null)

@@ -25,15 +25,11 @@ public class SceneLoader : MonoBehaviour
 
     public void LoadScene(string name, bool save = false)
     {
-        if (GameManager.CurrentScene == name)
-            return;
-
         GameManager.LastScene = GameManager.CurrentScene;
         GameManager.CurrentScene = name;
-        SceneManager.LoadScene("LoadingScreen", LoadSceneMode.Additive);
-
         if (save && SaveLoadSystem.Instance != null)
             SaveLoadSystem.Instance.Save();
+        SceneManager.LoadScene("LoadingScreen", LoadSceneMode.Additive);
     }
 
 }

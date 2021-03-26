@@ -9318,7 +9318,7 @@ PrefabInstance:
     - target: {fileID: 1508918164778853082, guid: d4b4c496eee03d7439a919de127a40ae, type: 3}
       propertyPath: innerDialogBundle.clips.Array.data[0]
       value: 
-      objectReference: {fileID: 8300000, guid: 8722dac2f518cec4d87922c9932ac0b0, type: 3}
+      objectReference: {fileID: 8300000, guid: 0b6da9c513b8cb94bbf236b49065e760, type: 3}
     - target: {fileID: 1508918164778853083, guid: d4b4c496eee03d7439a919de127a40ae, type: 3}
       propertyPath: m_Name
       value: ToolCollectable
@@ -12630,6 +12630,68 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e29113f5e189f7c48900011eac8d8dea, type: 3}
+--- !u!1 &521951302
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 521951305}
+  - component: {fileID: 521951304}
+  - component: {fileID: 521951303}
+  m_Layer: 0
+  m_Name: FirstMutantInnerDialogTrigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &521951303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 521951302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0959e087e3a92c43a01988bc2e4fce0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clipBundle:
+    clips:
+    - {fileID: 8300000, guid: 7978be4b0beec6944a07ff4f7c7d27f3, type: 3}
+  canPlayAgainDelay: -1
+  triggerType: 0
+--- !u!65 &521951304
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 521951302}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.5423737, y: 5.812034, z: 2.3449783}
+  m_Center: {x: -0.71525574, y: 2.406017, z: -0.48167038}
+--- !u!4 &521951305
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 521951302}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -80.02, y: 0, z: -37.06}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 40
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &524245768
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24869,6 +24931,68 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2969303750077140803, guid: e29113f5e189f7c48900011eac8d8dea, type: 3}
   m_PrefabInstance: {fileID: 1030623747}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1031109441
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1031109444}
+  - component: {fileID: 1031109443}
+  - component: {fileID: 1031109442}
+  m_Layer: 0
+  m_Name: StartInnerDialogTrigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1031109442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1031109441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0959e087e3a92c43a01988bc2e4fce0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clipBundle:
+    clips:
+    - {fileID: 8300000, guid: 57d73a238f035dc44b3568d5ba9189d7, type: 3}
+  canPlayAgainDelay: -1
+  triggerType: 0
+--- !u!65 &1031109443
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1031109441}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5.5200806, y: 5.812034, z: 6.5894203}
+  m_Center: {x: 0.9184303, y: 2.406017, z: 0.19898033}
+--- !u!4 &1031109444
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1031109441}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -60.68, y: 0, z: -63.81}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 39
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1032072405
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25088,7 +25212,7 @@ MonoBehaviour:
   outlineWidth: 0
   hoverClip: {fileID: 8300000, guid: d6601e34edecb804fa7a533842756740, type: 3}
   lever: {fileID: 174088615}
-  doorClosedDialog: {fileID: 8300000, guid: 8722dac2f518cec4d87922c9932ac0b0, type: 3}
+  doorClosedDialog: {fileID: 8300000, guid: 3795d2f12ee09514688c16b9ef37b110, type: 3}
 --- !u!65 &1033398857
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -49782,7 +49906,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1457290180807335844}
   - component: {fileID: 7461453774912278274}
-  - component: {fileID: 1578612201144971556}
   m_Layer: 10
   m_Name: DoorTriggerButton
   m_TagString: Untagged
@@ -49790,25 +49913,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1578612201144971556
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1578612201144971555}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42fe0d64cc9d5694aa327352244a00db, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outline: {fileID: 0}
-  outlineWidth: 0
-  hoverClip: {fileID: 8300000, guid: d6601e34edecb804fa7a533842756740, type: 3}
-  clipBundle:
-    clips:
-    - {fileID: 8300000, guid: 8722dac2f518cec4d87922c9932ac0b0, type: 3}
-  hoverText: Open Door
 --- !u!114 &1640232106952816039
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51180,7 +51284,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e8fab895fb2f4b042b2ee8a121dd659b, type: 2}
+  - {fileID: 2100000, guid: f92698576e725c640b9a6cc85c91ff67, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

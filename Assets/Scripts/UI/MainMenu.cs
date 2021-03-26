@@ -33,7 +33,7 @@ public class MainMenu : MonoBehaviour
 
     public void Continue()
     {
-        SceneLoader.Instance.LoadScene(PlayerPrefs.GetString("currentScene", "SLS_Test1"));
+        SceneLoader.Instance.LoadScene(PlayerPrefs.GetString("currentScene", "IntroCinematic"));
     }
 
     public void Play()

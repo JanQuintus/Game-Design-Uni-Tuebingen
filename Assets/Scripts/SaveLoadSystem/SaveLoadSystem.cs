@@ -36,6 +36,7 @@ public class SaveLoadSystem : MonoBehaviour
     public void Load()
     {
         GameManager.Load();
+        Debug.Log(GameManager.LastScene + " / " + GameManager.CurrentScene);
         var state = LoadFile();
         RestoreState(state);
     }

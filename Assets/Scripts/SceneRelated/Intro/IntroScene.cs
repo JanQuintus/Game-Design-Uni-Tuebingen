@@ -15,6 +15,6 @@ public class IntroScene : MonoBehaviour
     IEnumerator LoadIntroLevel()
     {
         yield return new WaitForSeconds(1f);
-        SceneLoader.Instance.LoadScene("Intro");
+        SceneLoader.Instance.LoadScene("Intro", true);
     }
 }

@@ -37,6 +37,7 @@ public class GameManager
         PlayerPrefs.SetInt("food", Food);
         PlayerPrefs.SetInt("drinks", Drinks);
         PlayerPrefs.SetString("currentScene", CurrentScene != "MainMenu" ? CurrentScene : LastScene);
+        PlayerPrefs.SetString("lastScene", LastScene);
         PlayerPrefs.Save();
     }
 
@@ -45,6 +46,7 @@ public class GameManager
         GlobalProgress = PlayerPrefs.GetInt("globalProgress", 0);
         Food = PlayerPrefs.GetInt("food", 0);
         Drinks = PlayerPrefs.GetInt("drinks", 0);
-        CurrentScene = PlayerPrefs.GetString("currentScene", "SLS_Test1");
+        CurrentScene = PlayerPrefs.GetString("currentScene", "IntroCinematic");
+        LastScene = PlayerPrefs.GetString("lastScene", "IntroCinematic");
     }
 }

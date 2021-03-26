@@ -105,8 +105,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3009250726267787564}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f67d9035d8db0241b25b7dea627b144, type: 3}
+  m_Script: {fileID: 11500000, guid: 7b20157ef46069a498bf7d7595de8722, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   door: {fileID: 0}
   minWeightToPress: 50
+  impactPressure: 0
+  impact_openDuration: 10

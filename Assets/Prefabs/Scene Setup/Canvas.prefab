@@ -1595,7 +1595,7 @@ MonoBehaviour:
   choice2: {fileID: 2620950895579432712}
   choice3: {fileID: 2620950896147438379}
   choice4: {fileID: 2620950897016392711}
-  dialogText: {fileID: 6067155797887652522}
+  dialogueText: {fileID: 6067155797887652522}
 --- !u!1 &6067155799050733691
 GameObject:
   m_ObjectHideFlags: 0
