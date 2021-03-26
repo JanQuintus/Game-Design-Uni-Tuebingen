@@ -263,10 +263,10 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
         }
 
         localVelocity = transform.InverseTransformDirection(_rb.velocity);
-        if (_isGrounded && localVelocity.y <= 0)
+        if (_isGrounded && (localVelocity.y <= -0.5 || _smoothMove.sqrMagnitude < 0.2f))
         {
-            col.material.staticFriction = Mathf.Clamp01(-_rb.velocity.y * -_rb.velocity.y);
-            col.material.frictionCombine = PhysicMaterialCombine.Average;
+            col.material.staticFriction = 1;
+            col.material.frictionCombine = PhysicMaterialCombine.Maximum;
         }
         else
         {
@@ -452,8 +452,8 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
         {
             if (transform.InverseTransformDirection(_rb.velocity).y > -.5f)
             {
-                _slopeSpeedMult = Vector3.Dot(hit.normal, transform.up) * Vector3.Dot(hit.normal, transform.up);
-                if (_slopeSpeedMult <= 0.35)
+                _slopeSpeedMult = Vector3.Dot(hit.normal, transform.up);
+                if (_slopeSpeedMult <= 0.65)
                     _slopeSpeedMult = 0;
             }
             else

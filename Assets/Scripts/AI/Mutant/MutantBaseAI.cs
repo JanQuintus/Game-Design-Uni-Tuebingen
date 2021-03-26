@@ -106,11 +106,11 @@ public class MutantBaseAI : BaseAI
         if (collision.collider.gameObject.layer == _aiLayer)
             return;
 
-        if (collision.relativeVelocity.magnitude < 8f)
+        if (collision.relativeVelocity.magnitude < 14f)
             return;
         float mass = collision.rigidbody ? collision.rigidbody.mass : 1f;
         if (collision.gameObject.isStatic)
-            mass = 50;
+            mass = 30;
         _health.Damage(collision.relativeVelocity.magnitude * mass);
     }
 
