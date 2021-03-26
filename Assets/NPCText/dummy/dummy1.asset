@@ -10,7 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f646fa05ddcaa964cb5adde779210713, type: 3}
-  m_Name: DummyText
+  m_Name: dummy1
   m_EditorClassIdentifier: 
-  npcText: messsage1|message2@a4.choice11|choice12|<@b4.choice21|choice22|<@c4.choice3|<@d4.choice4|<$a.global1|global2|<
-  playerText: message1|message2|message3/message4
+  text1: global progress yo
+  text2: tekst
+  text3: 
+  text4: 
+  text5: 
+  text6: 
+  text7: 
+  text8: 

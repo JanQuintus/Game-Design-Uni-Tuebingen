@@ -4,23 +4,21 @@
 [CreateAssetMenu(fileName = "New Dialogue", menuName = "DialogueScriptableObject")]
 public class DialogueScriptableObject : ScriptableObject
 {
-    // npc text contents ( split with | per answer, split with @x2. (x is a/b/c/d, 2/4 is amt of choices ) per conversation local path, split with $x. per conversation global path, paths end on |< )
-    [TextArea(2, 8)] // global path delim chars must be chosen correctly
-    public static string dummyText = "messsage1|message2" +
-        "@a4.choice11|choice12|<" +
-        "@b4.choice21|choice22|<" +
-        "@c4.choice3|<" +
-        "@d4.choice4|<" +
-        "$a.global1|global2|<";
-
-    // player choices ( split a la "message1|message2|message3/messgae4" or "message1|message2"; | is either only delim or first two delim followed by / )
+    // add strings, one obj per dialogue, name obj after globalprogress each line is dependant on localprogress, can just use names hehe
     [TextArea(2, 8)]
-    public static string playerDummyText = "message1|message2|message3/message4";
-
-    // can cull these if necessary^ ( keep info on conventions though )
+    public string text1;
     [TextArea(2, 8)]
-    [Tooltip("see DialogueScriptableObject for conventions")]
-    public string npcText;
+    public string text2;
     [TextArea(2, 8)]
-    public string playerText;
+    public string text3;
+    [TextArea(2, 8)]
+    public string text4;
+    [TextArea(2, 8)]
+    public string text5;
+    [TextArea(2, 8)]
+    public string text6;
+    [TextArea(2, 8)]
+    public string text7;
+    [TextArea(2, 8)]
+    public string text8;
 }
