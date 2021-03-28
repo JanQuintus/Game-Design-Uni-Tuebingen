@@ -94,6 +94,8 @@ public class MassExchangerTool : ATool
         float sourceMass = Mathf.Round(_source.GetRB().mass);
         _source.GetRB().mass = Mathf.Round(_target.GetRB().mass);
         _target.GetRB().mass = sourceMass;
+        _source = null;
+        _target = null;
     }
 
     public override void Reset(bool isRelease)
@@ -102,9 +104,11 @@ public class MassExchangerTool : ATool
         {
             changedObject.Key.GetRB().mass = Mathf.Round(changedObject.Value);
             Utils.SetMaterialPropertyFloat(changedObject.Key.GetMainRenderer(), _shader_active, 0);
-            Utils.SetMaterialPropertyFloat(changedObject.Key.GetMainRenderer(), _shader_Mass, _target.GetRB().mass);
+            Utils.SetMaterialPropertyFloat(changedObject.Key.GetMainRenderer(), _shader_Mass, changedObject.Key.GetRB().mass);
         }
         _changedObjects.Clear();
+        _source = null;
+        _target = null;
     }
 
     public override void Reload() { 
@@ -113,8 +117,8 @@ public class MassExchangerTool : ATool
     }
 
     public override void Scroll(float delta){}
-    public override void OnEquip() { }
-    public override void OnUnequip() { }
+    public override void OnEquip() { if(_source != null) chargerEffect.SetActive(true); }
+    public override void OnUnequip() { chargerEffect.SetActive(false); }
 
     private void fxActivate_getRay(RaycastHit hit)
     {

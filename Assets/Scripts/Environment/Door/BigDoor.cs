@@ -23,6 +23,7 @@ public class BigDoor : Door
         doorLeft.transform.DOMove(endPosLeft.transform.position, duration);
         doorRight.transform.DOMove(endPosRight.transform.position, duration);
         SoundController.Instance.PlaySoundAtLocation(doorOpenClip, transform.position);
+        IsOpen = true;
     }
 
     public override void CloseDoor()
@@ -30,5 +31,6 @@ public class BigDoor : Door
         doorLeft.transform.DOMove(startPosLeft.transform.position, duration);
         doorRight.transform.DOMove(startPosRight.transform.position, duration);
         SoundController.Instance.PlaySoundAtLocation(doorCloseClip, transform.position);
+        IsOpen = false;
     }
 }

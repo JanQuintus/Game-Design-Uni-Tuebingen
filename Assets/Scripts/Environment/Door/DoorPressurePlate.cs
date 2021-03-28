@@ -13,7 +13,7 @@ public class DoorPressurePlate : MonoBehaviour
     private float _currentTime = 0.0f;
 
     private int _shader_Mass = Shader.PropertyToID("objmass");
-
+    private bool _toldDoorToOpen = false;
 
     private void Awake()
     {
@@ -22,6 +22,7 @@ public class DoorPressurePlate : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (_toldDoorToOpen) return;
         Rigidbody rb = other.GetComponent<Rigidbody>();
 
         if (rb == null) //test if player walked over the pressure plate
@@ -35,6 +36,31 @@ public class DoorPressurePlate : MonoBehaviour
             {
                 _currentTime = Time.fixedTime;
                 door.OpenDoor();
+                _toldDoorToOpen = true;
+            }
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        Rigidbody rb = other.GetComponent<Rigidbody>();
+
+        if (rb == null) //test if player walked over the pressure plate
+        {
+            rb = other.GetComponentInParent<Rigidbody>();
+        }
+
+        if (rb != null)
+        {
+            if (!_toldDoorToOpen && rb.mass >= minWeightToPress)
+            {
+                _currentTime = Time.fixedTime;
+                door.OpenDoor();
+                _toldDoorToOpen = true;
+            }else if(_toldDoorToOpen && rb.mass < minWeightToPress)
+            {
+                door.CloseDoor();
+                _toldDoorToOpen = false;
             }
         }
     }
@@ -54,6 +80,7 @@ public class DoorPressurePlate : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        if (!_toldDoorToOpen) return;
         //original
         if (!impactPressure) {
             Rigidbody rb = other.GetComponent<Rigidbody>();
@@ -68,6 +95,7 @@ public class DoorPressurePlate : MonoBehaviour
                 if (rb.mass >= minWeightToPress)
                 {
                     door.CloseDoor();
+                    _toldDoorToOpen = false;
                 }
             }
         }

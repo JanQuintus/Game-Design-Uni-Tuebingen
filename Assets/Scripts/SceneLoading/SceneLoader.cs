@@ -23,6 +23,11 @@ public class SceneLoader : MonoBehaviour
         GameManager.CurrentScene = SceneManager.GetActiveScene().name;
     }
 
+    public void LoadSceneNoSave(string name)
+    {
+        LoadScene(name, false);
+    }
+    
     public void LoadScene(string name, bool save = false)
     {
         GameManager.LastScene = GameManager.CurrentScene;

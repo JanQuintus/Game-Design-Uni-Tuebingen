@@ -15,10 +15,12 @@ public class SmallDoorAnimated : Door
     public override void OpenDoor()
     {
         door.transform.DOMove(endPos.transform.position, duration);
+        IsOpen = true;
     }
 
     public override void CloseDoor()
     {
         door.transform.DOMove(startPos.transform.position, duration);
+        IsOpen = false;
     }
 }

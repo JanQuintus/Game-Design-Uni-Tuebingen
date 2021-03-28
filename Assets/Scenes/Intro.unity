@@ -12641,7 +12641,7 @@ GameObject:
   - component: {fileID: 521951305}
   - component: {fileID: 521951304}
   - component: {fileID: 521951303}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: FirstMutantInnerDialogTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24942,7 +24942,7 @@ GameObject:
   - component: {fileID: 1031109444}
   - component: {fileID: 1031109443}
   - component: {fileID: 1031109442}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: StartInnerDialogTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}

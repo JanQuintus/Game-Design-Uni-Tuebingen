@@ -22,6 +22,7 @@ public class multi_pressure_plate_gym_door : Door
         if (numCorrectPressurePlates == doorPressurePlates.Length)
         {
             door.transform.DOMove(endPos.transform.position, duration);
+            IsOpen = true;
         }
 
     }
@@ -30,6 +31,6 @@ public class multi_pressure_plate_gym_door : Door
     {
         numCorrectPressurePlates--;
         door.transform.DOMove(startPos.transform.position, duration);
-
+        IsOpen = false;
     }
 }
