@@ -58,10 +58,9 @@ public class GravityLauncherProjectile : MonoBehaviour
             transform.rotation = Quaternion.LookRotation(_rb.velocity.normalized, transform.up);
 
             float l = _rb.velocity.magnitude / 10f;
-
             Vector3 skew = new Vector3(
-               1f / ((4f / 3f) * Mathf.PI * l),
-               1f / ((4f / 3f) * Mathf.PI * l),
+               Mathf.Min(2f, Mathf.Max(0.1f, 1f / ((4f / 3f) * Mathf.PI * l))),
+               Mathf.Min(2f, Mathf.Max(0.1f, 1f / ((4f / 3f) * Mathf.PI * l))),
                l);
 
             _meshRenderer.material.SetVector("_Velocity", skew);
@@ -150,7 +149,7 @@ public class GravityLauncherProjectile : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.isStatic && collision.gameObject.tag != "NonSticky")
+        if (collision.gameObject.tag.Equals("Sticky"))
         {
             _rb.isKinematic = true;
             gameObject.isStatic = true;

@@ -658,6 +658,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bg: {fileID: 379951668}
   continueButton: {fileID: 1127275942}
+  mainMenuButton: {fileID: 718616384}
   graphics:
   - {fileID: 1383208224}
   - {fileID: 1127275943}

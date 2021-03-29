@@ -48,7 +48,7 @@ GameObject:
   - component: {fileID: 1966515707361933730}
   m_Layer: 0
   m_Name: Hallway (1)
-  m_TagString: Untagged
+  m_TagString: Sticky
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -250,7 +250,7 @@ GameObject:
   - component: {fileID: 2821149682283559636}
   m_Layer: 0
   m_Name: Hallway_Pillars
-  m_TagString: Untagged
+  m_TagString: Sticky
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295

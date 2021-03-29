@@ -52,7 +52,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": ""JumpHold"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Button"",
                     ""id"": ""0fcc8936-dcb3-47e7-bb97-307fa6c133ae"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",

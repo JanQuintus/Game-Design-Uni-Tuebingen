@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 8154245241626184308}
   m_Layer: 0
   m_Name: SmallWindowHub
-  m_TagString: Untagged
+  m_TagString: Sticky
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8078264090678739072}
   m_Layer: 0
   m_Name: Sci_Fi_Tiles_2_Wall_5x5
-  m_TagString: Untagged
+  m_TagString: Sticky
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295

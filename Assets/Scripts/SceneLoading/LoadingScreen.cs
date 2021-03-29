@@ -32,34 +32,79 @@ public class LoadingScreen : MonoBehaviour
 
         blend.DOFade(1f, 0.5f).onComplete += () =>
         {
-            AsyncOperation unload = SceneManager.UnloadSceneAsync(GameManager.LastScene);
+            if (SceneManager.GetSceneByName("MainMenu").isLoaded)
+            {
+                AsyncOperation unload = SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("MainMenu"));
+                unload.completed += (AsyncOperation unloadOperation) =>
+                {
+                    unloadAndLoad();
+                };
+            }
+            else
+            {
+                unloadAndLoad();
+            }
+            
+        };
+    }
+
+    private void unloadAndLoad()
+    {
+        if (SceneManager.GetSceneByName(GameManager.LastScene).isLoaded)
+        {
+            AsyncOperation unload = SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName(GameManager.LastScene));
             unload.completed += (AsyncOperation unloadOperation) =>
             {
-                loadingScreenCamera.SetActive(true);
-                Scene loadingScreenScene = SceneManager.GetSceneByName("LoadingScreen");
-                load = SceneManager.LoadSceneAsync(GameManager.CurrentScene, LoadSceneMode.Additive);
-                load.completed += (AsyncOperation asyncOperation) =>
+                if (SceneManager.GetSceneByName(GameManager.CurrentScene).isLoaded)
                 {
-                    SceneManager.SetActiveScene(SceneManager.GetSceneByName(GameManager.CurrentScene));
-                    loadingScreenCamera.SetActive(false);
-                    image.rectTransform.DOKill();
-                    image.DOKill();
-                    progress.DOFade(0f, 0.3f);
-                    foreach (MaskableGraphic g in blendInOut) g.DOFade(0f, 0.3f);
-                    blend.DOFade(0f, 0.5f).onComplete += () => SceneManager.UnloadSceneAsync(loadingScreenScene);
-                };
+                    AsyncOperation unload2 = SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName(GameManager.CurrentScene));
+                    unload2.completed += (AsyncOperation unloadOperation2) => loadNextScene();
+                }
+                else
+                    loadNextScene();
             };
+        }
+        else
+        {
+            if (SceneManager.GetSceneByName(GameManager.CurrentScene).isLoaded)
+            {
+                AsyncOperation unload2 = SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName(GameManager.CurrentScene));
+                unload2.completed += (AsyncOperation unloadOperation2) => loadNextScene();
+            }
+            else
+                loadNextScene();
+        }
+    }
+
+    private void loadNextScene()
+    {
+        loadingScreenCamera.SetActive(true);
+        Scene loadingScreenScene = SceneManager.GetSceneByName("LoadingScreen");
+        load = SceneManager.LoadSceneAsync(GameManager.CurrentScene, LoadSceneMode.Additive);
+        load.completed += (AsyncOperation asyncOperation) =>
+        {
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName(GameManager.CurrentScene));
+            loadingScreenCamera.SetActive(false);
+            if (image.rectTransform) image.rectTransform.DOKill();
+            if (image) image.DOKill();
+            if (progress) progress.DOFade(0f, 0.3f);
+            foreach (MaskableGraphic g in blendInOut) if (g) g.DOFade(0f, 0.3f);
+            if (blend)
+                blend.DOFade(0f, 0.5f).onComplete += () => SceneManager.UnloadSceneAsync(loadingScreenScene);
+            else
+                SceneManager.UnloadSceneAsync(loadingScreenScene);
         };
     }
 
     private void ShowNextImage()
     {
+        if (!image) return;
         image.DOFade(0f, 0.25f).onComplete += () =>
         {
-            image.sprite = sprites[Random.Range(0, sprites.Length)];
-            image.rectTransform.localScale = Vector3.one;
-            image.DOFade(1f, 0.25f);
-            image.rectTransform.DOScale(1.15f, 10f).onComplete += () => ShowNextImage();
+            if(image)image.sprite = sprites[Random.Range(0, sprites.Length)];
+            if(image)image.rectTransform.localScale = Vector3.one;
+            if(image)image.DOFade(1f, 0.25f);
+            if(image)image.rectTransform.DOScale(1.15f, 10f).onComplete += () => ShowNextImage();
         };
     }
 

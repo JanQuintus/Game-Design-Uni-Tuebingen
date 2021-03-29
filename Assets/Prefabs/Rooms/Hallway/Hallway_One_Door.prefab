@@ -49,7 +49,7 @@ GameObject:
   - component: {fileID: 5270272211077939093}
   m_Layer: 0
   m_Name: Hallway_One_Door
-  m_TagString: Untagged
+  m_TagString: Sticky
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -251,7 +251,7 @@ GameObject:
   - component: {fileID: 5262796220329355028}
   m_Layer: 0
   m_Name: Hallway_Pillars (1)
-  m_TagString: Untagged
+  m_TagString: Sticky
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295

@@ -6,12 +6,15 @@ public class PauseMenu : MonoBehaviour
 {
     [SerializeField] private MaskableGraphic bg;
     [SerializeField] private UIButton continueButton;
+    [SerializeField] private UIButton mainMenuButton;
     [SerializeField] private MaskableGraphic[] graphics;
 
     private PlayerInputActions inputActions;
 
     private void Awake()
     {
+        continueButton.gameObject.SetActive(false);
+        mainMenuButton.gameObject.SetActive(false);
         inputActions = new PlayerInputActions();
         GameManager.OnPauseGame += Show;
         GameManager.OnUnpauseGame += Hide;
@@ -34,6 +37,7 @@ public class PauseMenu : MonoBehaviour
 
     private void OnDisable()
     {
+        inputActions.UI.Cancel.Disable();
         inputActions.UI.Disable();
     }
 
@@ -48,6 +52,8 @@ public class PauseMenu : MonoBehaviour
         GameManager.UnpauseGame();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        inputActions.UI.Cancel.Disable();
+        inputActions.UI.Disable();
     }
     public void MainMenu()
     {
@@ -57,11 +63,14 @@ public class PauseMenu : MonoBehaviour
 
     private void Show()
     {
+        continueButton.gameObject.SetActive(true);
+        mainMenuButton.gameObject.SetActive(true);
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         bg.DOFade(0.8f, 0.25f).SetUpdate(true);
         foreach (MaskableGraphic g in graphics)
             g.DOFade(1f, 0.25f).SetUpdate(true);
+        inputActions.UI.Cancel.Enable();
         inputActions.UI.Enable();
         continueButton.Select();
     }
@@ -70,6 +79,9 @@ public class PauseMenu : MonoBehaviour
         bg.DOFade(0f, 0.25f).SetUpdate(true);
         foreach (MaskableGraphic g in graphics)
             g.DOFade(0f, 0.25f).SetUpdate(true);
+        inputActions.UI.Cancel.Disable();
         inputActions.UI.Disable();
+        continueButton.gameObject.SetActive(false);
+        mainMenuButton.gameObject.SetActive(false);
     }
 }

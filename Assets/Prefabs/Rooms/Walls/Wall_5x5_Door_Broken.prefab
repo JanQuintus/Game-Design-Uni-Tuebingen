@@ -599,7 +599,7 @@ GameObject:
   - component: {fileID: 5513232909933008232}
   m_Layer: 0
   m_Name: Wall_5x5_Door_Broken
-  m_TagString: Untagged
+  m_TagString: Sticky
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -758,6 +758,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aa4d32dc96d6a54d962f7bad09849a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsOpen: 0
   doorLeft: {fileID: 3653397991595257543}
   doorRight: {fileID: 562263690218654397}
   endPosLeft: {fileID: 373736442656542480}
@@ -765,6 +766,8 @@ MonoBehaviour:
   startPosLeft: {fileID: 203304041354323903}
   startPosRight: {fileID: 5109648258641347771}
   duration: 1
+  doorOpenClip: {fileID: 0}
+  doorCloseClip: {fileID: 0}
 --- !u!1 &5663667237887858454
 GameObject:
   m_ObjectHideFlags: 0

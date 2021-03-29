@@ -65,7 +65,9 @@ public class DialogueUI : MonoBehaviour
         {
             if (context.performed && bg.gameObject.activeSelf)
             {
-                hidePanel();
+                stopChat = true;
+                hidePanel(false);
+                Reset();
             }
         };
 
@@ -147,15 +149,19 @@ public class DialogueUI : MonoBehaviour
         if(!stopChat) // if chat doesn't need to stop
         {
             dialogueClip = Resources.Load<AudioClip>("Dialogue/" + _npcName + GameManager.GlobalProgress + _localDialogueProgress);
-            SoundController.Instance.PlaySoundAtLocation(dialogueClip, GameObject.Find(_npcName).transform.position); // play said sound at npc pos
+            GameObject.Find(_npcName).GetComponentInChildren<AudioSource>().clip = dialogueClip; // play said sound at npc pos
+            GameObject.Find(_npcName).GetComponentInChildren<AudioSource>().Stop();
+            GameObject.Find(_npcName).GetComponentInChildren<AudioSource>().Play();
         }
     }
 
-    private void hidePanel() // hidePanel, what does it do? :flushed: CHANGE GLOBAL PROGRESS HERE IF WANTED HELP YO
+    private void hidePanel(bool canIncreaseGlobalProgress = true) // hidePanel, what does it do? :flushed: CHANGE GLOBAL PROGRESS HERE IF WANTED HELP YO
     {
         bg.gameObject.SetActive(false);
         dialogueText.gameObject.SetActive(false);
-        if ((_npcName == "chad") && (GameManager.GlobalProgress % 2 == 0))
+        if(_npcName != null && GameObject.Find(_npcName) != null && GameObject.Find(_npcName).GetComponentInChildren<AudioSource>() != null)
+            GameObject.Find(_npcName).GetComponentInChildren<AudioSource>().Stop();
+        if (canIncreaseGlobalProgress && (_npcName == "chad") && (GameManager.GlobalProgress % 2 == 0))
         {
             GameManager.GlobalProgress += 1;
         }

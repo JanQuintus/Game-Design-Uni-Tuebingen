@@ -777,7 +777,7 @@ GameObject:
   - component: {fileID: 2030980213248978331}
   m_Layer: 0
   m_Name: Wall_5x5_Door (1)
-  m_TagString: Untagged
+  m_TagString: Sticky
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -1756,7 +1756,7 @@ GameObject:
   - component: {fileID: 5189859428258289917}
   m_Layer: 0
   m_Name: Wall_5x5_Door
-  m_TagString: Untagged
+  m_TagString: Sticky
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295

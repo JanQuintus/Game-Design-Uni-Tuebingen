@@ -5,8 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - GravityBomb
-  - NonSticky
   - TennisBall
+  - Sticky
   layers:
   - Default
   - TransparentFX

@@ -47,6 +47,8 @@ public class Health : MonoBehaviour, ISaveable
             Heal(-amount);
             return;
         }
+        if (_health <= 0)
+            return;
         _health -= amount;
         _lastDamage = Time.time;
         _regenTime = 0;

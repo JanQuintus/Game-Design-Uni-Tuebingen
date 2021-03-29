@@ -9,6 +9,8 @@ public class AudioClipBundle
 
     public AudioClip GetRandomClip()
     {
+        if (clips.Length == 0)
+            return null;
         return clips[Random.Range(0, clips.Length)];
     }
 }

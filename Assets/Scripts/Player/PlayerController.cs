@@ -114,7 +114,7 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
 
     private void Awake()
     {
-        if(Instance != null)
+        if (Instance != null)
         {
             Destroy(gameObject);
             return;
@@ -196,13 +196,13 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
             audioSource.pitch = 1;
             audioSource.PlayOneShot(standUpClip);
         }
-        
+
 
         if (_isCrouching)
         {
             col.height = crouchHeight;
             col.center = new Vector3(col.center.x, crouchHeight / 2f, col.center.z);
-            _hbDefaultPosY =  crouchHeight - 0.2f;
+            _hbDefaultPosY = crouchHeight - 0.2f;
         }
         else
         {
@@ -222,9 +222,9 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
         }
         Vector3 move = transform.TransformDirection(new Vector3(_smoothMove.x, 0, _smoothMove.y) * Time.fixedDeltaTime * speed) + upVelocity;
         _rb.velocity = move;
-        if(_isGrounded) 
+        if (_isGrounded)
             _nextFoodStep -= _smoothMove.magnitude * speed;
-        if(_nextFoodStep <= 0)
+        if (_nextFoodStep <= 0)
         {
             _nextFoodStep = footStepDistance;
             if (_isGrounded)
@@ -235,7 +235,7 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
                     if (hit.collider.GetComponent<CollisionSound>() != null)
                         audioSource.PlayOneShot(hit.collider.GetComponent<CollisionSound>().GetCollisionClip(), Random.Range(0.01f, 0.03f));
                 }
-                
+
                 audioSource.PlayOneShot(footStepClip, Random.Range(0.5f, 1f));
             }
         }
@@ -256,7 +256,7 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
         if (localVelocity.y <= 0)
         {
             _rb.velocity += _gravity.GetLocalGravity() * (fallMultiplier - 1) * Time.fixedDeltaTime;
-        }else if (localVelocity.y > 0 && !_jump)
+        } else if (localVelocity.y > 0 && !_jump)
         {
             _rb.velocity += _gravity.GetLocalGravity() * (lowJumpMultiplier - 1) * Time.fixedDeltaTime;
         }
@@ -280,7 +280,7 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
             audioSource.pitch = Random.Range(0.9f, 1.1f);
             audioSource.PlayOneShot(landClip, Mathf.Clamp01(_rb.velocity.magnitude - 5f));
         }
-        else if(!_isGrounded && wasGrounded)
+        else if (!_isGrounded && wasGrounded)
         {
             _tbDefaultPosY = _tbInitialDefaultPosY - 0.15f;
         }
@@ -298,7 +298,7 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
         Vector3 localVelocity = transform.InverseTransformDirection(_rb.velocity);
         if ((Mathf.Abs(localVelocity.x) > 0.1f || Mathf.Abs(localVelocity.z) > 0.1f) && _isGrounded)
         {
-            _hbTimer += Time.deltaTime * walkBobbingSpeed *_rb.velocity.magnitude;
+            _hbTimer += Time.deltaTime * walkBobbingSpeed * _rb.velocity.magnitude;
             head.localPosition = new Vector3(
                 Mathf.Lerp(head.localPosition.x, _hbDefaultPosX + Mathf.Sin(_hbTimer / 2f) * walkBobbingAmount.x, 8f * Time.deltaTime),
                 Mathf.Lerp(head.localPosition.y, _hbDefaultPosY + Mathf.Sin(_hbTimer) * walkBobbingAmount.y, 8f * Time.deltaTime),
@@ -336,7 +336,7 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
         _heartBeatSpeed = heartBeatNormalSpeed * Mathf.Max(0.2f, _health.GetHealthPercentage());
         heartBeatSource.volume = (1f - _health.GetHealthPercentage()) * 2f + 0.1f;
         _heartBeatTimer -= Time.deltaTime;
-        if(_heartBeatTimer / _heartBeatSpeed <= 0.3f && !_heartBeat1Played)
+        if (_heartBeatTimer / _heartBeatSpeed <= 0.3f && !_heartBeat1Played)
         {
             _heartBeat1Played = true;
             heartBeatSource.PlayOneShot(heartBeat1);
@@ -457,7 +457,7 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
             }
             else
                 _slopeSpeedMult = 1f;
-                
+
             _isGrounded = true;
             return;
         }
@@ -482,9 +482,9 @@ public class PlayerController : MonoBehaviour, PlayerInputActions.IPlayerActions
     }
 
     public void OnSprint(InputAction.CallbackContext context) { if (context.performed || context.canceled) _sprint = context.performed; }
-    
-    public void OnJumpStart(InputAction.CallbackContext context) { if (context.performed) _jumpRequest = true; }
-    public void OnJumpHold(InputAction.CallbackContext context) => _jump = !_jump;
+
+    public void OnJumpStart(InputAction.CallbackContext context) { if (context.performed) _jumpRequest = true; if (context.canceled) _jump = false; }
+    public void OnJumpHold(InputAction.CallbackContext context) { if(!_jump) _jump = true; }
 
     public void OnCrouch(InputAction.CallbackContext context) { if (context.performed || context.canceled) _crouch = context.performed; }
 

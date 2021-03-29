@@ -387,6 +387,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7921954276207858558, guid: db21f0621d428604582b3eb2fae9b9ac, type: 3}
+      propertyPath: m_TagString
+      value: Sticky
+      objectReference: {fileID: 0}
     - target: {fileID: -6463813039801078170, guid: db21f0621d428604582b3eb2fae9b9ac, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -419,9 +423,25 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 3008227576ec0954c8d115f7bbd2387a, type: 2}
+    - target: {fileID: -1192811879899833875, guid: db21f0621d428604582b3eb2fae9b9ac, type: 3}
+      propertyPath: m_TagString
+      value: Sticky
+      objectReference: {fileID: 0}
+    - target: {fileID: 702962392968817213, guid: db21f0621d428604582b3eb2fae9b9ac, type: 3}
+      propertyPath: m_TagString
+      value: Sticky
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: db21f0621d428604582b3eb2fae9b9ac, type: 3}
       propertyPath: m_Name
       value: stairnewtest Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: db21f0621d428604582b3eb2fae9b9ac, type: 3}
+      propertyPath: m_TagString
+      value: Sticky
+      objectReference: {fileID: 0}
+    - target: {fileID: 3107858430089844129, guid: db21f0621d428604582b3eb2fae9b9ac, type: 3}
+      propertyPath: m_TagString
+      value: Sticky
       objectReference: {fileID: 0}
     - target: {fileID: 3465572966266730083, guid: db21f0621d428604582b3eb2fae9b9ac, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -431,6 +451,14 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 3008227576ec0954c8d115f7bbd2387a, type: 2}
+    - target: {fileID: 4778211189094012685, guid: db21f0621d428604582b3eb2fae9b9ac, type: 3}
+      propertyPath: m_TagString
+      value: Sticky
+      objectReference: {fileID: 0}
+    - target: {fileID: 5345526674503298615, guid: db21f0621d428604582b3eb2fae9b9ac, type: 3}
+      propertyPath: m_TagString
+      value: Sticky
+      objectReference: {fileID: 0}
     - target: {fileID: 5583417623689245906, guid: db21f0621d428604582b3eb2fae9b9ac, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -439,6 +467,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 4d49db7eb48522f459a6217130fd0fe3, type: 2}
+    - target: {fileID: 7509724602976043936, guid: db21f0621d428604582b3eb2fae9b9ac, type: 3}
+      propertyPath: m_TagString
+      value: Sticky
+      objectReference: {fileID: 0}
     - target: {fileID: 9194509242015492025, guid: db21f0621d428604582b3eb2fae9b9ac, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 

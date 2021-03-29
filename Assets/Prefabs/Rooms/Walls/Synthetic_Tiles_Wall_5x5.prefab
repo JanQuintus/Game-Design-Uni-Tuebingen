@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3109111566175200106}
   m_Layer: 0
   m_Name: Synthetic_Tiles_Wall_5x5
-  m_TagString: Untagged
+  m_TagString: Sticky
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295

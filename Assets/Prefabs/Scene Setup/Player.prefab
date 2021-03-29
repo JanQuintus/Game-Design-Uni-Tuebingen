@@ -679,7 +679,7 @@ MonoBehaviour:
   sprintSpeedMult: 1.75
   crouchSpeedMult: 0.5
   head: {fileID: 435276535253156492}
-  mouseSensitivity: 0.4
+  mouseSensitivity: 0.2
   maxPitch: 90
   minPitch: -70
   walkBobbingSpeed: 4

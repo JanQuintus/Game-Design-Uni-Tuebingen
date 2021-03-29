@@ -309,6 +309,10 @@ PrefabInstance:
       value: Wall_5x5_Vent
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 6eee8692cabefaa4d920eedc15b02ce2, type: 3}
+      propertyPath: m_TagString
+      value: Sticky
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6eee8692cabefaa4d920eedc15b02ce2, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 4294967295
       objectReference: {fileID: 0}

@@ -13,8 +13,9 @@ public class PartCollectable : AInteractive, ISaveable
     {
         _pickedUp = true;
         SoundController.Instance.PlaySoundAtLocation(pickUpClip, transform.position);
-        InnerDialog.Instance.PlayDialog(innerDialogBundle.GetRandomClip());
-        GameManager.GlobalProgress = globalProgress;
+        if(innerDialogBundle != null && innerDialogBundle.GetRandomClip() != null)
+            InnerDialog.Instance.PlayDialog(innerDialogBundle.GetRandomClip());
+        if(globalProgress != -1) GameManager.GlobalProgress = globalProgress;
         Destroy(GetComponent<Collider>());
         for(int i = 0; i < transform.childCount; i++)
             Destroy(transform.GetChild(i).gameObject);

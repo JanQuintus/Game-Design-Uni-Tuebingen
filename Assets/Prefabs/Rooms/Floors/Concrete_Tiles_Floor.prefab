@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 288490744562749065}
   m_Layer: 0
   m_Name: Concrete_Tiles_Floor
-  m_TagString: Untagged
+  m_TagString: Sticky
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295

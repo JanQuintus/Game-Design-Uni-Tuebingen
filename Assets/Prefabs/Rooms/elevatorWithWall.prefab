@@ -79,6 +79,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aa4d32dc96d6a54d962f7bad09849a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsOpen: 0
   doorLeft: {fileID: 5275394115717767108}
   doorRight: {fileID: 8802921099955346301}
   endPosLeft: {fileID: 1865248205069119848}
@@ -423,7 +424,7 @@ GameObject:
   - component: {fileID: 8466087284589332858}
   m_Layer: 0
   m_Name: Plane
-  m_TagString: Untagged
+  m_TagString: Sticky
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -876,7 +877,7 @@ GameObject:
   - component: {fileID: 6164658367639294194}
   m_Layer: 0
   m_Name: Room
-  m_TagString: Untagged
+  m_TagString: Sticky
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

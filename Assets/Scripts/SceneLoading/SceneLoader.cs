@@ -30,7 +30,7 @@ public class SceneLoader : MonoBehaviour
     
     public void LoadScene(string name, bool save = false)
     {
-        GameManager.LastScene = GameManager.CurrentScene;
+        if(save) GameManager.LastScene = GameManager.CurrentScene;
         GameManager.CurrentScene = name;
         if (save && SaveLoadSystem.Instance != null)
             SaveLoadSystem.Instance.Save();
