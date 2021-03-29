@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f646fa05ddcaa964cb5adde779210713, type: 3}
+  m_Name: doc1
+  m_EditorClassIdentifier: 
+  text1: Hello, the officer over there told me I could ask you about what exactly
+    happened here?
+  text2: 'Yes, I suppose he did. Hello by the way, my name is Doctor Lapsberg.
+
+    So
+    I doubt you have heard of it, since it happened 200 years back, but a meteorite
+    hit our station
+
+    and damaged one of our reactors. We managed to get it up
+    and running without any problems, at least that''s what
+
+    we thought at that
+    time, because apparently there must have been some oversight. Soon after the
+    incident
+
+    some of our people were reportedly showing smaller mutations,
+    not many generations after we had newborn kids looking
+
+    so horrible that
+    we had no choice but to isolate them and keep them in continuous care under tight
+    security.'
+  text3: "What happened then is hard to explain, our science staff said that some
+    of the mutating properties of our new\r\npower element, which we found together
+    with Graviterial on that weird planet seems to work exponentially, \r\nmeaning
+    that the amount of mutations per generation ramps up quickly.\r\nThe number of
+    people showing mutations also grew over time, and six months ago we suffered
+    a safety breach.\r\nWe had to deploy countless measures of containment, most
+    of which have been unsuccessful."
+  text4: Uhh okay that was a lot... thank you. Does that mean that it is still dangerous
+    to go out?
+  text5: 'Apart from the mutants there''s still radiation out there, however judging
+    from the symbols on
+
+    your suit you seem "suited" to not be bothered by that...
+    haha... I''m sorry.'
+  text6: 
+  text7: 
+  text8: 
