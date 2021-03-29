@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f646fa05ddcaa964cb5adde779210713, type: 3}
+  m_Name: chad0
+  m_EditorClassIdentifier: 
+  text1: Hello, I'm Ruby from A2, order unit. I was sent to check out what happened
+    here.
+  text2: Hey, I'm the one in charge here, what do you want to know?
+  text3: 'The stations should be communicating with one another once per month,
+
+    but
+    comms have been down for six months now, what happened here?'
+  text4: 'There''s mutants here now, it''s too much to explain. If you really want
+    to know, go ask that
+
+    doctor. Thing is we need help and we need it now.
+    We''re short on supplies and we''d all love to leave this place
+
+    for good.
+    You must have come here by ship, how many people can board?'
+  text5: 'There''s room for 6 regular passengers, given this situation we might be
+    able to fit in
+
+    up to around 25 if we make some room in the storage part.
+    But there''s a catch, while I was trying to land,
+
+    one of these "mutants"
+    managed to damage my ship.'
+  text6: 'Hmm, I see. Some of our technicians could see to that, but we''re gonna
+    need parts.
+
+    We''re low on manpower here as most of us are gone looking
+    for supplies, so you gotta find the parts yourself.
+
+    You should start looking
+    for parts in the storage area, take the elevator to go there.'
+  text7: Got it, I'll be on my way.
+  text8: 

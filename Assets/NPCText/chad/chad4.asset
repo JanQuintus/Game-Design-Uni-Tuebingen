@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f646fa05ddcaa964cb5adde779210713, type: 3}
+  m_Name: chad4
+  m_EditorClassIdentifier: 
+  text1: As for the missing person, this is all I found of them. Here's another part.
+  text2: 'Hmm, not the time to mourn our losses, can''t do anything about that now.
+
+    That
+    reminds me, there should be some spare parts on the second floor in the big Storage
+    room.'
+  text3: Oh I saw that, but I couldn't get up there.
+  text4: 'I see, one of our scouts lost her Gravity Launcher in the Park during a
+    mutant encounter.
+
+    You should be able to use that to get to places. Since
+    part of the transportation from manufacturing is processing
+
+    near the Park,
+    you might also find some more electronics in the maintenance room.
+
+    Head
+    to the corresponding elevator when you''re ready.'
+  text5: 
+  text6: 
+  text7: 
+  text8: 

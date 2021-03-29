@@ -30,12 +30,16 @@ public class DialogueUI : MonoBehaviour
     private string _npcText;
     private string _npcName;
 
+    private bool stopChat;
+
     private DialogueScriptableObject usedDialogueScriptable; // cuz we call thing in awake and can't give parameters hence
 
     public bool IsOpen() => bg.gameObject.activeSelf;
 
     private void Awake()
     {
+        stopChat = false;
+
         if (Instance != null) // clear
         {
             Destroy(gameObject);
@@ -112,8 +116,12 @@ public class DialogueUI : MonoBehaviour
                 break; // set text depending on dialogue progress, can't access the field via concatenation of "text" and localprogress because scrobjs don't use static fields
         }
 
-        if (_npcText == "") // stop cond, when next dialogue is empty
+        stopChat = false; // make sure chat's not stopped from previous convo
+        
+        if ((_npcText == "") || (_npcText == null)) // stop cond, when next dialogue is empty
         {
+            stopChat = true;
+            hidePanel();
             Reset();
         }
 
@@ -136,15 +144,18 @@ public class DialogueUI : MonoBehaviour
 
         // play sound, use soundname by global and local progress and name
         // get sound from filesys and concat prog to chose
-        dialogueClip = Resources.Load<AudioClip>("Dialogue/" + _npcName + GameManager.GlobalProgress + _localDialogueProgress);
-        SoundController.Instance.PlaySoundAtLocation(dialogueClip, GameObject.Find(_npcName).transform.position); // play said sound at npc pos
+        if(!stopChat) // if chat doesn't need to stop
+        {
+            dialogueClip = Resources.Load<AudioClip>("Dialogue/" + _npcName + GameManager.GlobalProgress + _localDialogueProgress);
+            SoundController.Instance.PlaySoundAtLocation(dialogueClip, GameObject.Find(_npcName).transform.position); // play said sound at npc pos
+        }
     }
 
-    private void hidePanel() // hidePanel, what does it do? :flushed: CHANGE GLOBAL PROGRESS HERE IF WANTED
+    private void hidePanel() // hidePanel, what does it do? :flushed: CHANGE GLOBAL PROGRESS HERE IF WANTED HELP YO
     {
         bg.gameObject.SetActive(false);
         dialogueText.gameObject.SetActive(false);
-        if ((gameObject.name == "officer") && (GameManager.GlobalProgress % 2 == 0)) // if officer and globalprog mod 2 = 0 ( every time when talking advances global progress )
+        if ((_npcName == "chad") && (GameManager.GlobalProgress % 2 == 0))
         {
             GameManager.GlobalProgress += 1;
         }
