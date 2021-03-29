@@ -116,10 +116,13 @@ public class DialogueUI : MonoBehaviour
                 break; // set text depending on dialogue progress, can't access the field via concatenation of "text" and localprogress because scrobjs don't use static fields
         }
 
-        if (_npcText == "") // stop cond, when next dialogue is empty
+        stopChat = false; // make sure chat's not stopped from previous convo
+        
+        if ((_npcText == "") || (_npcText == null)) // stop cond, when next dialogue is empty
         {
-            Reset();
             stopChat = true;
+            hidePanel();
+            Reset();
         }
 
         if (!bg.gameObject.activeSelf) // if panel is off
@@ -152,9 +155,8 @@ public class DialogueUI : MonoBehaviour
     {
         bg.gameObject.SetActive(false);
         dialogueText.gameObject.SetActive(false);
-        if ((gameObject.name == "chad") && (GameManager.GlobalProgress % 2 == 0)) // if officer and globalprog mod 2 = 0 ( every time when talking advances global progress )
+        if ((_npcName == "chad") && (GameManager.GlobalProgress % 2 == 0))
         {
-            Debug.Log("yo"); // TODO
             GameManager.GlobalProgress += 1;
         }
     }
